@@ -18,46 +18,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             @foreach($properties as $property)
-            <a href="{{ route('properties.show', $property->slug) }}" wire:navigate class="group relative block overflow-hidden rounded-lg border bg-base-100 transition-all hover:shadow-lg">
-                <div class="relative h-64 overflow-hidden">
-                    <img
-                        src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
-                        alt="{{ $property->name }}"
-                        class="h-full w-full object-cover transition duration-500 group-hover:scale-110"
-                    />
-                    <div class="absolute top-4 left-4">
-                        <span class="badge badge-primary px-3 py-1">{{ $property->type }}</span>
-                    </div>
-                </div>
-
-                <div class="p-6">
-                    <div class="flex items-center justify-between mb-2">
-                        <p class="text-sm text-base-content/60">{{ $property->location }}</p>
-                        <p class="text-sm font-medium text-success">{{ $property->is_available ? 'Available Now' : 'Booked' }}</p>
-                    </div>
-
-                    <h3 class="text-xl font-bold group-hover:text-primary transition-colors mb-4">
-                        {{ $property->name }}
-                    </h3>
-
-                    <div class="border-t pt-4">
-                        <div class="flex flex-wrap gap-x-4 gap-y-2">
-                            @if($property->price_daily)
-                            <div>
-                                <p class="text-xs text-base-content/50 uppercase font-semibold">Daily</p>
-                                <p class="text-lg font-bold">IDR {{ number_format($property->price_daily) }}</p>
-                            </div>
-                            @endif
-                            @if($property->price_monthly)
-                            <div>
-                                <p class="text-xs text-base-content/50 uppercase font-semibold">Monthly</p>
-                                <p class="text-lg font-bold">IDR {{ number_format($property->price_monthly) }}</p>
-                            </div>
-                            @endif
-                        </div>
-                    </div>
-                </div>
-            </a>
+                <x-single-property :property="$property" />
             @endforeach
         </div>
 

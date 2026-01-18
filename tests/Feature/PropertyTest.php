@@ -30,5 +30,7 @@ it('can filter properties by type reactively', function () {
     Livewire::test('properties.list-properties')
         ->set('type', 'Villa')
         ->assertSee('The Grand Villa')
-        ->assertDontSee('Modern Urban Loft');
+        ->assertDontSee('Modern Urban Loft')
+        ->assertSee('Book Now')
+        ->assertSee('https://wa.me/628123456789');
 });
