@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\PropertyController;
+use App\Livewire\Properties\ListProperties;
+use App\Livewire\Properties\ShowProperty;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [PropertyController::class, 'index'])->name('home');
-Route::get('/properties', [PropertyController::class, 'index'])->name('properties.index');
-Route::get('/properties/{property:slug}', [PropertyController::class, 'show'])->name('properties.show');
+Route::get('/', ListProperties::class)->name('home');
+Route::get('/properties', ListProperties::class)->name('properties.index');
+Route::get('/properties/{property:slug}', ShowProperty::class)->name('properties.show');

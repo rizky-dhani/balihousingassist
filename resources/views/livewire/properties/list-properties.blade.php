@@ -1,8 +1,3 @@
-@extends('layouts.app')
-
-@section('title', 'Property Catalog - Bali Housing Assist')
-
-@section('content')
 <section class="bg-base-100 py-8 lg:py-12 px-4 lg:px-8">
     <div class="max-w-screen-xl mx-auto">
         <div class="flex flex-col md:flex-row md:items-center justify-between mb-8">
@@ -12,20 +7,18 @@
             </div>
             
             <div class="mt-4 md:mt-0 flex gap-2">
-                <form action="{{ route('properties.index') }}" method="GET" class="flex gap-2">
-                    <select name="type" class="select select-bordered w-full max-w-xs" onchange="this.form.submit()">
-                        <option value="">All Types</option>
-                        <option value="Villa" {{ request('type') == 'Villa' ? 'selected' : '' }}>Villas</option>
-                        <option value="Guest House" {{ request('type') == 'Guest House' ? 'selected' : '' }}>Guest Houses</option>
-                        <option value="Loft" {{ request('type') == 'Loft' ? 'selected' : '' }}>Lofts</option>
-                    </select>
-                </form>
+                <select wire:model.live="type" class="select select-bordered w-full max-w-xs">
+                    <option value="">All Types</option>
+                    <option value="Villa">Villas</option>
+                    <option value="Guest House">Guest Houses</option>
+                    <option value="Loft">Lofts</option>
+                </select>
             </div>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
             @foreach($properties as $property)
-            <a href="{{ route('properties.show', $property->slug) }}" class="group relative block overflow-hidden rounded-lg border bg-base-100 transition-all hover:shadow-lg">
+            <a href="{{ route('properties.show', $property->slug) }}" wire:navigate class="group relative block overflow-hidden rounded-lg border bg-base-100 transition-all hover:shadow-lg">
                 <div class="relative h-64 overflow-hidden">
                     <img
                         src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
@@ -73,4 +66,3 @@
         </div>
     </div>
 </section>
-@endsection

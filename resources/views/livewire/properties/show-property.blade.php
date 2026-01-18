@@ -1,8 +1,3 @@
-@extends('layouts.app')
-
-@section('title', $property->name . ' - Bali Housing Assist')
-
-@section('content')
 <section class="bg-base-100 py-8 lg:py-12 px-4 lg:px-8">
     <div class="max-w-screen-xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
@@ -93,4 +88,3 @@
         </div>
     </div>
 </section>
-@endsection

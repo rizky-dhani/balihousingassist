@@ -33,7 +33,7 @@
     </header>
 
     <main class="flex-grow">
-        @yield('content')
+        {{ $slot }}
     </main>
 
     <footer class="footer p-10 bg-base-200 text-base-content border-t">
