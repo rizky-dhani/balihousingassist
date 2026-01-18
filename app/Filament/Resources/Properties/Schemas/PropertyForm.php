@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\Properties\Schemas;
 
-use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class PropertyForm
@@ -27,18 +29,33 @@ class PropertyForm
                 Textarea::make('address')
                     ->default(null)
                     ->columnSpanFull(),
-                TextInput::make('price_daily')
-                    ->numeric()
-                    ->default(null),
-                TextInput::make('price_weekly')
-                    ->numeric()
-                    ->default(null),
-                TextInput::make('price_monthly')
-                    ->numeric()
-                    ->default(null),
-                TextInput::make('price_yearly')
-                    ->numeric()
-                    ->default(null),
+                Section::make('')
+                    ->label('Prices')
+                    ->columnSpanFull()
+                    ->schema([
+                        TextInput::make('price_daily')
+                            ->label('Daily')
+                            ->numeric()
+                            ->default(null),
+                        TextInput::make('price_weekly')
+                            ->label('Weekly')
+                            ->numeric()
+                            ->default(null),
+                        TextInput::make('price_monthly')
+                            ->label('Monthly')
+                            ->numeric()
+                            ->default(null),
+                        TextInput::make('price_yearly')
+                            ->label('Yearly')
+                            ->numeric()
+                            ->default(null),
+                    ]),
+                FileUpload::make('images')
+                    ->multiple()
+                    ->reorderable()
+                    ->image()
+                    ->directory('properties')
+                    ->columnSpanFull(),
                 Toggle::make('is_available')
                     ->required(),
             ]);

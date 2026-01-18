@@ -17,6 +17,7 @@ class Property extends Model
         'type',
         'location',
         'address',
+        'images',
         'price_daily',
         'price_weekly',
         'price_monthly',
@@ -27,6 +28,7 @@ class Property extends Model
     protected function casts(): array
     {
         return [
+            'images' => 'array',
             'price_daily' => 'integer',
             'price_weekly' => 'integer',
             'price_monthly' => 'integer',
