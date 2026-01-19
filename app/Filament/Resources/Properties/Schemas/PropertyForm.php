@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Properties\Schemas;
 
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -18,7 +19,10 @@ class PropertyForm
         return $schema
             ->components([
                 TextInput::make('name')
-                    ->columnSpanFull()
+                    ->columnSpan(1)
+                    ->required(),
+                Select::make('property_category_id')
+                    ->relationship('category', 'name')
                     ->required(),
                 Textarea::make('description')
                     ->default(null)
@@ -34,9 +38,6 @@ class PropertyForm
                     ->numeric()
                     ->step(0.1)
                     ->default(0),
-                Textarea::make('address')
-                    ->default(null)
-                    ->columnSpanFull(),
                 Grid::make(2)
                     ->columnSpanFull()
                     ->schema([

@@ -60,6 +60,11 @@ class Property extends Model
         return $this->belongsTo(PropertyCategory::class, 'property_category_id');
     }
 
+    public function location_details(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(PropertyLocation::class);
+    }
+
     public function amenities(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(Amenity::class);

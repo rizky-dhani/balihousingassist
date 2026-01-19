@@ -16,10 +16,15 @@ it('can create a property with images', function () {
     $user = User::factory()->create();
     $this->actingAs($user);
 
+    $category = \App\Models\PropertyCategory::create([
+        'name' => 'Villa',
+        'slug' => 'villa',
+    ]);
+
     Livewire::test(CreateProperty::class)
         ->fill([
             'data.name' => 'Test Property',
-            'data.slug' => 'test-property',
+            'data.property_category_id' => $category->id,
             'data.type' => 'Villa',
             'data.location' => 'Ubud',
             'data.is_available' => true,
@@ -31,11 +36,14 @@ it('can create a property with images', function () {
         ->call('create')
         ->assertHasNoErrors();
 
-    $property = Property::where('slug', 'test-property')->first();
+    $property = Property::where('name', 'Test Property')->first();
 
     expect($property->images)
         ->toBeArray()
         ->toHaveCount(2)
         ->toContain('properties/image1.jpg')
         ->toContain('properties/image2.jpg');
+
+    expect($property->property_category_id)->toBe($category->id);
+    expect($property->location)->toBe('Ubud');
 });

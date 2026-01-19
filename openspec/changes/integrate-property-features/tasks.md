@@ -1,11 +1,11 @@
-- [ ] Ensure `PropertyCategory` model and migration are created (if not already done by `update-footer` proposal).
-- [ ] Ensure `PropertyCategoryResource` is created and configured with correct navigation (if not already done by `update-footer` proposal).
-- [ ] Modify `App\Filament\Resources\Properties\Schemas\PropertyForm` to include a `Select` field for `property_category_id`.
-- [ ] Create `App\Models\PropertyLocation` model with appropriate fields (e.g., `property_id`, `latitude`, `longitude`, `address_line_1`, `address_line_2`, `city`, `state`, `zip_code`, `country`).
-- [ ] Create a migration for the `property_locations` table, including a foreign key to `properties` table.
-- [ ] Update `App\Models\Property` to define a `hasOne` relationship with `PropertyLocation`.
-- [ ] Create `App\Filament\Resources\PropertyLocationResource` and configure its form, table, and navigation.
-- [ ] Create a RelationManager for `PropertyLocation` within `App\Filament\Resources\Properties\PropertyResource`.
-- [ ] Remove `location` and `address` fields from `App\Filament\Resources\Properties\Schemas\PropertyForm`.
-- [ ] Update any existing views or logic that uses `Property->location` or `Property->address` to use the new `PropertyLocation` relationship.
-- [ ] Create tests for `PropertyCategory` integration, `PropertyLocation` functionality, and `PropertyForm` updates.
+- [x] Ensure `PropertyCategory` model and migration are created (if not already done by `update-footer` proposal).
+- [x] Ensure `PropertyCategoryResource` is created and configured with correct navigation (if not already done by `update-footer` proposal).
+- [x] Modify `App\Filament\Resources\Properties\Schemas\PropertyForm` to include a `Select` field for `property_category_id`.
+- [x] Create `App\Models\PropertyLocation` model with appropriate fields (e.g., `property_id`, `latitude`, `longitude`, `address_line_1`, `address_line_2`, `city`, `state`, `zip_code`, `country`).
+- [x] Create a migration for the `property_locations` table, including a foreign key to `properties` table.
+- [x] Update `App\Models\Property` to define a `hasOne` relationship with `PropertyLocation`.
+- [x] Create `App\Filament\Resources\PropertyLocationResource` and configure its form, table, and navigation.
+- [x] Create a RelationManager for `PropertyLocation` within `App\Filament\Resources\Properties\PropertyResource`.
+- [x] Remove `location` and `address` fields from `App\Filament\Resources\Properties\Schemas\PropertyForm`.
+- [x] Update any existing views or logic that uses `Property->location` or `Property->address` to use the new `PropertyLocation` relationship.
+- [x] Create tests for `PropertyCategory` integration, `PropertyLocation` functionality, and `PropertyForm` updates.

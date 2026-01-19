@@ -35,6 +35,7 @@ class PropertyResource extends Resource
     {
         return [
             AmenitiesRelationManager::class,
+            RelationManagers\LocationDetailsRelationManager::class,
         ];
     }
 

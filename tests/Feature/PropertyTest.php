@@ -23,6 +23,25 @@ it('can view property detail component', function () {
         ->assertSee($property->type);
 });
 
+it('displays updated property card fields', function () {
+    $property = Property::factory()->create([
+        'name' => 'Test Card Property',
+        'location' => 'Seminyak',
+        'bedroom' => 3,
+        'bathroom' => 2,
+        'price_daily' => 1500000,
+        'is_available' => true,
+    ]);
+
+    Livewire::test('properties.list-properties')
+        ->assertSee('Test Card Property')
+        ->assertSee('Seminyak')
+        ->assertSee('Bed')
+        ->assertSee('Bath')
+        ->assertSee('IDR 1,500,000')
+        ->assertSee('/ night');
+});
+
 it('can filter properties by type reactively', function () {
     Property::factory()->create(['name' => 'The Grand Villa', 'type' => 'Villa', 'is_available' => true]);
     Property::factory()->create(['name' => 'Modern Urban Loft', 'type' => 'Loft', 'is_available' => true]);

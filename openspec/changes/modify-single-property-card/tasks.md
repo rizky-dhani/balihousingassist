@@ -1,0 +1,8 @@
+- [x] Open `resources/views/components/single-property.blade.php`.
+- [x] Remove the display of `$property->price_monthly`.
+- [x] Modify the display of `$property->price_daily` to "IDR {{ number_format($property->price_daily) }} / night".
+- [x] Reposition the daily price display to be below the bedroom count.
+- [x] Add the display of `$property->location` (or `PropertyLocation` once implemented) to the card.
+- [x] Add the display of `$property->bedroom` and `$property->bathroom` to the card.
+- [x] Verify the updated card displays correctly.
+- [x] Write appropriate feature tests to ensure the changes are correct and robust.
