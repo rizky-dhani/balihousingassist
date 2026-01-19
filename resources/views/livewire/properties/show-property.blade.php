@@ -1,36 +1,7 @@
 <section class="bg-base-100 py-8 lg:py-12 px-4 lg:px-8">
     <div class="max-w-screen-xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-            <div>
-                @php
-                    $images = $property->images ?? [];
-                    $mainImage = !empty($images) ? \Illuminate\Support\Facades\Storage::url($images[0]) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80';
-                @endphp
-                <div class="rounded-xl overflow-hidden shadow-sm mb-4">
-                    <img
-                        src="{{ $mainImage }}"
-                        alt="{{ $property->name }}"
-                        class="w-full h-[400px] object-cover"
-                    />
-                </div>
-                
-                @if(count($images) > 1)
-                <div class="grid grid-cols-4 gap-4">
-                    @foreach(collect($images)->slice(1, 3) as $image)
-                        <img src="{{ \Illuminate\Support\Facades\Storage::url($image) }}" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80" />
-                    @endforeach
-                    
-                    @if(count($images) > 4)
-                    <div class="relative rounded-lg h-24 w-full overflow-hidden cursor-pointer group">
-                        <img src="{{ \Illuminate\Support\Facades\Storage::url($images[4]) }}" class="h-full w-full object-cover" />
-                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-bold group-hover:bg-black/40">+{{ count($images) - 4 }}</div>
-                    </div>
-                    @elseif(count($images) === 4)
-                        <img src="{{ \Illuminate\Support\Facades\Storage::url($images[3]) }}" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80" />
-                    @endif
-                </div>
-                @endif
-            </div>
+            <x-property-gallery :images="$property->images" :name="$property->name" />
 
             <div class="flex flex-col">
                 <div class="mb-6">

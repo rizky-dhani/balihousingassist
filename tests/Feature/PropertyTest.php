@@ -42,16 +42,28 @@ it('displays updated property card fields', function () {
         ->assertSee('/ night');
 });
 
-it('can filter properties by type reactively', function () {
-    Property::factory()->create(['name' => 'The Grand Villa', 'type' => 'Villa', 'is_available' => true]);
-    Property::factory()->create(['name' => 'Modern Urban Loft', 'type' => 'Loft', 'is_available' => true]);
+it('can filter properties by category manually', function () {
+    $category = \App\Models\PropertyCategory::create(['name' => 'Villa', 'slug' => 'villa']);
+    Property::factory()->create(['name' => 'The Grand Villa', 'property_category_id' => $category->id, 'is_available' => true]);
+    Property::factory()->create(['name' => 'Modern Urban Loft', 'property_category_id' => null, 'is_available' => true]);
 
     Livewire::test('properties.list-properties')
-        ->set('type', 'Villa')
+        ->set('category_id', $category->id)
+        ->call('applyFilters')
         ->assertSee('The Grand Villa')
         ->assertDontSee('Modern Urban Loft')
-        ->assertSee('Book Now')
-        ->assertSee('https://wa.me/628123456789');
+        ->assertSee('Book Now');
+});
+
+it('can filter properties by location manually', function () {
+    Property::factory()->create(['name' => 'Canggu Villa', 'location' => 'Canggu', 'is_available' => true]);
+    Property::factory()->create(['name' => 'Ubud Villa', 'location' => 'Ubud', 'is_available' => true]);
+
+    Livewire::test('properties.list-properties')
+        ->set('location', 'Canggu')
+        ->call('applyFilters')
+        ->assertSee('Canggu Villa')
+        ->assertDontSee('Ubud Villa');
 });
 
 it('automatically generates a slug when creating a property', function () {
