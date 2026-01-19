@@ -6,7 +6,7 @@
     <title>@yield('title', 'Bali Housing Assist')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col font-sans">
     <x-header />
 
     <main class="flex-grow">
