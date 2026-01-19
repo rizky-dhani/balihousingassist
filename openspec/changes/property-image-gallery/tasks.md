@@ -1,0 +1,5 @@
+- [x] Modify `resources/views/livewire/properties/show-property.blade.php` to iterate over `$property->images` for the main image display.
+- [x] Modify `resources/views/livewire/properties/show-property.blade.php` to iterate over `$property->images` for the thumbnail gallery, ensuring appropriate styling and handling for multiple images.
+- [x] Implement logic to display a placeholder or hide the section if no images are available.
+- [x] Add a feature test to verify that the property images are displayed correctly on the `show-property` page.
+- [x] Run `vendor/bin/pint --dirty` to ensure code formatting.

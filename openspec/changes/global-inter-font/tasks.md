@@ -1,0 +1,3 @@
+- [x] Investigate current font usage.
+- [x] Confirm Inter font is already globally applied.
+- [x] (Cancelled) Implement Inter font globally.

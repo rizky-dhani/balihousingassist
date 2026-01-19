@@ -2,23 +2,34 @@
     <div class="max-w-screen-xl mx-auto">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
             <div>
+                @php
+                    $images = $property->images ?? [];
+                    $mainImage = !empty($images) ? \Illuminate\Support\Facades\Storage::url($images[0]) : 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80';
+                @endphp
                 <div class="rounded-xl overflow-hidden shadow-sm mb-4">
                     <img
-                        src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=1200&q=80"
+                        src="{{ $mainImage }}"
                         alt="{{ $property->name }}"
                         class="w-full h-[400px] object-cover"
                     />
                 </div>
                 
+                @if(count($images) > 1)
                 <div class="grid grid-cols-4 gap-4">
-                    <img src="https://images.unsplash.com/photo-1512918766671-ed6a47ca025a?auto=format&fit=crop&w=300&q=80" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80" />
-                    <img src="https://images.unsplash.com/photo-1449156003053-c2d2247bd39c?auto=format&fit=crop&w=300&q=80" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80" />
-                    <img src="https://images.unsplash.com/photo-1513584684374-8bdb7489feef?auto=format&fit=crop&w=300&q=80" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80" />
+                    @foreach(collect($images)->slice(1, 3) as $image)
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url($image) }}" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80" />
+                    @endforeach
+                    
+                    @if(count($images) > 4)
                     <div class="relative rounded-lg h-24 w-full overflow-hidden cursor-pointer group">
-                        <img src="https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?auto=format&fit=crop&w=300&q=80" class="h-full w-full object-cover" />
-                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-bold group-hover:bg-black/40">+12</div>
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url($images[4]) }}" class="h-full w-full object-cover" />
+                        <div class="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-bold group-hover:bg-black/40">+{{ count($images) - 4 }}</div>
                     </div>
+                    @elseif(count($images) === 4)
+                        <img src="{{ \Illuminate\Support\Facades\Storage::url($images[3]) }}" class="rounded-lg h-24 w-full object-cover cursor-pointer hover:opacity-80" />
+                    @endif
                 </div>
+                @endif
             </div>
 
             <div class="flex flex-col">
