@@ -7,6 +7,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -17,6 +18,7 @@ class PropertyForm
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->columnSpanFull()
                     ->required(),
                 Textarea::make('description')
                     ->default(null)
@@ -35,31 +37,37 @@ class PropertyForm
                 Textarea::make('address')
                     ->default(null)
                     ->columnSpanFull(),
-                Section::make('')
-                    ->label('Prices')
+                Grid::make(2)
                     ->columnSpanFull()
                     ->schema([
-                        TextInput::make('price_daily')
-                            ->label('Daily')
-                            ->numeric()
-                            ->default(null),
-                        TextInput::make('price_weekly')
-                            ->label('Weekly')
-                            ->numeric()
-                            ->default(null),
-                        TextInput::make('price_monthly')
-                            ->label('Monthly')
-                            ->numeric()
-                            ->default(null),
-                        TextInput::make('price_yearly')
-                            ->label('Yearly')
-                            ->numeric()
-                            ->default(null),
+                        Section::make('Amenities')
+                            ->schema([
+                                CheckboxList::make('')
+                                    ->relationship('amenities', 'name')
+                                    ->searchable()
+                                    ->columns(2),
+                            ]),
+                        Section::make('Pricing')
+                            ->columns(2)
+                            ->schema([
+                                TextInput::make('price_daily')
+                                    ->label('Daily')
+                                    ->numeric()
+                                    ->default(null),
+                                TextInput::make('price_weekly')
+                                    ->label('Weekly')
+                                    ->numeric()
+                                    ->default(null),
+                                TextInput::make('price_monthly')
+                                    ->label('Monthly')
+                                    ->numeric()
+                                    ->default(null),
+                                TextInput::make('price_yearly')
+                                    ->label('Yearly')
+                                    ->numeric()
+                                    ->default(null),
+                            ])
                     ]),
-                CheckboxList::make('amenities')
-                    ->relationship('amenities', 'name')
-                    ->columns(2)
-                    ->columnSpanFull(),
                 FileUpload::make('images')
                     ->multiple()
                     ->reorderable()
