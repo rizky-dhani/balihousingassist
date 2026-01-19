@@ -5,6 +5,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 it('renders header and footer on the homepage', function () {
+    \App\Models\Navigation::create(['label' => 'About', 'url' => '/about', 'order' => 1]);
+    \App\Models\Navigation::create(['label' => 'Careers', 'url' => '/careers', 'order' => 2]);
+
     $response = $this->get(route('home'));
 
     $response->assertStatus(200);

@@ -42,10 +42,10 @@ class PropertyForm
                     ->schema([
                         Section::make('Amenities')
                             ->schema([
-                                CheckboxList::make('')
+                                CheckboxList::make('amenities')
                                     ->relationship('amenities', 'name')
                                     ->searchable()
-                                    ->columns(2),
+                                    ->columns(4),
                             ]),
                         Section::make('Pricing')
                             ->columns(2)
@@ -66,7 +66,7 @@ class PropertyForm
                                     ->label('Yearly')
                                     ->numeric()
                                     ->default(null),
-                            ])
+                            ]),
                     ]),
                 FileUpload::make('images')
                     ->multiple()

@@ -5,9 +5,7 @@
         @foreach($property->amenities as $amenity)
         <div class="flex items-center gap-3">
             <div class="bg-primary/10 p-2 rounded-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
+                <x-hugeicons-checkmark-circle-01 class="h-5 w-5 text-primary" />
             </div>
             <span class="font-medium text-base-content/80">{{ $amenity->name }}</span>
         </div>
