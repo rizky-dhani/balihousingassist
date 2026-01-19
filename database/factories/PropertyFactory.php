@@ -2,7 +2,10 @@
 
 namespace Database\Factories;
 
+use App\Models\Amenity;
+use App\Models\Property;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Property>
@@ -20,6 +23,7 @@ class PropertyFactory extends Factory
 
         return [
             'name' => $name,
+            'slug' => Str::slug($name),
             'description' => $this->faker->paragraphs(3, true),
             'type' => $this->faker->randomElement(['Villa', 'Guest House', 'Loft']),
             'location' => $this->faker->randomElement(['Canggu', 'Seminyak', 'Ubud', 'Uluwatu', 'Pererenan']),
@@ -32,5 +36,21 @@ class PropertyFactory extends Factory
             'price_yearly' => $this->faker->numberBetween(100000000, 1000000000),
             'is_available' => true,
         ];
+    }
+
+    /**
+     * Configure the model factory.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Property $property) {
+            $amenities = Amenity::all();
+
+            if ($amenities->isNotEmpty()) {
+                $property->amenities()->attach(
+                    $amenities->random(rand(2, 5))->pluck('id')->toArray()
+                );
+            }
+        });
     }
 }
