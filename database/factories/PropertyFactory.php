@@ -25,11 +25,10 @@ class PropertyFactory extends Factory
             'name' => $name,
             'slug' => Str::slug($name),
             'description' => $this->faker->paragraphs(3, true),
-            'type' => $this->faker->randomElement(['Villa', 'Guest House', 'Loft']),
-            'location' => $this->faker->randomElement(['Canggu', 'Seminyak', 'Ubud', 'Uluwatu', 'Pererenan']),
+            'property_category_id' => \App\Models\PropertyCategory::factory(),
+            'property_location_id' => \App\Models\PropertyLocation::factory(),
             'bedroom' => $this->faker->numberBetween(1, 6),
             'bathroom' => $this->faker->randomElement([1, 1.5, 2, 2.5, 3, 3.5, 4]),
-            'address' => $this->faker->address(),
             'price_daily' => $this->faker->numberBetween(500000, 5000000), // In IDR
             'price_weekly' => $this->faker->numberBetween(3000000, 30000000),
             'price_monthly' => $this->faker->numberBetween(10000000, 100000000),

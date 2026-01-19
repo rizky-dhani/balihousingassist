@@ -15,9 +15,6 @@ class Property extends Model
         'name',
         'slug',
         'description',
-        'type',
-        'location',
-        'address',
         'bedroom',
         'bathroom',
         'images',
@@ -27,6 +24,7 @@ class Property extends Model
         'price_yearly',
         'is_available',
         'property_category_id',
+        'property_location_id',
     ];
 
     protected static function booted(): void
@@ -52,6 +50,7 @@ class Property extends Model
             'price_yearly' => 'integer',
             'is_available' => 'boolean',
             'property_category_id' => 'integer',
+            'property_location_id' => 'integer',
         ];
     }
 
@@ -60,9 +59,9 @@ class Property extends Model
         return $this->belongsTo(PropertyCategory::class, 'property_category_id');
     }
 
-    public function location_details(): \Illuminate\Database\Eloquent\Relations\HasOne
+    public function location(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->hasOne(PropertyLocation::class);
+        return $this->belongsTo(PropertyLocation::class, 'property_location_id');
     }
 
     public function amenities(): \Illuminate\Database\Eloquent\Relations\BelongsToMany

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('properties', function (Blueprint $table) {
-            $table->string('location')->nullable()->change();
-            $table->text('address')->nullable()->change();
+            $table->dropColumn(['type', 'location']);
+            $table->foreignId('property_location_id')->nullable()->constrained('property_locations')->nullOnDelete();
         });
     }
 
@@ -23,8 +23,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('properties', function (Blueprint $table) {
-            $table->string('location')->nullable(false)->change();
-            $table->text('address')->nullable(false)->change();
+            $table->string('type')->nullable();
+            $table->string('location')->nullable();
+            $table->dropConstrainedForeignId('property_location_id');
         });
     }
 };

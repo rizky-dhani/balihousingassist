@@ -10,7 +10,13 @@ class PropertyLocationForm
     {
         return $schema
             ->components([
-                //
+                \Filament\Forms\Components\TextInput::make('name')
+                    ->required()
+                    ->maxLength(255),
+                \Filament\Forms\Components\Select::make('parent_id')
+                    ->relationship('parent', 'name')
+                    ->searchable()
+                    ->preload(),
             ]);
     }
 }

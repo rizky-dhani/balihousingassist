@@ -12,6 +12,12 @@ class PropertySeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Property::factory(10)->create();
+        $categories = \App\Models\PropertyCategory::factory()->count(5)->create();
+        $locations = \App\Models\PropertyLocation::factory()->count(10)->create();
+
+        \App\Models\Property::factory(20)->create([
+            'property_category_id' => fn () => $categories->random()->id,
+            'property_location_id' => fn () => $locations->random()->id,
+        ]);
     }
 }

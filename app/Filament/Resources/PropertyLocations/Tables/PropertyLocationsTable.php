@@ -13,7 +13,13 @@ class PropertyLocationsTable
     {
         return $table
             ->columns([
-                //
+                \Filament\Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('parent.name')
+                    ->label('Parent Location')
+                    ->searchable()
+                    ->sortable(),
             ])
             ->filters([
                 //

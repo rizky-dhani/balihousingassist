@@ -13,15 +13,8 @@ return new class extends Migration
     {
         Schema::create('property_locations', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('property_id')->constrained()->cascadeOnDelete();
-            $table->decimal('latitude', 10, 8)->nullable();
-            $table->decimal('longitude', 11, 8)->nullable();
-            $table->string('address_line_1');
-            $table->string('address_line_2')->nullable();
-            $table->string('city');
-            $table->string('state')->nullable();
-            $table->string('zip_code')->nullable();
-            $table->string('country')->default('Indonesia');
+            $table->string('name');
+            $table->foreignId('parent_id')->nullable()->constrained('property_locations')->nullOnDelete();
             $table->timestamps();
         });
     }

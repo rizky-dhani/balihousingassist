@@ -18,11 +18,16 @@ class PropertiesTable
                 TextColumn::make('name')
                     ->searchable(),
                 TextColumn::make('slug')
-                    ->searchable(),
-                TextColumn::make('type')
-                    ->searchable(),
-                TextColumn::make('location')
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('category.name')
+                    ->label('Category')
+                    ->searchable()
+                    ->sortable(),
+                TextColumn::make('location.city')
+                    ->label('Location')
+                    ->searchable()
+                    ->sortable(),
                 TextColumn::make('bedroom')
                     ->numeric()
                     ->sortable(),

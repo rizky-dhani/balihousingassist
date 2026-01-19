@@ -24,13 +24,14 @@ class PropertyForm
                 Select::make('property_category_id')
                     ->relationship('category', 'name')
                     ->required(),
+                Select::make('property_location_id')
+                    ->relationship('location', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->required(),
                 Textarea::make('description')
                     ->default(null)
                     ->columnSpanFull(),
-                TextInput::make('type')
-                    ->required(),
-                TextInput::make('location')
-                    ->required(),
                 TextInput::make('bedroom')
                     ->numeric()
                     ->default(0),

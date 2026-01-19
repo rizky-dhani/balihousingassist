@@ -29,7 +29,7 @@
             </div>
             <div class="flex items-center gap-2">
                 <x-hugeicons-location-01 class="h-5 w-5 text-primary" />
-                <span class="text-md font-bold text-base-content">{{ $property->location }}</span>
+                <span class="text-md font-bold text-base-content">{{ $property->location?->city ?? 'Bali' }}</span>
             </div>
         </div>
     </div>
@@ -51,7 +51,7 @@
         @php
             $siteSettings = \App\Models\SiteSetting::getSingleton();
             $waNumber = $siteSettings->whatsapp_number ?? '628123456789';
-            $locationName = $property->location_details?->city ?? $property->location;
+            $locationName = $property->location?->city ?? 'Bali';
             $waText = urlencode("Hello, I'm interested in booking " . $property->name . " in " . $locationName . ". Can I get more details?");
             $waUrl = "https://wa.me/{$waNumber}?text={$waText}";
         @endphp

@@ -6,8 +6,10 @@
             <div class="flex flex-col">
                 <div class="mb-6">
                     <div class="flex items-center gap-2 mb-2">
-                        <span class="badge badge-primary">{{ $property->type }}</span>
-                        <span class="badge badge-ghost text-base-content/60">{{ $property->location_details?->city ?? $property->location }}</span>
+                        @if($property->category)
+                            <span class="badge badge-primary">{{ $property->category->name }}</span>
+                        @endif
+                        <span class="badge badge-ghost text-base-content/60">{{ $property->location?->city ?? 'Bali' }}</span>
                     </div>
                     <h1 class="text-4xl font-bold mb-4">{{ $property->name }}</h1>
                     <p class="text-base-content/70 leading-relaxed">
@@ -56,8 +58,8 @@
                 </div>
                 <div>
                     <h4 class="font-bold mb-4">Address</h4>
-                    <p class="text-base-content/70">{{ $property->location_details?->address_line_1 ?? $property->address }}</p>
-                    <p class="mt-2 text-primary font-medium">{{ $property->location_details?->city ?? $property->location }}, Bali</p>
+                    <p class="text-base-content/70">{{ $property->location?->address_line_1 ?? 'Address not set' }}</p>
+                    <p class="mt-2 text-primary font-medium">{{ $property->location?->city ?? 'Bali' }}, Bali</p>
                 </div>
             </div>
         </div>

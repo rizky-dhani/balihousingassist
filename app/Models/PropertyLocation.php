@@ -2,24 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PropertyLocation extends Model
 {
+    /** @use HasFactory<\Database\Factories\PropertyLocationFactory> */
+    use HasFactory;
+
     protected $fillable = [
-        'property_id',
-        'latitude',
-        'longitude',
-        'address_line_1',
-        'address_line_2',
-        'city',
-        'state',
-        'zip_code',
-        'country',
+        'name',
+        'parent_id',
     ];
 
-    public function property(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    public function parent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Property::class);
+        return $this->belongsTo(PropertyLocation::class, 'parent_id');
+    }
+
+    public function children(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PropertyLocation::class, 'parent_id');
     }
 }
