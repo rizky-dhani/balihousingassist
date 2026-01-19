@@ -2,18 +2,20 @@
 
 namespace App\Filament\Resources\Properties\RelationManagers;
 
-use Filament\Forms\Components\TextInput;
-use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Schemas\Schema;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class LocationDetailsRelationManager extends RelationManager
 {
     protected static string $relationship = 'location_details';
+
+    protected static ?string $title = 'Location Details';
 
     protected static ?string $recordTitleAttribute = 'address_line_1';
 
