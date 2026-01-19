@@ -17,29 +17,11 @@
       <div class="hidden md:block">
         <nav aria-label="Global">
           <ul class="flex items-center gap-6 text-sm">
+            @foreach(\App\Models\Navigation::whereNull('parent_id')->orderBy('order')->get() as $item)
             <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> About </a>
+              <a class="text-gray-500 transition hover:text-gray-500/75" href="{{ $item->url }}" @if($item->new_tab) target="_blank" @endif> {{ $item->label }} </a>
             </li>
-
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> Careers </a>
-            </li>
-
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> History </a>
-            </li>
-
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> Services </a>
-            </li>
-
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> Projects </a>
-            </li>
-
-            <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="#"> Blog </a>
-            </li>
+            @endforeach
           </ul>
         </nav>
       </div>

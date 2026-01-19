@@ -1,0 +1,10 @@
+- [x] Create `resources/views/components/footer.blade.php` with the specified sections.
+- [x] Implement dynamic navigation links in the footer, reusing the navigation items from a shared config.
+- [x] Create `app/Models/PropertyCategory.php` model.
+- [x] Create `app/Filament/Resources/PropertyCategoryResource.php`.
+- [x] Implement the display of `PropertyCategory` items in the footer.
+- [x] Implement "Contact Us" (WhatsApp) and "FAQs" links in the footer.
+- [x] Ensure all links are absolute and use named routes where appropriate.
+- [x] Add `x-footer` component to `resources/views/layouts/app.blade.php`.
+- [x] Verify the footer displays correctly.
+- [x] Create necessary tests for the new footer functionality.

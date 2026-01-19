@@ -14,6 +14,29 @@ it('renders header and footer on the homepage', function () {
     $response->assertSee('Careers');
 
     // Assert footer is present (using some unique text from x-footer)
-    $response->assertSee('Bali Housing Assist');
+    $response->assertSee('Navigation');
+    $response->assertSee('Properties');
     $response->assertSee('Helpful Links');
+    $response->assertSee('Contact Us');
+    $response->assertSee('FAQs');
+});
+
+it('displays property categories in the footer', function () {
+    $category = \App\Models\PropertyCategory::create([
+        'name' => 'Villa',
+        'slug' => 'villa',
+    ]);
+
+    $response = $this->get(route('home'));
+
+    $response->assertSee('Villa');
+});
+
+it('uses whatsapp number from site settings in the footer', function () {
+    $settings = \App\Models\SiteSetting::getSingleton();
+    $settings->update(['whatsapp_number' => '628123456789']);
+
+    $response = $this->get(route('home'));
+
+    $response->assertSee('https://wa.me/628123456789');
 });

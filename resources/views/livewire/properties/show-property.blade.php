@@ -46,37 +46,28 @@
 
                 <div class="bg-base-200 rounded-2xl p-6 mb-8">
                     <h3 class="font-bold text-lg mb-4">Stay Rates</h3>
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        @if($property->price_daily)
+                    <div class="grid grid-cols-2 gap-4">
                         <div class="bg-base-100 p-4 rounded-xl text-center">
                             <p class="text-xs text-base-content/50 uppercase font-bold mb-1">Daily</p>
-                            <p class="text-sm font-bold truncate">IDR {{ number_format($property->price_daily) }}</p>
+                            <p class="text-sm font-bold truncate">{{ $property->price_daily ? 'IDR ' . number_format($property->price_daily) : 'Ask' }}</p>
                         </div>
-                        @endif
-                        @if($property->price_weekly)
                         <div class="bg-base-100 p-4 rounded-xl text-center">
                             <p class="text-xs text-base-content/50 uppercase font-bold mb-1">Weekly</p>
-                            <p class="text-sm font-bold truncate">IDR {{ number_format($property->price_weekly) }}</p>
+                            <p class="text-sm font-bold truncate">{{ $property->price_weekly ? 'IDR ' . number_format($property->price_weekly) : 'Ask' }}</p>
                         </div>
-                        @endif
-                        @if($property->price_monthly)
                         <div class="bg-base-100 p-4 rounded-xl text-center">
                             <p class="text-xs text-base-content/50 uppercase font-bold mb-1">Monthly</p>
-                            <p class="text-sm font-bold truncate">IDR {{ number_format($property->price_monthly) }}</p>
+                            <p class="text-sm font-bold truncate">{{ $property->price_monthly ? 'IDR ' . number_format($property->price_monthly) : 'Ask' }}</p>
                         </div>
-                        @endif
-                        @if($property->price_yearly)
                         <div class="bg-base-100 p-4 rounded-xl text-center">
                             <p class="text-xs text-base-content/50 uppercase font-bold mb-1">Yearly</p>
-                            <p class="text-sm font-bold truncate">IDR {{ number_format($property->price_yearly) }}</p>
+                            <p class="text-sm font-bold truncate">{{ $property->price_yearly ? 'IDR ' . number_format($property->price_yearly) : 'Ask' }}</p>
                         </div>
-                        @endif
                     </div>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-4 mt-auto">
-                    <button class="btn btn-primary flex-1 btn-lg">Book Short Term</button>
-                    <button class="btn btn-outline flex-1 btn-lg">Inquire Long Lease</button>
+                    <button class="btn btn-primary flex-1 btn-lg">Book Now</button>
                 </div>
             </div>
         </div>

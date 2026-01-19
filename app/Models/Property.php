@@ -26,6 +26,7 @@ class Property extends Model
         'price_monthly',
         'price_yearly',
         'is_available',
+        'property_category_id',
     ];
 
     protected static function booted(): void
@@ -50,7 +51,13 @@ class Property extends Model
             'price_monthly' => 'integer',
             'price_yearly' => 'integer',
             'is_available' => 'boolean',
+            'property_category_id' => 'integer',
         ];
+    }
+
+    public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(PropertyCategory::class, 'property_category_id');
     }
 
     public function amenities(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
