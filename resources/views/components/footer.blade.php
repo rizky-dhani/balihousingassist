@@ -4,7 +4,9 @@
       <div>
         <div class="text-teal-600">
           @if ($siteSettings?->logo)
-            <img class="h-8 w-auto" src="{{ asset('storage/' . $siteSettings->logo) }}" alt="{{ config('app.name') }}">
+            <a href="{{ route('home') }}">
+                <img class="h-20 w-auto" src="{{ asset('storage/' . $siteSettings->logo) }}" alt="{{ config('app.name') }}">
+            </a>
           @else
             <a class="block text-teal-600 font-bold text-xl" href="/">
               {{ config('app.name') }}
