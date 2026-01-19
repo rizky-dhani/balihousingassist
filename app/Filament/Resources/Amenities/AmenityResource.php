@@ -13,12 +13,17 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class AmenityResource extends Resource
 {
     protected static ?string $model = Amenity::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedHeart;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Properties';
+
+    protected static ?string $navigationParentItem = 'Properties';
 
     public static function form(Schema $schema): Schema
     {

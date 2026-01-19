@@ -9,6 +9,7 @@ use App\Filament\Resources\PropertyCategories\Schemas\PropertyCategoryForm;
 use App\Filament\Resources\PropertyCategories\Tables\PropertyCategoriesTable;
 use App\Models\PropertyCategory;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -19,6 +20,12 @@ class PropertyCategoryResource extends Resource
     protected static ?string $model = PropertyCategory::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Properties';
+
+    protected static ?string $navigationParentItem = 'Properties';
+
+    protected static ?string $navigationLabel = 'Categories';
 
     public static function form(Schema $schema): Schema
     {

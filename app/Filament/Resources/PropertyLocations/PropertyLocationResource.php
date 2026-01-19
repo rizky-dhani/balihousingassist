@@ -9,6 +9,7 @@ use App\Filament\Resources\PropertyLocations\Schemas\PropertyLocationForm;
 use App\Filament\Resources\PropertyLocations\Tables\PropertyLocationsTable;
 use App\Models\PropertyLocation;
 use BackedEnum;
+use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
@@ -19,6 +20,12 @@ class PropertyLocationResource extends Resource
     protected static ?string $model = PropertyLocation::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+
+    protected static string|UnitEnum|null $navigationGroup = 'Properties';
+
+    protected static ?string $navigationParentItem = 'Properties';
+
+    protected static ?string $navigationLabel = 'Locations';
 
     public static function form(Schema $schema): Schema
     {
