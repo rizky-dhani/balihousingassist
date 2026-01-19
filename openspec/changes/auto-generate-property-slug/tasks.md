@@ -1,4 +1,4 @@
-- [ ] Remove the 'slug' TextInput from `app/Filament/Resources/Properties/Schemas/PropertyForm.php`.
-- [ ] Implement automatic slug generation in the `App\Models\Property` model using an Eloquent event (e.g., 'creating' or 'saving') to populate the 'slug' field from the 'name' field using `Illuminate\Support\Str::slug()`.
-- [ ] Add a feature test to `tests/Feature/PropertyTest.php` to verify that the slug is automatically generated upon property creation/update.
-- [ ] Run `vendor/bin/pint --dirty` to ensure code formatting.
+- [x] Remove the 'slug' TextInput from `app/Filament/Resources/Properties/Schemas/PropertyForm.php`.
+- [x] Implement automatic slug generation in the `App\Models\Property` model using an Eloquent event (e.g., 'creating' or 'saving') to populate the 'slug' field from the 'name' field using `Illuminate\Support\Str::slug()`.
+- [x] Add a feature test to `tests/Feature/PropertyTest.php` to verify that the slug is automatically generated upon property creation/update.
+- [x] Run `vendor/bin/pint --dirty` to ensure code formatting.

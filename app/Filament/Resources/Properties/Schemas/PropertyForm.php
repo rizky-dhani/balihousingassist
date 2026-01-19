@@ -17,8 +17,6 @@ class PropertyForm
             ->components([
                 TextInput::make('name')
                     ->required(),
-                TextInput::make('slug')
-                    ->required(),
                 Textarea::make('description')
                     ->default(null)
                     ->columnSpanFull(),

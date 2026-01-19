@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Property extends Model
 {
@@ -25,6 +26,19 @@ class Property extends Model
         'is_available',
     ];
 
+    protected static function booted(): void
+    {
+        static::creating(function (Property $property) {
+            $property->slug = Str::slug($property->name);
+        });
+
+        static::updating(function (Property $property) {
+            if ($property->isDirty('name')) {
+                $property->slug = Str::slug($property->name);
+            }
+        });
+    }
+
     protected function casts(): array
     {
         return [
@@ -35,5 +49,10 @@ class Property extends Model
             'price_yearly' => 'integer',
             'is_available' => 'boolean',
         ];
+    }
+
+    public function amenities(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Amenity::class);
     }
 }

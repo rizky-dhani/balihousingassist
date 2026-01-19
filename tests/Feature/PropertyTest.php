@@ -34,3 +34,29 @@ it('can filter properties by type reactively', function () {
         ->assertSee('Book Now')
         ->assertSee('https://wa.me/628123456789');
 });
+
+it('automatically generates a slug when creating a property', function () {
+    $property = Property::create([
+        'name' => 'Beautiful Beach Villa',
+        'type' => 'Villa',
+        'location' => 'Bali',
+        'is_available' => true,
+    ]);
+
+    expect($property->slug)->toBe('beautiful-beach-villa');
+});
+
+it('automatically updates the slug when the name changes', function () {
+    $property = Property::create([
+        'name' => 'Old Name Villa',
+        'type' => 'Villa',
+        'location' => 'Bali',
+        'is_available' => true,
+    ]);
+
+    expect($property->slug)->toBe('old-name-villa');
+
+    $property->update(['name' => 'New Awesome Villa']);
+
+    expect($property->slug)->toBe('new-awesome-villa');
+});
