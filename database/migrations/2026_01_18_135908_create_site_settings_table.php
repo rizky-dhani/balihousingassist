@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('linkedin_url')->nullable();
             $table->string('whatsapp_number')->nullable();
             $table->string('email')->nullable();
+            $table->json('settings')->nullable();
             $table->timestamps();
         });
     }

@@ -18,7 +18,10 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('type'); // Villa, Guest House, Loft, etc.
             $table->string('location'); // Area in Bali
+            $table->integer('bedroom')->default(0);
+            $table->decimal('bathroom', 3, 1)->default(0);
             $table->text('address')->nullable();
+            $table->longText('images')->nullable();
             $table->integer('price_daily')->nullable();
             $table->integer('price_weekly')->nullable();
             $table->integer('price_monthly')->nullable();

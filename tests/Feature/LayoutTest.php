@@ -14,6 +14,6 @@ it('renders header and footer on the homepage', function () {
     $response->assertSee('Careers');
 
     // Assert footer is present (using some unique text from x-footer)
-    $response->assertSee('Company Name');
+    $response->assertSee('Bali Housing Assist');
     $response->assertSee('Helpful Links');
 });

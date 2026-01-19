@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Properties\Schemas;
 
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -24,6 +25,13 @@ class PropertyForm
                     ->required(),
                 TextInput::make('location')
                     ->required(),
+                TextInput::make('bedroom')
+                    ->numeric()
+                    ->default(0),
+                TextInput::make('bathroom')
+                    ->numeric()
+                    ->step(0.1)
+                    ->default(0),
                 Textarea::make('address')
                     ->default(null)
                     ->columnSpanFull(),
@@ -48,6 +56,10 @@ class PropertyForm
                             ->numeric()
                             ->default(null),
                     ]),
+                CheckboxList::make('amenities')
+                    ->relationship('amenities', 'name')
+                    ->columns(2)
+                    ->columnSpanFull(),
                 FileUpload::make('images')
                     ->multiple()
                     ->reorderable()

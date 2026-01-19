@@ -18,6 +18,8 @@ class Property extends Model
         'type',
         'location',
         'address',
+        'bedroom',
+        'bathroom',
         'images',
         'price_daily',
         'price_weekly',

@@ -19,6 +19,7 @@ class SiteSetting extends Model
     protected function casts(): array
     {
         return [
+            'settings' => 'array',
         ];
     }
 

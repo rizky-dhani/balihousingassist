@@ -23,6 +23,12 @@ class PropertiesTable
                     ->searchable(),
                 TextColumn::make('location')
                     ->searchable(),
+                TextColumn::make('bedroom')
+                    ->numeric()
+                    ->sortable(),
+                TextColumn::make('bathroom')
+                    ->numeric()
+                    ->sortable(),
                 TextColumn::make('price_daily')
                     ->numeric()
                     ->sortable(),

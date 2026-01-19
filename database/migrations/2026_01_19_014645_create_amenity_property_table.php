@@ -11,8 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('properties', function (Blueprint $table) {
-            $table->longText('images')->nullable()->after('address');
+        Schema::create('amenity_property', function (Blueprint $table) {
+            $table->foreignId('property_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('amenity_id')->constrained()->cascadeOnDelete();
+            $table->primary(['property_id', 'amenity_id']);
         });
     }
 
@@ -21,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('properties', function (Blueprint $table) {
-            $table->dropColumn('images');
-        });
+        Schema::dropIfExists('amenity_property');
     }
 };

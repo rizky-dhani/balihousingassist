@@ -7,8 +7,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 it('displays site logo in header and footer', function () {
-    $settings = SiteSetting::query()->updateOrCreate(['id' => 1], ['logo' => 'site/logo.png']);
-    view()->share('siteSettings', $settings);
+    $settings = SiteSetting::getSingleton();
+    $settings->update(['logo' => 'site/logo.png']);
 
     $this->get('/')
         ->assertStatus(200)
