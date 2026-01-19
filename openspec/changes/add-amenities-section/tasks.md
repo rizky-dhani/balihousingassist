@@ -1,0 +1,5 @@
+- [ ] Implement Amenity display logic in `ShowProperty.php` to fetch associated amenities.
+- [ ] Create the Blade partial for displaying amenities.
+- [ ] Integrate the new amenities Blade partial into `show-property.blade.php` before the map section.
+- [ ] Ensure proper styling and responsiveness for the new section.
+- [ ] Write feature tests to verify the amenities section is displayed correctly.
