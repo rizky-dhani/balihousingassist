@@ -14,16 +14,13 @@ class ListProperties extends Component
     use WithPagination;
 
     #[Url]
-    public $type = '';
-
-    #[Url]
     public $bedroom = '';
 
     #[Url]
     public $bathroom = '';
 
     #[Url]
-    public $location = '';
+    public $property_location_id = '';
 
     #[Url]
     public $category_id = '';
@@ -35,17 +32,13 @@ class ListProperties extends Component
 
     public function resetFilters()
     {
-        $this->reset(['type', 'bedroom', 'bathroom', 'location', 'category_id']);
+        $this->reset(['bedroom', 'bathroom', 'property_location_id', 'category_id']);
         $this->resetPage();
     }
 
     public function render()
     {
         $query = Property::query()->where('is_available', true);
-
-        if ($this->type) {
-            $query->where('type', $this->type);
-        }
 
         if ($this->bedroom) {
             $query->where('bedroom', $this->bedroom);
@@ -55,8 +48,8 @@ class ListProperties extends Component
             $query->where('bathroom', '>=', $this->bathroom);
         }
 
-        if ($this->location) {
-            $query->where('location', $this->location);
+        if ($this->property_location_id) {
+            $query->where('property_location_id', $this->property_location_id);
         }
 
         if ($this->category_id) {
@@ -66,7 +59,7 @@ class ListProperties extends Component
         return view('livewire.properties.list-properties', [
             'properties' => $query->latest()->paginate(9),
             'categories' => \App\Models\PropertyCategory::all(),
-            'locations' => Property::query()->whereNotNull('location')->distinct()->pluck('location'),
+            'locations' => \App\Models\PropertyLocation::all(),
         ]);
     }
 }

@@ -25,10 +25,10 @@
 
                     <div class="form-control w-full">
                         <label class="label"><span class="label-text font-bold">Location</span></label>
-                        <select wire:model="location" class="select select-bordered w-full">
+                        <select wire:model="property_location_id" class="select select-bordered w-full">
                             <option value="">All Locations</option>
                             @foreach($locations as $loc)
-                                <option value="{{ $loc }}">{{ $loc }}</option>
+                                <option value="{{ $loc->id }}">{{ $loc->name }}</option>
                             @endforeach
                         </select>
                     </div>

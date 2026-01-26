@@ -1,6 +1,6 @@
 @props(['property'])
 
-<div class="block rounded-lg p-4 shadow-sm border border-base-200 bg-base-100 transition-all hover:shadow-lg">
+<div class="flex flex-col h-full rounded-lg p-4 shadow-sm border border-base-200 bg-base-100 transition-all hover:shadow-lg">
   <a href="{{ route('properties.show', $property->slug) }}" wire:navigate>
     <img
       alt="{{ $property->name }}"
@@ -9,7 +9,7 @@
     />
   </a>
 
-  <div class="mt-2">
+  <div class="flex flex-col flex-grow mt-2">
     @if($property->category)
         <span class="badge badge-secondary badge-outline badge-xs mb-1 uppercase font-bold">{{ $property->category->name }}</span>
     @endif
@@ -47,7 +47,7 @@
         @endif
     </div>
 
-    <div class="mt-4">
+    <div class="mt-auto pt-4">
         @php
             $siteSettings = \App\Models\SiteSetting::getSingleton();
             $waNumber = $siteSettings->whatsapp_number ?? '628123456789';

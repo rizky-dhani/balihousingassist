@@ -11,7 +11,7 @@ it('can view property listing component', function () {
 
     Livewire::test('properties.list-properties')
         ->assertStatus(200)
-        ->assertSee('Our Property Catalog');
+        ->assertSee('Our Properties');
 });
 
 it('can view property detail component', function () {
@@ -19,14 +19,14 @@ it('can view property detail component', function () {
 
     Livewire::test('properties.show-property', ['property' => $property])
         ->assertStatus(200)
-        ->assertSee($property->name)
-        ->assertSee($property->type);
+        ->assertSee($property->name);
 });
 
 it('displays updated property card fields', function () {
+    $location = \App\Models\PropertyLocation::create(['name' => 'Seminyak']);
     $property = Property::factory()->create([
         'name' => 'Test Card Property',
-        'location' => 'Seminyak',
+        'property_location_id' => $location->id,
         'bedroom' => 3,
         'bathroom' => 2,
         'price_daily' => 1500000,
@@ -56,11 +56,13 @@ it('can filter properties by category manually', function () {
 });
 
 it('can filter properties by location manually', function () {
-    Property::factory()->create(['name' => 'Canggu Villa', 'location' => 'Canggu', 'is_available' => true]);
-    Property::factory()->create(['name' => 'Ubud Villa', 'location' => 'Ubud', 'is_available' => true]);
+    $canggu = \App\Models\PropertyLocation::create(['name' => 'Canggu']);
+    $ubud = \App\Models\PropertyLocation::create(['name' => 'Ubud']);
+    Property::factory()->create(['name' => 'Canggu Villa', 'property_location_id' => $canggu->id, 'is_available' => true]);
+    Property::factory()->create(['name' => 'Ubud Villa', 'property_location_id' => $ubud->id, 'is_available' => true]);
 
     Livewire::test('properties.list-properties')
-        ->set('location', 'Canggu')
+        ->set('property_location_id', $canggu->id)
         ->call('applyFilters')
         ->assertSee('Canggu Villa')
         ->assertDontSee('Ubud Villa');
@@ -69,8 +71,6 @@ it('can filter properties by location manually', function () {
 it('automatically generates a slug when creating a property', function () {
     $property = Property::create([
         'name' => 'Beautiful Beach Villa',
-        'type' => 'Villa',
-        'location' => 'Bali',
         'is_available' => true,
     ]);
 
