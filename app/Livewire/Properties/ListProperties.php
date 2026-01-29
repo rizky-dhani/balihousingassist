@@ -25,14 +25,38 @@ class ListProperties extends Component
     #[Url]
     public $category_id = '';
 
+    #[Url]
+    public $sortBy = 'latest';
+
+    public $showBottomFilters = false;
+
+    public $perPage = 9;
+
+    #[Url]
+    public $isAdvancedFiltersOpen = false;
+
+    public function updating($name, $value)
+    {
+        if (in_array($name, ['bedroom', 'bathroom', 'property_location_id', 'category_id', 'sortBy'])) {
+            $this->showBottomFilters = false;
+            $this->perPage = 9;
+        }
+    }
+
+    public function loadMore(): void
+    {
+        $this->perPage += 9;
+    }
+
     public function applyFilters()
     {
+        $this->perPage = 9;
         $this->resetPage();
     }
 
     public function resetFilters()
     {
-        $this->reset(['bedroom', 'bathroom', 'property_location_id', 'category_id']);
+        $this->reset(['bedroom', 'bathroom', 'property_location_id', 'category_id', 'sortBy', 'perPage']);
         $this->resetPage();
     }
 
@@ -56,8 +80,15 @@ class ListProperties extends Component
             $query->where('property_category_id', $this->category_id);
         }
 
+        $query = match ($this->sortBy) {
+            'price_low' => $query->orderBy('price_daily', 'asc'),
+            'price_high' => $query->orderBy('price_daily', 'desc'),
+            'oldest' => $query->oldest(),
+            default => $query->latest(),
+        };
+
         return view('livewire.properties.list-properties', [
-            'properties' => $query->latest()->paginate(9),
+            'properties' => $query->paginate($this->perPage),
             'categories' => \App\Models\PropertyCategory::all(),
             'locations' => \App\Models\PropertyLocation::all(),
         ]);

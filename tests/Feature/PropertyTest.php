@@ -91,3 +91,27 @@ it('automatically updates the slug when the name changes', function () {
 
     expect($property->slug)->toBe('new-awesome-villa');
 });
+
+it('can load more properties using infinite scroll', function () {
+    Property::factory()->count(15)->create(['is_available' => true]);
+
+    Livewire::test('properties.list-properties')
+        ->assertViewHas('properties', function ($properties) {
+            return $properties->count() === 9;
+        })
+        ->call('loadMore')
+        ->assertViewHas('properties', function ($properties) {
+            return $properties->count() === 15;
+        });
+});
+
+it('resets perPage when filters are applied', function () {
+    Property::factory()->count(20)->create(['is_available' => true]);
+
+    Livewire::test('properties.list-properties')
+        ->call('loadMore')
+        ->assertSet('perPage', 18)
+        ->set('bedroom', 1)
+        ->call('applyFilters')
+        ->assertSet('perPage', 9);
+});

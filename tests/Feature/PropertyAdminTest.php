@@ -21,12 +21,15 @@ it('can create a property with images', function () {
         'slug' => 'villa',
     ]);
 
+    $location = \App\Models\PropertyLocation::create([
+        'name' => 'Ubud',
+    ]);
+
     Livewire::test(CreateProperty::class)
         ->fill([
             'data.name' => 'Test Property',
             'data.property_category_id' => $category->id,
-            'data.type' => 'Villa',
-            'data.location' => 'Ubud',
+            'data.property_location_id' => $location->id,
             'data.is_available' => true,
             'data.images' => [
                 'properties/image1.jpg',
@@ -45,5 +48,5 @@ it('can create a property with images', function () {
         ->toContain('properties/image2.jpg');
 
     expect($property->property_category_id)->toBe($category->id);
-    expect($property->location)->toBe('Ubud');
+    expect($property->property_location_id)->toBe($location->id);
 });

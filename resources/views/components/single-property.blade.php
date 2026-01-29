@@ -1,6 +1,6 @@
 @props(['property'])
 
-<div class="flex flex-col h-full rounded-lg p-4 shadow-sm border border-base-200 bg-base-100 transition-all hover:shadow-lg">
+<div class="max-w-screen-xl mx-auto flex flex-col h-full rounded-lg p-4 shadow-sm border border-base-200 bg-base-100 transition-all hover:shadow-lg">
   <a href="{{ route('properties.show', $property->slug) }}" wire:navigate>
     <img
       alt="{{ $property->name }}"
@@ -17,7 +17,7 @@
       <h3 class="font-bold text-lg hover:text-primary transition-colors mb-2">{{ $property->name }}</h3>
     </a>
 
-    <div class="flex items-center justify-center">
+    <div class="flex-grow flex items-center justify-center py-4">
         <div class="flex items-center gap-3 text-base-content/70">
             <div class="flex items-center gap-2">
                 <x-hugeicons-bed-double class="h-5 w-5" />
@@ -34,20 +34,20 @@
         </div>
     </div>
 
-    <div class="mt-2">
+    <div class="mt-auto text-center">
         @if($property->price_daily)
-        <div class="flex items-baseline gap-1">
+        <div class="flex items-baseline justify-center gap-1">
             <span class="text-xl font-bold text-primary">IDR {{ number_format($property->price_daily) }}</span>
             <span class="text-xs text-base-content">/ night</span>
         </div>
         @else
-        <div class="flex items-baseline gap-1">
+        <div class="flex items-baseline justify-center gap-1">
             <span class="text-lg font-bold text-primary">Ask</span>
         </div>
         @endif
     </div>
 
-    <div class="mt-auto pt-4">
+    <div class="pt-4">
         @php
             $siteSettings = \App\Models\SiteSetting::getSingleton();
             $waNumber = $siteSettings->whatsapp_number ?? '628123456789';
@@ -57,10 +57,8 @@
         @endphp
         <a href="{{ $waUrl }}" target="_blank" class="btn btn-primary btn-sm w-full font-bold">
         <x-hugeicons-whatsapp class="h-4 w-4 mr-1" />
-        Book Now
+        <p class="text-md">Book Now</p>
         </a>
     </div>
     </div>
 </div>
-
-    
