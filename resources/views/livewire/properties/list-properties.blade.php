@@ -98,7 +98,15 @@
             </div>        
     </div>
     <div class="max-w-screen-xl mx-auto">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        {{-- Skeleton Loading --}}
+        <div wire:loading.grid wire:target="sortBy, category_id, property_location_id, bedroom, bathroom, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+            @foreach(range(1, 8) as $i)
+                <x-property-skeleton />
+            @endforeach
+        </div>
+
+        {{-- Properties Grid --}}
+        <div wire:loading.remove wire:target="sortBy, category_id, property_location_id, bedroom, bathroom, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             @foreach($properties as $property)
                 <x-single-property :property="$property" />
             @endforeach

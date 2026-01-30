@@ -4,14 +4,21 @@ namespace App\Livewire\Properties;
 
 use App\Models\Property;
 use Livewire\Attributes\Layout;
+use Livewire\Attributes\Lazy;
 use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
 
 #[Layout('layouts.app')]
+#[Lazy]
 class ListProperties extends Component
 {
     use WithPagination;
+
+    public function placeholder()
+    {
+        return view('livewire.properties.list-properties-skeleton');
+    }
 
     #[Url]
     public $bedroom = '';
@@ -62,6 +69,7 @@ class ListProperties extends Component
 
     public function render()
     {
+        sleep(2);
         $query = Property::query()->where('is_available', true);
 
         if ($this->bedroom) {

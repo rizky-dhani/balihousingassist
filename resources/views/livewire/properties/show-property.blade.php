@@ -1,4 +1,4 @@
-<div>
+<div x-data="{ showSticky: false }">
     <section class="bg-base-100 pt-8 pb-24 lg:py-12 px-4 lg:px-8">
         <div class="max-w-screen-xl mx-auto">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
@@ -19,29 +19,22 @@
                     </div>
 
                     <div class="bg-base-200 rounded-2xl p-6 mb-8">
-                        <h3 class="font-bold text-lg mb-4">Stay Rates</h3>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div class="bg-base-100 p-4 rounded-xl text-center">
-                                <p class="text-xs text-base-content/50 uppercase font-bold mb-1">Daily</p>
-                                <p class="text-sm font-bold truncate">{{ $property->price_daily ? 'IDR ' . number_format($property->price_daily) : 'Ask' }}</p>
-                            </div>
-                            <div class="bg-base-100 p-4 rounded-xl text-center">
-                                <p class="text-xs text-base-content/50 uppercase font-bold mb-1">Weekly</p>
-                                <p class="text-sm font-bold truncate">{{ $property->price_weekly ? 'IDR ' . number_format($property->price_weekly) : 'Ask' }}</p>
-                            </div>
-                            <div class="bg-base-100 p-4 rounded-xl text-center">
-                                <p class="text-xs text-base-content/50 uppercase font-bold mb-1">Monthly</p>
-                                <p class="text-sm font-bold truncate">{{ $property->price_monthly ? 'IDR ' . number_format($property->price_monthly) : 'Ask' }}</p>
-                            </div>
-                            <div class="bg-base-100 p-4 rounded-xl text-center">
-                                <p class="text-xs text-base-content/50 uppercase font-bold mb-1">Yearly</p>
-                                <p class="text-sm font-bold truncate">{{ $property->price_yearly ? 'IDR ' . number_format($property->price_yearly) : 'Ask' }}</p>
-                            </div>
+                        <div class="flex items-baseline gap-1">
+                            <span class="text-3xl font-bold text-primary">{{ $property->price_daily ? 'IDR ' . number_format($property->price_daily) : 'Ask' }}</span>
+                            @if($property->price_daily)
+                                <span class="text-base-content/50 font-medium">/ night</span>
+                            @endif
                         </div>
                     </div>
 
                     <div class="flex flex-col sm:flex-row gap-4 mt-auto">
-                        <button class="btn btn-primary flex-1 btn-lg">Book Now</button>
+                        <button 
+                            x-intersect:enter="showSticky = false"
+                            x-intersect:leave="showSticky = $el.getBoundingClientRect().top < 0"
+                            class="btn btn-primary flex-1 btn-lg"
+                        >
+                            Book Now
+                        </button>
                     </div>
                 </div>
             </div>
@@ -68,7 +61,11 @@
     </section>
 
     {{-- Sticky Book Now for Mobile --}}
-    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-base-100/80 backdrop-blur-md border-t border-base-200 p-4 z-50">
+    <div 
+        x-show="showSticky"
+        x-transition
+        class="lg:hidden fixed bottom-0 left-0 right-0 bg-base-100/80 backdrop-blur-md border-t border-base-200 p-4 z-50"
+    >
         <button class="btn btn-primary w-full btn-lg">Book Now</button>
     </div>
 </div>
