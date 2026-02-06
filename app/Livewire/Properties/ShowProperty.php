@@ -5,6 +5,7 @@ namespace App\Livewire\Properties;
 use App\Models\Property;
 use Livewire\Attributes\Layout;
 use Livewire\Component;
+use RalphJSmit\Laravel\SEO\TagManager;
 
 #[Layout('layouts.app')]
 class ShowProperty extends Component
@@ -13,12 +14,13 @@ class ShowProperty extends Component
 
     public function mount(Property $property)
     {
-        $this->property = $property->load('amenities');
+        $this->property = $property->load(['amenities', 'seo']);
     }
 
     public function render()
     {
-        return view('livewire.properties.show-property')
-            ->title($this->property->name.' - Bali Housing Assist');
+        app(TagManager::class)->for($this->property);
+
+        return view('livewire.properties.show-property');
     }
 }

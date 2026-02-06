@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\InteractsWithSeo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -9,6 +10,8 @@ class PropertyLocation extends Model
 {
     /** @use HasFactory<\Database\Factories\PropertyLocationFactory> */
     use HasFactory;
+
+    use InteractsWithSeo;
 
     protected $fillable = [
         'name',

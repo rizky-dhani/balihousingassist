@@ -13,6 +13,7 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Wizard;
 use Filament\Schemas\Components\Wizard\Step;
 use Filament\Schemas\Schema;
+use RalphJSmit\Filament\SEO\SEO;
 
 class PropertyForm
 {
@@ -88,6 +89,10 @@ class PropertyForm
                                 ->columnSpanFull(),
                             Toggle::make('is_available')
                                 ->required(),
+                        ]),
+                    Step::make('SEO')
+                        ->schema([
+                            SEO::make(),
                         ]),
                 ])->columnSpanFull(),
             ]);

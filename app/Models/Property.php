@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\InteractsWithSeo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -10,6 +11,8 @@ class Property extends Model
 {
     /** @use HasFactory<\Database\Factories\PropertyFactory> */
     use HasFactory;
+
+    use InteractsWithSeo;
 
     protected $fillable = [
         'name',
