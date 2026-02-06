@@ -71,4 +71,31 @@ class Property extends Model
     {
         return $this->belongsToMany(Amenity::class);
     }
+
+    /**
+     * Generate the Schema.org JSON-LD for the property.
+     */
+    public function generateSchema(): ?array
+    {
+        $image = null;
+        if ($this->images && is_array($this->images) && count($this->images) > 0) {
+            $image = asset('storage/'.$this->images[0]);
+        }
+
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'RealEstateListing',
+            'name' => $this->name,
+            'description' => str($this->description)->limit(160)->toString(),
+            'url' => route('properties.show', $this),
+            'image' => $image,
+            'address' => [
+                '@type' => 'PostalAddress',
+                'addressLocality' => $this->location?->name,
+                'addressRegion' => 'Bali',
+                'addressCountry' => 'ID',
+            ],
+            'numberOfRooms' => $this->bedroom,
+        ];
+    }
 }

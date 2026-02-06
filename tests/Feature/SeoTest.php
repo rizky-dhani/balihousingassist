@@ -47,3 +47,16 @@ it('renders global SEO defaults on the home page', function () {
         ->assertStatus(200)
         ->assertSee('<meta property="og:site_name" content="Bali Housing Assist"', false);
 });
+
+it('renders JSON-LD schema for a property', function () {
+    $property = Property::factory()->create([
+        'name' => 'Paradise Villa',
+        'is_available' => true,
+    ]);
+
+    $this->get(route('properties.show', $property))
+        ->assertStatus(200)
+        ->assertSee('application/ld+json', false)
+        ->assertSee('"@type": "RealEstateListing"', false)
+        ->assertSee('"name": "Paradise Villa"', false);
+});

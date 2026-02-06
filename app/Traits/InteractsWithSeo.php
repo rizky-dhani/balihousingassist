@@ -40,4 +40,12 @@ trait InteractsWithSeo
             image: $image,
         );
     }
+
+    /**
+     * Generate the Schema.org JSON-LD for the model.
+     */
+    public function generateSchema(): ?array
+    {
+        return null;
+    }
 }

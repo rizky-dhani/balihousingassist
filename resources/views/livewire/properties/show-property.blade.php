@@ -1,3 +1,11 @@
+@if(isset($schema))
+    @push('schema')
+        <script type="application/ld+json">
+            {!! json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+        </script>
+    @endpush
+@endif
+
 <div x-data="{ showSticky: false }">
     <section class="bg-base-100 pt-8 pb-24 lg:py-12 px-4 lg:px-8">
         <div class="max-w-screen-xl mx-auto">

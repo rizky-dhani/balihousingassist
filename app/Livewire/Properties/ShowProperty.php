@@ -21,6 +21,8 @@ class ShowProperty extends Component
     {
         app(TagManager::class)->for($this->property);
 
-        return view('livewire.properties.show-property');
+        return view('livewire.properties.show-property', [
+            'schema' => $this->property->generateSchema(),
+        ]);
     }
 }
