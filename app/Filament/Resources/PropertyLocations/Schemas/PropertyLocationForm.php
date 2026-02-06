@@ -20,6 +20,12 @@ class PropertyLocationForm
                             ->relationship('parent', 'name')
                             ->searchable()
                             ->preload(),
+                        \Filament\Forms\Components\TextInput::make('latitude')
+                            ->numeric()
+                            ->step(0.00000001),
+                        \Filament\Forms\Components\TextInput::make('longitude')
+                            ->numeric()
+                            ->step(0.00000001),
                     ])->columns(2),
 
                 \Filament\Schemas\Components\Section::make('SEO')

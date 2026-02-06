@@ -42,6 +42,11 @@
                 </div>
                 <div class="collapse-content">
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end pt-4 pb-4">
+                        <div class="form-control w-full lg:col-span-2">
+                            <label class="label"><span class="label-text font-bold">Search Keywords</span></label>
+                            <input wire:model="search" type="text" placeholder="Villa name, description..." class="input input-bordered w-full" />
+                        </div>
+
                         <div class="form-control w-full">
                             <label class="label"><span class="label-text font-bold">Category</span></label>
                             <select wire:model="category_id" class="select select-bordered w-full">

@@ -21,6 +21,9 @@ class ListProperties extends Component
     }
 
     #[Url]
+    public $search = '';
+
+    #[Url]
     public $bedroom = '';
 
     #[Url]
@@ -44,7 +47,7 @@ class ListProperties extends Component
 
     public function updating($name, $value)
     {
-        if (in_array($name, ['bedroom', 'bathroom', 'property_location_id', 'category_id', 'sortBy'])) {
+        if (in_array($name, ['search', 'bedroom', 'bathroom', 'property_location_id', 'category_id', 'sortBy'])) {
             $this->showBottomFilters = false;
             $this->perPage = 9;
         }
@@ -63,7 +66,7 @@ class ListProperties extends Component
 
     public function resetFilters()
     {
-        $this->reset(['bedroom', 'bathroom', 'property_location_id', 'category_id', 'sortBy', 'perPage']);
+        $this->reset(['search', 'bedroom', 'bathroom', 'property_location_id', 'category_id', 'sortBy', 'perPage']);
         $this->resetPage();
     }
 
@@ -71,6 +74,13 @@ class ListProperties extends Component
     {
         sleep(2);
         $query = Property::query()->where('is_available', true);
+
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->where('name', 'like', '%'.$this->search.'%')
+                    ->orWhere('description', 'like', '%'.$this->search.'%');
+            });
+        }
 
         if ($this->bedroom) {
             $query->where('bedroom', $this->bedroom);

@@ -15,6 +15,8 @@ class PropertyLocation extends Model
 
     protected $fillable = [
         'name',
+        'latitude',
+        'longitude',
         'parent_id',
     ];
 

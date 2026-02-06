@@ -14,18 +14,18 @@
         <span class="badge badge-secondary badge-outline badge-xs mb-1 uppercase font-bold">{{ $property->category->name }}</span>
     @endif
     <a href="{{ route('properties.show', $property->slug) }}" wire:navigate>
-      <h3 class="font-bold text-lg hover:text-primary transition-colors mb-2">{{ $property->name }}</h3>
+      <h3 class="font-bold text-lg hover:text-primary transition-colors">{{ $property->name }}</h3>
     </a>
 
-    <div class="flex-grow flex items-center justify-center py-4">
+    <div class="flex-grow flex items-center justify-center py-3 ">
         <div class="flex items-center gap-3 text-base-content/70">
             <div class="flex items-center gap-2">
                 <x-hugeicons-bed-double class="h-5 w-5" />
-                <span class="text-md font-medium text-base-content">{{ $property->bedroom }} Bed</span>
+                <span class="text-md font-medium text-base-content">{{ $property->bedroom }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <x-hugeicons-bathtub-01 class="h-5 w-5" />
-                <span class="text-md font-medium text-base-content">{{ (float) $property->bathroom }} Bath</span>
+                <span class="text-md font-medium text-base-content">{{ (float) $property->bathroom }}</span>
             </div>
             <div class="flex items-center gap-2">
                 <x-hugeicons-location-01 class="h-5 w-5 text-primary" />
@@ -36,14 +36,24 @@
 
     <div class="mt-auto text-center">
         @if($property->price_daily)
-        <div class="flex items-baseline justify-center gap-1">
-            <span class="text-xl font-bold text-primary">IDR {{ number_format($property->price_daily) }}</span>
-            <span class="text-xs text-base-content">/ night</span>
-        </div>
+            <div class="flex items-baseline justify-center gap-1">
+                <span class="text-xl font-bold text-primary">IDR {{ number_format($property->price_daily) }}</span>
+                <span class="text-xs text-base-content/60">/ night</span>
+            </div>
+            @if($property->price_monthly)
+                <div class="text-[10px] text-base-content/40 font-medium">
+                    Monthly from IDR {{ number_format($property->price_monthly / 1000000, 1) }}M
+                </div>
+            @endif
+        @elseif($property->price_monthly)
+            <div class="flex items-baseline justify-center gap-1">
+                <span class="text-xl font-bold text-primary">IDR {{ number_format($property->price_monthly) }}</span>
+                <span class="text-xs text-base-content/60">/ month</span>
+            </div>
         @else
-        <div class="flex items-baseline justify-center gap-1">
-            <span class="text-lg font-bold text-primary">Ask</span>
-        </div>
+            <div class="flex items-baseline justify-center gap-1">
+                <span class="text-lg font-bold text-primary">Ask for Price</span>
+            </div>
         @endif
     </div>
 
