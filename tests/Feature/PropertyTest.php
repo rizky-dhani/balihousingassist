@@ -48,7 +48,7 @@ it('can filter properties by category manually', function () {
     Property::factory()->create(['name' => 'Modern Urban Loft', 'property_category_id' => null, 'is_available' => true]);
 
     Livewire::test('properties.list-properties')
-        ->set('category_id', $category->id)
+        ->set('category', $category->slug)
         ->call('applyFilters')
         ->assertSee('The Grand Villa')
         ->assertDontSee('Modern Urban Loft')

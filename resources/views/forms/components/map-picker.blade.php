@@ -6,6 +6,7 @@
         $statePath = $getStatePath();
         $latitudePath = 'data.' . $getLatitudeField();
         $longitudePath = 'data.' . $getLongitudeField();
+        $addressPath = $getAddressField() ? 'data.' . $getAddressField() : null;
         
         $config = [
             'zoom' => $getZoom(),
@@ -15,6 +16,7 @@
             'attribution' => $getAttribution(),
             'isDraggable' => $getIsDraggable(),
             'isClickable' => $getIsClickable(),
+            'hasAddressField' => (bool) $addressPath,
         ];
     @endphp
 
@@ -23,6 +25,7 @@
             state: $wire.entangle('{{ $statePath }}'),
             latitude: $wire.entangle('{{ $latitudePath }}'),
             longitude: $wire.entangle('{{ $longitudePath }}'),
+            address: {{ $addressPath ? "\$wire.entangle('{$addressPath}')" : 'null' }},
             config: {{ json_encode($config) }},
             map: null,
             marker: null,
@@ -83,6 +86,21 @@
                 this.latitude = lat.toFixed(8);
                 this.longitude = lng.toFixed(8);
                 this.marker.setLatLng([lat, lng]);
+
+                if (this.config.hasAddressField) {
+                    this.reverseGeocode(lat, lng);
+                }
+            },
+            async reverseGeocode(lat, lng) {
+                try {
+                    const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
+                    const data = await response.json();
+                    if (data && data.display_name) {
+                        this.address = data.display_name;
+                    }
+                } catch (error) {
+                    console.error('Reverse geocoding failed:', error);
+                }
             },
             syncMap() {
                 if (!this.map || !this.marker) return;

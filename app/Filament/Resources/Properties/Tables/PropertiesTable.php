@@ -35,16 +35,16 @@ class PropertiesTable
                     ->numeric()
                     ->sortable(),
                 TextColumn::make('price_daily')
-                    ->numeric()
+                    ->money('IDR', locale: 'id')
                     ->sortable(),
                 TextColumn::make('price_weekly')
-                    ->numeric()
+                    ->money('IDR', locale: 'id')
                     ->sortable(),
                 TextColumn::make('price_monthly')
-                    ->numeric()
+                    ->money('IDR', locale: 'id')
                     ->sortable(),
                 TextColumn::make('price_yearly')
-                    ->numeric()
+                    ->money('IDR', locale: 'id')
                     ->sortable(),
                 IconColumn::make('is_available')
                     ->boolean(),

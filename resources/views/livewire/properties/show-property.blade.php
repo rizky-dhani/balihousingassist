@@ -15,7 +15,7 @@
                     <li><a href="{{ route('home') }}" wire:navigate>Home</a></li>
                     <li><a href="{{ route('properties.index') }}" wire:navigate>Properties</a></li>
                     @if($property->category)
-                        <li><a href="{{ route('properties.index', ['category_id' => $property->category->id]) }}" wire:navigate>{{ $property->category->name }}</a></li>
+                        <li><a href="{{ route('properties.index', ['category' => $property->category->slug]) }}" wire:navigate>{{ $property->category->name }}</a></li>
                     @endif
                     <li class="font-bold text-primary">{{ $property->name }}</li>
                 </ul>
@@ -80,7 +80,7 @@
                         </div>
                     </div>
 
-                    <div class="flex flex-col sm:flex-row gap-4 mt-auto">
+                    <div class="flex flex-col sm:flex-row gap-4 mt-auto pt-8 lg:pt-0">
                         @php
                             $siteSettings = \App\Models\SiteSetting::getSingleton();
                             $waNumber = $siteSettings->whatsapp_number ?? '628123456789';
@@ -92,7 +92,7 @@
                             target="_blank"
                             x-intersect:enter="showSticky = false"
                             x-intersect:leave="showSticky = $el.getBoundingClientRect().top < 0"
-                            class="btn btn-primary flex-1 btn-lg font-bold"
+                            class="btn btn-primary flex-1 btn-lg font-bold px-10 py-4"
                         >
                             <x-hugeicons-whatsapp class="h-6 w-6" />
                             Book Now
@@ -101,15 +101,15 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12 border-t pt-12">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 border-t pt-12">
                 <div class="lg:col-span-1 lg:border-r lg:border-base-300 lg:pr-12 pb-12 lg:pb-0 border-b lg:border-b-0 border-base-300">
-                    <h2 class="text-2xl font-bold mb-6">Description</h2>
-                    <div class="text-base-content/70 leading-relaxed whitespace-pre-line">
+                    <h2 class="text-2xl font-bold mb-6">About</h2>
+                    <div class="text-base-content leading-relaxed whitespace-pre-line">
                         {{ $property->description }}
                     </div>
                 </div>
                 
-                <div class="lg:col-span-2">
+                <div class="lg:col-span-1">
                     @if($property->amenities->count() > 0)
                         <h2 class="text-2xl font-bold mb-6">Amenities</h2>
                         <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
@@ -163,9 +163,9 @@
     <div 
         x-show="showSticky"
         x-transition
-        class="lg:hidden fixed bottom-0 left-0 right-0 bg-base-100/80 backdrop-blur-md border-t border-base-200 p-4 z-50"
+        class="lg:hidden fixed bottom-0 left-0 right-0 bg-base-100/90 backdrop-blur-md border-t border-base-200 p-6 pb-8 z-50 shadow-[0_-10px_15px_-3px_rgba(0,0,0,0.1)]"
     >
-        <a href="{{ $waUrl }}" target="_blank" class="btn btn-primary w-full btn-lg font-bold">
+        <a href="{{ $waUrl }}" target="_blank" class="btn btn-primary w-full btn-lg font-bold shadow-lg py-4">
             <x-hugeicons-whatsapp class="h-6 w-6" />
             Book Now
         </a>

@@ -16,6 +16,9 @@ class PropertyLocationsTable
                 \Filament\Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
+                \Filament\Tables\Columns\TextColumn::make('slug')
+                    ->searchable()
+                    ->sortable(),
                 \Filament\Tables\Columns\TextColumn::make('parent.name')
                     ->label('Parent Location')
                     ->searchable()

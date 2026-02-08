@@ -36,19 +36,20 @@
 
     <div class="mt-auto text-center">
         @if($property->price_daily)
-            <div class="flex items-baseline justify-center gap-1">
-                <span class="text-xl font-bold text-primary">IDR {{ number_format($property->price_daily) }}</span>
-                <span class="text-xs text-base-content/60">/ night</span>
-            </div>
-            @if($property->price_monthly)
-                <div class="text-[10px] text-base-content/40 font-medium">
-                    Monthly from IDR {{ number_format($property->price_monthly / 1000000, 1) }}M
+            <div class="flex flex-col items-center">
+                <span class="text-[10px] uppercase font-bold text-base-content/40 tracking-wider">Start From</span>
+                <div class="flex items-baseline justify-center gap-1">
+                    <span class="text-xl font-bold text-primary">IDR {{ number_format($property->price_daily) }}</span>
+                    <span class="text-xs text-base-content/60">/ night</span>
                 </div>
-            @endif
+            </div>
         @elseif($property->price_monthly)
-            <div class="flex items-baseline justify-center gap-1">
-                <span class="text-xl font-bold text-primary">IDR {{ number_format($property->price_monthly) }}</span>
-                <span class="text-xs text-base-content/60">/ month</span>
+            <div class="flex flex-col items-center">
+                <span class="text-[10px] uppercase font-bold text-base-content/40 tracking-wider">Start From</span>
+                <div class="flex items-baseline justify-center gap-1">
+                    <span class="text-xl font-bold text-primary">IDR {{ number_format($property->price_monthly) }}</span>
+                    <span class="text-xs text-base-content/60">/ month</span>
+                </div>
             </div>
         @else
             <div class="flex items-baseline justify-center gap-1">

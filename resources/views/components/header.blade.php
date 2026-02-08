@@ -2,7 +2,7 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 items-center justify-between">
       <div class="md:flex md:items-center md:gap-12">
-        <a class="block text-teal-600" href="/">
+        <a class="block text-primary" href="/">
           <span class="sr-only">Home</span>
           @if ($siteSettings?->logo)
             <img class="h-25 w-auto" src="{{ asset('storage/' . $siteSettings->logo) }}" alt="{{ config('app.name') }}">
@@ -19,7 +19,7 @@
           <ul class="flex items-center gap-6 text-sm">
             @foreach(\App\Models\Navigation::whereNull('parent_id')->orderBy('order')->get() as $item)
             <li>
-              <a class="text-gray-500 transition hover:text-gray-500/75" href="{{ $item->url }}" @if($item->new_tab) target="_blank" @endif> {{ $item->label }} </a>
+              <a class="text-gray-500 transition hover:text-primary" href="{{ $item->url }}" @if($item->new_tab) target="_blank" @endif> {{ $item->label }} </a>
             </li>
             @endforeach
           </ul>
@@ -27,20 +27,45 @@
       </div>
 
       <div class="flex items-center gap-4">
-        <div class="sm:flex sm:gap-4">
-          <a class="rounded-md bg-teal-600 px-5 py-2.5 text-sm font-medium text-white shadow-sm" href="#">
-            Login
-          </a>
-
-          <div class="hidden sm:flex">
-            <a class="rounded-md bg-gray-100 px-5 py-2.5 text-sm font-medium text-teal-600" href="#">
-              Register
+        <div class="flex gap-4">
+          @if($siteSettings?->facebook_url)
+            <a href="{{ $siteSettings->facebook_url }}" class="text-gray-500 transition hover:text-primary" target="_blank">
+              <span class="sr-only">Facebook</span>
+              <x-hugeicons-facebook-01 class="size-5" />
             </a>
-          </div>
+          @endif
+
+          @if($siteSettings?->instagram_url)
+            <a href="{{ $siteSettings->instagram_url }}" class="text-gray-500 transition hover:text-primary" target="_blank">
+              <span class="sr-only">Instagram</span>
+              <x-hugeicons-instagram class="size-5" />
+            </a>
+          @endif
+
+          @if($siteSettings?->twitter_url)
+            <a href="{{ $siteSettings->twitter_url }}" class="text-gray-500 transition hover:text-primary" target="_blank">
+              <span class="sr-only">Twitter</span>
+              <x-hugeicons-new-twitter class="size-5" />
+            </a>
+          @endif
+
+          @if($siteSettings?->linkedin_url)
+            <a href="{{ $siteSettings->linkedin_url }}" class="text-gray-500 transition hover:text-primary" target="_blank">
+              <span class="sr-only">LinkedIn</span>
+              <x-hugeicons-linkedin-01 class="size-5" />
+            </a>
+          @endif
+
+          @if($siteSettings?->whatsapp_number)
+            <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $siteSettings->whatsapp_number) }}" class="text-gray-500 transition hover:text-primary" target="_blank">
+              <span class="sr-only">WhatsApp</span>
+              <x-hugeicons-whatsapp class="size-5" />
+            </a>
+          @endif
         </div>
 
         <div class="block md:hidden">
-          <button class="rounded-sm bg-gray-100 p-2 text-gray-600 transition hover:text-gray-600/75">
+          <button class="rounded-sm bg-gray-100 p-2 text-gray-600 transition hover:text-primary/75">
             <x-hugeicons-menu-01 class="size-5" />
           </button>
         </div>

@@ -12,6 +12,8 @@ class MapPicker extends Field
 
     public string $longitudeField = 'longitude';
 
+    public ?string $addressField = null;
+
     public string $height = '400px';
 
     public string $width = '100%';
@@ -40,6 +42,13 @@ class MapPicker extends Field
     public function longitudeField(string $field): static
     {
         $this->longitudeField = $field;
+
+        return $this;
+    }
+
+    public function addressField(string $field): static
+    {
+        $this->addressField = $field;
 
         return $this;
     }
@@ -105,6 +114,11 @@ class MapPicker extends Field
     public function getLongitudeField(): string
     {
         return $this->longitudeField;
+    }
+
+    public function getAddressField(): ?string
+    {
+        return $this->addressField;
     }
 
     public function getHeight(): string

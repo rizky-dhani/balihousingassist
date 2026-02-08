@@ -58,10 +58,10 @@
                 <div class="grid grid-cols-2 gap-4 items-end">
                     <div class="form-control w-full">
                         <label class="label p-1"><span class="label-text text-xs font-bold">Category</span></label>
-                        <select wire:model.live="category_id" class="select select-bordered select-sm w-full">
+                        <select wire:model.live="category" class="select select-bordered select-sm w-full">
                             <option value="">All Categories</option>
                             @foreach($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                <option value="{{ $category->slug }}">{{ $category->name }}</option>
                             @endforeach
                         </select>
                     </div>

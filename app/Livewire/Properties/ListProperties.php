@@ -33,7 +33,7 @@ class ListProperties extends Component
     public $property_location_id = '';
 
     #[Url]
-    public $category_id = '';
+    public $category = '';
 
     #[Url]
     public $sortBy = 'latest';
@@ -47,7 +47,7 @@ class ListProperties extends Component
 
     public function updating($name, $value)
     {
-        if (in_array($name, ['search', 'bedroom', 'bathroom', 'property_location_id', 'category_id', 'sortBy'])) {
+        if (in_array($name, ['search', 'bedroom', 'bathroom', 'property_location_id', 'category', 'sortBy'])) {
             $this->showBottomFilters = false;
             $this->perPage = 9;
         }
@@ -66,7 +66,7 @@ class ListProperties extends Component
 
     public function resetFilters()
     {
-        $this->reset(['search', 'bedroom', 'bathroom', 'property_location_id', 'category_id', 'sortBy', 'perPage']);
+        $this->reset(['search', 'bedroom', 'bathroom', 'property_location_id', 'category', 'sortBy', 'perPage']);
         $this->resetPage();
     }
 
@@ -94,8 +94,10 @@ class ListProperties extends Component
             $query->where('property_location_id', $this->property_location_id);
         }
 
-        if ($this->category_id) {
-            $query->where('property_category_id', $this->category_id);
+        if ($this->category) {
+            $query->whereHas('category', function ($q) {
+                $q->where('slug', $this->category);
+            });
         }
 
         $query = match ($this->sortBy) {

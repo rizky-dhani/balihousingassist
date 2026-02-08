@@ -15,10 +15,16 @@ class PropertyLocation extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'latitude',
         'longitude',
         'parent_id',
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 
     public function parent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {

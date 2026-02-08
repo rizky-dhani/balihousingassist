@@ -33,6 +33,11 @@ class Property extends Model
         'property_location_id',
     ];
 
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
     protected static function booted(): void
     {
         static::creating(function (Property $property) {

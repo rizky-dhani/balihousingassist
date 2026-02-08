@@ -49,10 +49,10 @@
 
                         <div class="form-control w-full">
                             <label class="label"><span class="label-text font-bold">Category</span></label>
-                            <select wire:model="category_id" class="select select-bordered w-full">
+                            <select wire:model="category" class="select select-bordered w-full">
                                 <option value="">All Categories</option>
                                 @foreach($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    <option value="{{ $category->slug }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -104,14 +104,14 @@
     </div>
     <div class="max-w-screen-xl mx-auto">
         {{-- Skeleton Loading --}}
-        <div wire:loading.grid wire:target="sortBy, category_id, property_location_id, bedroom, bathroom, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        <div wire:loading.grid wire:target="sortBy, category, property_location_id, bedroom, bathroom, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             @foreach(range(1, 8) as $i)
                 <x-property-skeleton />
             @endforeach
         </div>
 
         {{-- Properties Grid --}}
-        <div wire:loading.remove wire:target="sortBy, category_id, property_location_id, bedroom, bathroom, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        <div wire:loading.remove wire:target="sortBy, category, property_location_id, bedroom, bathroom, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             @foreach($properties as $property)
                 <x-single-property :property="$property" />
             @endforeach

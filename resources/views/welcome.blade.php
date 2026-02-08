@@ -31,20 +31,42 @@
                             Dashboard
                         </a>
                     @else
-                        <a
-                            href="{{ route('login') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal"
-                        >
-                            Log in
-                        </a>
+                        <div class="flex gap-4">
+                            @if($siteSettings?->facebook_url)
+                                <a href="{{ $siteSettings->facebook_url }}" class="text-[#706f6c] dark:text-[#A1A09A] transition hover:text-primary" target="_blank">
+                                    <span class="sr-only">Facebook</span>
+                                    <x-hugeicons-facebook-01 class="size-5" />
+                                </a>
+                            @endif
 
-                        @if (Route::has('register'))
-                            <a
-                                href="{{ route('register') }}"
-                                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">
-                                Register
-                            </a>
-                        @endif
+                            @if($siteSettings?->instagram_url)
+                                <a href="{{ $siteSettings->instagram_url }}" class="text-[#706f6c] dark:text-[#A1A09A] transition hover:text-primary" target="_blank">
+                                    <span class="sr-only">Instagram</span>
+                                    <x-hugeicons-instagram class="size-5" />
+                                </a>
+                            @endif
+
+                            @if($siteSettings?->twitter_url)
+                                <a href="{{ $siteSettings->twitter_url }}" class="text-[#706f6c] dark:text-[#A1A09A] transition hover:text-primary" target="_blank">
+                                    <span class="sr-only">Twitter</span>
+                                    <x-hugeicons-new-twitter class="size-5" />
+                                </a>
+                            @endif
+
+                            @if($siteSettings?->linkedin_url)
+                                <a href="{{ $siteSettings->linkedin_url }}" class="text-[#706f6c] dark:text-[#A1A09A] transition hover:text-primary" target="_blank">
+                                    <span class="sr-only">LinkedIn</span>
+                                    <x-hugeicons-linkedin-01 class="size-5" />
+                                </a>
+                            @endif
+
+                            @if($siteSettings?->whatsapp_number)
+                                <a href="https://wa.me/{{ preg_replace('/[^0-9]/', '', $siteSettings->whatsapp_number) }}" class="text-[#706f6c] dark:text-[#A1A09A] transition hover:text-primary" target="_blank">
+                                    <span class="sr-only">WhatsApp</span>
+                                    <x-hugeicons-whatsapp class="size-5" />
+                                </a>
+                            @endif
+                        </div>
                     @endauth
                 </nav>
             @endif

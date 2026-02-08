@@ -15,7 +15,12 @@ class PropertyLocationForm
                     ->schema([
                         \Filament\Forms\Components\TextInput::make('name')
                             ->required()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->live(onBlur: true)
+                            ->afterStateUpdated(fn (\Filament\Schemas\Components\Utilities\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                        \Filament\Forms\Components\TextInput::make('slug')
+                            ->required()
+                            ->unique(ignoreRecord: true),
                         \Filament\Forms\Components\Select::make('parent_id')
                             ->relationship('parent', 'name')
                             ->searchable()

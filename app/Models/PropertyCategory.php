@@ -17,4 +17,9 @@ class PropertyCategory extends Model
         'name',
         'slug',
     ];
+
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
 }

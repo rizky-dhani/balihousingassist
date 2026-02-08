@@ -11,10 +11,16 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Components\Wizard;
 use Filament\Schemas\Components\Wizard\Step;
 use Filament\Schemas\Schema;
-use RalphJSmit\Filament\SEO\SEO;
+use Filament\Support\RawJs;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 
 class PropertyForm
 {
@@ -27,7 +33,9 @@ class PropertyForm
                         ->schema([
                             TextInput::make('name')
                                 ->columnSpanFull()
-                                ->required(),
+                                ->required()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn (Set $set, ?string $state) => $set('seo.title', $state)),
                             Select::make('property_category_id')
                                 ->relationship('category', 'name')
                                 ->required(),
@@ -38,13 +46,62 @@ class PropertyForm
                                 ->required(),
                             Textarea::make('description')
                                 ->default(null)
-                                ->columnSpanFull(),
+                                ->columnSpanFull()
+                                ->live(onBlur: true)
+                                ->afterStateUpdated(fn (Set $set, ?string $state) => $set('seo.description', $state)),
+
+                            Section::make('Search Engine Optimization (SEO)')
+                                ->description('Manage how this property appears in search results.')
+                                ->collapsed()
+                                ->columnSpanFull()
+                                ->schema([
+                                    TextInput::make('title')
+                                        ->label('SEO Title')
+                                        ->placeholder('Defaults to Property Name')
+                                        ->columnSpanFull(),
+                                    Textarea::make('description')
+                                        ->label('SEO Description')
+                                        ->placeholder('Defaults to Property Description')
+                                        ->columnSpanFull(),
+                                    TextInput::make('author')
+                                        ->label('Author')
+                                        ->default(fn () => auth()->user()?->name)
+                                        ->columnSpanFull(),
+                                    Select::make('robots')
+                                        ->label('Robots')
+                                        ->options([
+                                            'index, follow' => 'Index, Follow',
+                                            'index, nofollow' => 'Index, Nofollow',
+                                            'noindex, follow' => 'Noindex, Follow',
+                                            'noindex, nofollow' => 'Noindex, Nofollow',
+                                        ])
+                                        ->helperText(fn (?string $state): ?string => match ($state) {
+                                            'index, follow' => 'Allow search engines to index the page and follow links. (Recommended)',
+                                            'index, nofollow' => 'Index the page but do not follow links.',
+                                            'noindex, follow' => 'Do not index the page but follow links.',
+                                            'noindex, nofollow' => 'Do not index the page and do not follow links.',
+                                            default => null,
+                                        })
+                                        ->default('index, follow')
+                                        ->live()
+                                        ->columnSpanFull(),
+                                ])
+                                ->statePath('seo')
+                                ->afterStateHydrated(function ($component, ?Model $record) {
+                                    if ($record?->seo) {
+                                        $component->getChildSchema()->fill($record->seo->toArray());
+                                    }
+                                })
+                                ->saveRelationshipsUsing(function (Model $record, array $state): void {
+                                    $record->seo()->updateOrCreate([], $state);
+                                }),
                         ])->columns(2),
                     Step::make('Details & Amenities')
                         ->schema([
                             Grid::make(2)
                                 ->schema([
                                     Section::make('Bedroom & Bathroom')
+                                        ->columns(2)
                                         ->schema([
                                             TextInput::make('bedroom')
                                                 ->numeric()
@@ -59,7 +116,8 @@ class PropertyForm
                                                         ->relationship('amenities', 'name')
                                                         ->searchable()
                                                         ->columns(4),
-                                                ]),
+                                                ])
+                                                ->columnSpanFull(),
                                         ]),
                                     Section::make('Property Location (Map)')
                                         ->description('Drag the marker or click on the map to set the exact coordinates.')
@@ -69,6 +127,7 @@ class PropertyForm
                                                 ->tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png')
                                                 ->latitudeField('latitude')
                                                 ->longitudeField('longitude')
+                                                ->addressField('address')
                                                 ->height('645px')
                                                 ->zoom(15)
                                                 ->clickable()
@@ -99,33 +158,56 @@ class PropertyForm
                                 ->schema([
                                     TextInput::make('price_daily')
                                         ->label('Daily')
-                                        ->numeric()
+                                        ->prefix('Rp')
+                                        ->mask(RawJs::make('$money($input, ",", ".", 0)'))
+                                        ->formatStateUsing(fn ($state) => $state ? number_format($state, 0, ',', '.') : null)
+                                        ->dehydrateStateUsing(fn ($state) => $state ? (int) str_replace('.', '', $state) : null)
                                         ->default(null),
                                     TextInput::make('price_weekly')
                                         ->label('Weekly')
-                                        ->numeric()
+                                        ->prefix('Rp')
+                                        ->mask(RawJs::make('$money($input, ",", ".", 0)'))
+                                        ->formatStateUsing(fn ($state) => $state ? number_format($state, 0, ',', '.') : null)
+                                        ->dehydrateStateUsing(fn ($state) => $state ? (int) str_replace('.', '', $state) : null)
                                         ->default(null),
                                     TextInput::make('price_monthly')
                                         ->label('Monthly')
-                                        ->numeric()
+                                        ->prefix('Rp')
+                                        ->mask(RawJs::make('$money($input, ",", ".", 0)'))
+                                        ->formatStateUsing(fn ($state) => $state ? number_format($state, 0, ',', '.') : null)
+                                        ->dehydrateStateUsing(fn ($state) => $state ? (int) str_replace('.', '', $state) : null)
                                         ->default(null),
                                     TextInput::make('price_yearly')
                                         ->label('Yearly')
-                                        ->numeric()
+                                        ->prefix('Rp')
+                                        ->mask(RawJs::make('$money($input, ",", ".", 0)'))
+                                        ->formatStateUsing(fn ($state) => $state ? number_format($state, 0, ',', '.') : null)
+                                        ->dehydrateStateUsing(fn ($state) => $state ? (int) str_replace('.', '', $state) : null)
                                         ->default(null),
                                 ]),
                             FileUpload::make('images')
                                 ->multiple()
                                 ->reorderable()
                                 ->image()
-                                ->directory('properties')
+                                ->disk('public')
+                                ->directory(fn (Get $get): string => 'properties/'.Str::slug($get('name') ?? 'default'))
+                                ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file, Get $get): string {
+                                    $name = Str::slug($get('name') ?? 'property');
+                                    $extension = $file->getClientOriginalExtension();
+                                    $directory = "properties/{$name}";
+
+                                    $files = Storage::disk('public')->files($directory);
+                                    $count = count($files) + 1;
+
+                                    while (Storage::disk('public')->exists("{$directory}/{$name}-{$count}.{$extension}")) {
+                                        $count++;
+                                    }
+
+                                    return "{$name}-{$count}.{$extension}";
+                                })
                                 ->columnSpanFull(),
                             Toggle::make('is_available')
                                 ->required(),
-                        ]),
-                    Step::make('SEO')
-                        ->schema([
-                            SEO::make(),
                         ]),
                 ])->columnSpanFull(),
             ]);
