@@ -19,8 +19,8 @@ class Analytics extends Page
 
     public static function canAccess(): bool
     {
-        return auth()->user()?->can('view_analytics') || 
-               auth()->user()?->hasRole('admin') || 
+        return auth()->user()?->can('view_analytics') ||
+               auth()->user()?->hasRole('admin') ||
                auth()->user()?->hasRole('Super Admin');
     }
 

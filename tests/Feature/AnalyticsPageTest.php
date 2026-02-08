@@ -1,9 +1,9 @@
 <?php
 
-use App\Models\User;
 use App\Filament\Pages\Analytics;
-use Spatie\Permission\Models\Role;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Spatie\Permission\Models\Role;
 
 uses(RefreshDatabase::class);
 
@@ -20,6 +20,6 @@ it('allows access to admins', function () {
     $user = User::factory()->create();
     Role::create(['name' => 'Super Admin']);
     $user->assignRole('Super Admin');
-    
+
     $this->actingAs($user)->get(Analytics::getUrl())->assertSuccessful();
 });

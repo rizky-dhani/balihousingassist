@@ -22,7 +22,7 @@
             </nav>
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
-                <x-property-gallery :images="$property->images" :name="$property->name" />
+                <x-property-gallery :images="$property->images" :name="$property->name" :mainImage="$property->main_image" />
 
                 <div class="flex flex-col">
                     <div class="mb-6">

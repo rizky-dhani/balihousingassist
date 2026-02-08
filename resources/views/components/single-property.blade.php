@@ -2,10 +2,18 @@
 
 <div class="max-w-screen-xl mx-auto flex flex-col h-full rounded-lg p-4 shadow-sm border border-base-200 bg-base-100 transition-all hover:shadow-lg">
   <a href="{{ route('properties.show', $property->slug) }}" wire:navigate>
+    @php
+        $thumbnail = 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80';
+        if ($property->main_image) {
+            $thumbnail = asset('storage/' . $property->main_image);
+        } elseif ($property->images && count($property->images) > 0) {
+            $thumbnail = asset('storage/' . $property->images[0]);
+        }
+    @endphp
     <img
       alt="{{ $property->name }}"
-      src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80"
-      class="h-56 w-full rounded-md object-cover transition duration-500 hover:scale-105"
+      src="{{ $thumbnail }}"
+      class="aspect-4/3 w-full rounded-md object-cover transition duration-500 hover:scale-105"
     />
   </a>
 

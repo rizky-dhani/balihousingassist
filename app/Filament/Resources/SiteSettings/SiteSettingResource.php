@@ -25,6 +25,7 @@ class SiteSettingResource extends Resource
     protected static string|UnitEnum|null $navigationGroup = 'Site Settings';
 
     protected static ?int $navigationSort = 1;
+
     public static function canCreate(): bool
     {
         return false;

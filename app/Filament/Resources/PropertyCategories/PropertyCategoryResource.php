@@ -9,11 +9,11 @@ use App\Filament\Resources\PropertyCategories\Schemas\PropertyCategoryForm;
 use App\Filament\Resources\PropertyCategories\Tables\PropertyCategoriesTable;
 use App\Models\PropertyCategory;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class PropertyCategoryResource extends Resource
 {

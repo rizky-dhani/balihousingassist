@@ -23,6 +23,7 @@ class Property extends Model
         'latitude',
         'longitude',
         'address',
+        'main_image',
         'images',
         'price_daily',
         'price_weekly',
@@ -86,7 +87,9 @@ class Property extends Model
     public function generateSchema(): ?array
     {
         $image = null;
-        if ($this->images && is_array($this->images) && count($this->images) > 0) {
+        if ($this->main_image) {
+            $image = asset('storage/'.$this->main_image);
+        } elseif ($this->images && is_array($this->images) && count($this->images) > 0) {
             $image = asset('storage/'.$this->images[0]);
         }
 

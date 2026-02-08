@@ -9,11 +9,11 @@ use App\Filament\Resources\PropertyLocations\Schemas\PropertyLocationForm;
 use App\Filament\Resources\PropertyLocations\Tables\PropertyLocationsTable;
 use App\Models\PropertyLocation;
 use BackedEnum;
-use UnitEnum;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class PropertyLocationResource extends Resource
 {

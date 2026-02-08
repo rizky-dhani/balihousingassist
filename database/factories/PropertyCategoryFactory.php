@@ -17,9 +17,10 @@ class PropertyCategoryFactory extends Factory
     public function definition(): array
     {
         $name = $this->faker->randomElement(['Villa', 'Apartment', 'Loft', 'Guest House', 'Studio', 'Penthouse', 'Cottage', 'Cabin', 'Bungalow', 'Mansion']);
+
         return [
             'name' => $name,
-            'slug' => \Illuminate\Support\Str::slug($name) . '-' . $this->faker->unique()->numberBetween(1, 1000),
+            'slug' => \Illuminate\Support\Str::slug($name).'-'.$this->faker->unique()->numberBetween(1, 1000),
         ];
     }
 }

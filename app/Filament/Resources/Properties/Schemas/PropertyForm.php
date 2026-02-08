@@ -185,6 +185,19 @@ class PropertyForm
                                         ->dehydrateStateUsing(fn ($state) => $state ? (int) str_replace('.', '', $state) : null)
                                         ->default(null),
                                 ]),
+                            FileUpload::make('main_image')
+                                ->label('Main Property Image')
+                                ->image()
+                                ->disk('public')
+                                ->directory(fn (Get $get): string => 'properties/'.Str::slug($get('name') ?? 'default'))
+                                ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file, Get $get): string {
+                                    $name = Str::slug($get('name') ?? 'property');
+                                    $extension = $file->getClientOriginalExtension();
+                                    $directory = "properties/{$name}";
+
+                                    return "{$name}-main.{$extension}";
+                                })
+                                ->columnSpanFull(),
                             FileUpload::make('images')
                                 ->multiple()
                                 ->reorderable()

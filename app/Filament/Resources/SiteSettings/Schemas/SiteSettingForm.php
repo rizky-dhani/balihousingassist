@@ -23,28 +23,28 @@ class SiteSettingForm
                 Grid::make(2)
                     ->columnSpanFull()
                     ->schema([
-                    Section::make('Social Media')
-                        ->schema([
-                            TextInput::make('facebook_url')
-                                ->label('Facebook')
-                                ->url(),
-                            TextInput::make('twitter_url')
-                                ->label('Twitter')
-                                ->url(),
-                            TextInput::make('instagram_url')
-                                ->label('Instagram')
-                                ->url(),
-                            TextInput::make('linkedin_url')
-                                ->label('LinkedIn')
-                                ->url(),
-                            TextInput::make('whatsapp_number')
-                                ->label('WhatsApp')
-                                ->tel(),
-                        ]),
-                    Section::make('')
-                        ->schema([
-                            KeyValue::make('settings'),
-                        ])
+                        Section::make('Social Media')
+                            ->schema([
+                                TextInput::make('facebook_url')
+                                    ->label('Facebook')
+                                    ->url(),
+                                TextInput::make('twitter_url')
+                                    ->label('Twitter')
+                                    ->url(),
+                                TextInput::make('instagram_url')
+                                    ->label('Instagram')
+                                    ->url(),
+                                TextInput::make('linkedin_url')
+                                    ->label('LinkedIn')
+                                    ->url(),
+                                TextInput::make('whatsapp_number')
+                                    ->label('WhatsApp')
+                                    ->tel(),
+                            ]),
+                        Section::make('')
+                            ->schema([
+                                KeyValue::make('settings'),
+                            ]),
                     ]),
             ]);
     }
