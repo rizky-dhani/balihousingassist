@@ -68,7 +68,58 @@ class AmenitySeeder extends Seeder
         ];
 
         foreach ($amenities as $amenity) {
-            Amenity::firstOrCreate(['name' => $amenity]);
+            Amenity::firstOrCreate([
+                'name' => $amenity,
+                'icon' => $this->getIconForAmenity($amenity),
+            ]);
         }
+    }
+
+    private function getIconForAmenity(string $amenityName): string
+    {
+        return match ($amenityName) {
+            'WiFi' => 'hugeicon-wifi',
+            'Air Conditioning' => 'hugeicon-snowflake',
+            'Heating' => 'hugeicon-sun',
+            'Washing Machine' => 'hugeicon-washing-machine',
+            'Dryer' => 'hugeicon-dryer',
+            'TV' => 'hugeicon-tv',
+            'Iron' => 'hugeicon-iron',
+            'Hair Dryer' => 'hugeicon-hair-dryer',
+            'Dedicated Workspace' => 'hugeicon-desk',
+            'Kitchen' => 'hugeicon-kitchen',
+            'Refrigerator' => 'hugeicon-fridge',
+            'Microwave' => 'hugeicon-microwave',
+            'Dishwasher' => 'hugeicon-dishwasher',
+            'Stove' => 'hugeicon-stove',
+            'Oven' => 'hugeicon-oven',
+            'Coffee Maker' => 'hugeicon-coffee',
+            'Cooking Basics' => 'hugeicon-cooking',
+            'Dishes and Silverware' => 'hugeicon-silverware',
+            'Free Parking' => 'hugeicon-parking',
+            'Gym' => 'hugeicon-gym',
+            'Swimming Pool' => 'hugeicon-pool',
+            'Hot Tub' => 'hugeicon-jacuzzi',
+            'EV Charger' => 'hugeicon-ev-charger',
+            'Private Garden' => 'hugeicon-garden',
+            'Patio or Balcony' => 'hugeicon-balcony',
+            'Backyard' => 'hugeicon-backyard',
+            'BBQ Grill' => 'hugeicon-bbq-grill',
+            'Outdoor Furniture' => 'hugeicon-outdoor-furniture',
+            'Beach Access' => 'hugeicon-beach',
+            'Waterfront' => 'hugeicon-waterfront',
+            'Smoke Alarm' => 'hugeicon-smoke-detector',
+            'Carbon Monoxide Alarm' => 'hugeicon-carbon-monoxide',
+            'Fire Extinguisher' => 'hugeicon-fire-extinguisher',
+            'First Aid Kit' => 'hugeicon-first-aid-kit',
+            'Breakfast Included' => 'hugeicon-breakfast',
+            'Pet Friendly' => 'hugeicon-paw',
+            'Self Check-in' => 'hugeicon-key',
+            'Long-term Stays Allowed' => 'hugeicon-calendar',
+            'Private Entrance' => 'hugeicon-door',
+            'Crib' => 'hugeicon-crib',
+            'High Chair' => 'hugeicon-high-chair',
+            default => 'hugeicon-home', // Default icon if no specific match
+        };
     }
 }
