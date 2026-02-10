@@ -72,7 +72,6 @@ class ListProperties extends Component
 
     public function render()
     {
-        sleep(2);
         $query = Property::query()->where('is_available', true);
 
         if ($this->search) {

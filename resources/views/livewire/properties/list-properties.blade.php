@@ -3,15 +3,10 @@
     init() {
         let observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                const isMobile = window.innerWidth < 1024; // Tailwind's lg breakpoint
-                if (isMobile) {
-                    if (entry.isIntersecting) {
-                        @this.set('showBottomFilters', false);
-                    } else {
-                        @this.set('showBottomFilters', true);
-                    }
+                if (entry.isIntersecting) {
+                    @this.set('showBottomFilters', false);
                 } else {
-                    @this.set('showBottomFilters', false); // Always hide on larger screens
+                    @this.set('showBottomFilters', true);
                 }
             });
         }, { threshold: 0 });
@@ -19,90 +14,118 @@
         observer.observe(document.getElementById('advanced-filters-top'));
     },
 }">
-        <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
-            <div>
-                <h1 class="text-3xl font-bold mb-2">Our Properties</h1>
-                <p class="text-base-content/70">Find your perfect stay in Bali - from daily rentals to yearly leases, we cover it all!</p>
+        {{-- Hero Section --}}
+        <div class="mb-12 text-center">
+            <h1 class="text-4xl lg:text-5xl font-extrabold mb-4 tracking-tight">Discover Your Dream Stay in Bali</h1>
+            <p class="text-lg text-base-content/70 max-w-2xl mx-auto">From daily retreats to yearly sanctuaries, explore our curated collection of luxury properties across the island.</p>
+        </div>
+
+        {{-- Category Navigation Bar --}}
+        @php
+            $categoryIcons = [
+                'Villa' => 'hugeicons-house-01',
+                'Mansion' => 'hugeicons-castle-01',
+                'Cabin' => 'hugeicons-home-02',
+                'Loft' => 'hugeicons-building-05',
+                'Apartment' => 'hugeicons-building-01',
+                'House' => 'hugeicons-home-01',
+                'Land' => 'hugeicons-mountain',
+            ];
+        @endphp
+        <div class="mb-8 border-b border-base-200 pb-2 overflow-x-auto no-scrollbar flex items-center gap-8 lg:gap-12 px-2">
+            <button wire:click="$set('category', '')" class="flex flex-col items-center gap-2 group border-b-2 transition-all pb-2 whitespace-nowrap {{ $category === '' ? 'border-primary text-primary opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-base-300' }}">
+                <x-hugeicons-grid-view class="size-6 group-hover:scale-110 transition-transform" />
+                <span class="text-xs font-bold uppercase tracking-wider">All</span>
+            </button>
+            @foreach($categories as $cat)
+                @php $icon = $categoryIcons[$cat->name] ?? 'hugeicons-house-01'; @endphp
+                <button wire:click="$set('category', '{{ $cat->slug }}')" class="flex flex-col items-center gap-2 group border-b-2 transition-all pb-2 whitespace-nowrap {{ $category === $cat->slug ? 'border-primary text-primary opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-base-300' }}">
+                    <x-dynamic-component :component="$icon" class="size-6 group-hover:scale-110 transition-transform" />
+                    <span class="text-xs font-bold uppercase tracking-wider">{{ $cat->name }}</span>
+                </button>
+            @endforeach
+        </div>
+
+        <div class="mb-8 flex flex-col lg:flex-row items-stretch lg:items-center gap-4 bg-base-100 p-4 rounded-3xl border border-base-200 shadow-sm" id="advanced-filters-top">
+            <div class="relative flex-grow">
+                <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none opacity-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                </div>
+                <input wire:model.live.debounce.500ms="search" type="text" placeholder="Search villa name or location..." class="input input-bordered w-full pl-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-colors h-12" />
             </div>
+
             <div class="flex items-center gap-2">
-                <span class="text-sm font-bold opacity-50 uppercase whitespace-nowrap">Sort By</span>
-                <select wire:model.live="sortBy" class="select select-bordered select-sm w-full md:w-auto">
-                    <option value="latest">Newest First</option>
-                    <option value="oldest">Oldest First</option>
-                    <option value="price_low">Price: Low to High</option>
-                    <option value="price_high">Price: High to Low</option>
-                </select>
+                <div class="dropdown dropdown-end w-full lg:w-auto">
+                    <div tabindex="0" role="button" class="btn btn-ghost border border-base-200 rounded-2xl h-12 w-full lg:w-auto px-6">
+                        <span class="text-sm font-bold opacity-50 uppercase mr-2">Sort:</span>
+                        <span class="text-sm font-bold">
+                            @if($sortBy === 'latest') Newest @elseif($sortBy === 'oldest') Oldest @elseif($sortBy === 'price_low') Price Low @else Price High @endif
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-50 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 mt-2">
+                        <li><a wire:click="$set('sortBy', 'latest')" class="{{ $sortBy === 'latest' ? 'active' : '' }}">Newest First</a></li>
+                        <li><a wire:click="$set('sortBy', 'oldest')" class="{{ $sortBy === 'oldest' ? 'active' : '' }}">Oldest First</a></li>
+                        <li><a wire:click="$set('sortBy', 'price_low')" class="{{ $sortBy === 'price_low' ? 'active' : '' }}">Price: Low to High</a></li>
+                        <li><a wire:click="$set('sortBy', 'price_high')" class="{{ $sortBy === 'price_high' ? 'active' : '' }}">Price: High to Low</a></li>
+                    </ul>
+                </div>
+
+                <button @click="$dispatch('open-advanced-filters')" class="btn btn-primary rounded-2xl h-12 px-6 shadow-md shadow-primary/20">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
+                    Filters
+                </button>
             </div>
         </div>
-            <div id="advanced-filters-top" x-data="{ isAdvancedFiltersOpen: @entangle('isAdvancedFiltersOpen').live }" class="collapse collapse-arrow bg-base-200 rounded-2xl mb-12">
-                <input type="checkbox" x-model="isAdvancedFiltersOpen" />
-                <div class="collapse-title text-lg font-bold flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" /></svg>
-                    Advanced Filters
+
+        <div x-data="{ open: false }" x-on:open-advanced-filters.window="open = true" x-show="open" class="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" x-cloak>
+            <div @click.away="open = false" class="bg-base-100 rounded-3xl shadow-2xl w-full max-w-xl overflow-hidden">
+                <div class="p-6 border-b border-base-200 flex items-center justify-between">
+                    <h2 class="text-xl font-bold">Advanced Filters</h2>
+                    <button @click="open = false" class="btn btn-ghost btn-sm btn-square">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
                 </div>
-                <div class="collapse-content">
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end pt-4 pb-4">
-                        <div class="form-control w-full lg:col-span-2">
-                            <label class="label"><span class="label-text font-bold">Search Keywords</span></label>
-                            <input wire:model="search" type="text" placeholder="Villa name, description..." class="input input-bordered w-full" />
-                        </div>
+                <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="form-control w-full">
+                        <label class="label"><span class="label-text font-bold">Location</span></label>
+                        <select wire:model="property_location_id" class="select select-bordered w-full rounded-xl">
+                            <option value="">All Locations</option>
+                            @foreach($locations as $loc)
+                                <option value="{{ $loc->id }}">{{ $loc->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-bold">Category</span></label>
-                            <select wire:model="category" class="select select-bordered w-full">
-                                <option value="">All Categories</option>
-                                @foreach($categories as $category)
-                                    <option value="{{ $category->slug }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+                    <div class="form-control w-full">
+                        <label class="label"><span class="label-text font-bold">Bedrooms</span></label>
+                        <select wire:model="bedroom" class="select select-bordered w-full rounded-xl">
+                            <option value="">Any</option>
+                            @foreach(range(1, 10) as $num)
+                                <option value="{{ $num }}">{{ $num }}+ Beds</option>
+                            @endforeach
+                        </select>
+                    </div>
 
-                        <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-bold">Location</span></label>
-                            <select wire:model="property_location_id" class="select select-bordered w-full">
-                                <option value="">All Locations</option>
-                                @foreach($locations as $loc)
-                                    <option value="{{ $loc->id }}">{{ $loc->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-bold">Bedrooms</span></label>
-                            <select wire:model="bedroom" class="select select-bordered w-full">
-                                <option value="">Any</option>
-                                @foreach(range(1, 10) as $num)
-                                    <option value="{{ $num }}">{{ $num }}+ Beds</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="form-control w-full">
-                            <label class="label"><span class="label-text font-bold">Bathrooms</span></label>
-                            <select wire:model="bathroom" class="select select-bordered w-full">
-                                <option value="">Any</option>
-                                @foreach([1, 1.5, 2, 2.5, 3, 3.5, 4, 5] as $num)
-                                    <option value="{{ $num }}">{{ $num }}+ Baths</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="flex gap-2 w-full lg:w-auto">
-                            <button wire:click="applyFilters" class="btn btn-primary flex-1">
-                                Apply Filters
-                            </button>
-                            <button wire:click="resetFilters" class="btn btn-secondary flex-1">
-                                Reset Filters
-                            </button>
-                            <button @click="isAdvancedFiltersOpen = !isAdvancedFiltersOpen" class="btn btn-ghost btn-square" title="Close Filters">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-                            </button>
-                        </div>
+                    <div class="form-control w-full">
+                        <label class="label"><span class="label-text font-bold">Bathrooms</span></label>
+                        <select wire:model="bathroom" class="select select-bordered w-full rounded-xl">
+                            <option value="">Any</option>
+                            @foreach([1, 1.5, 2, 2.5, 3, 3.5, 4, 5] as $num)
+                                <option value="{{ $num }}">{{ $num }}+ Baths</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
-            </div>        
+                <div class="p-6 bg-base-200 flex gap-4">
+                    <button wire:click="resetFilters" @click="open = false" class="btn btn-secondary flex-1 rounded-xl font-bold">Reset</button>
+                    <button wire:click="applyFilters" @click="open = false" class="btn btn-primary flex-1 rounded-xl font-bold">Show Results</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="max-w-screen-xl mx-auto">
+
+    <div class="max-w-screen-xl mx-auto px-4 lg:px-8">
         {{-- Skeleton Loading --}}
         <div wire:loading.grid wire:target="sortBy, category, property_location_id, bedroom, bathroom, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             @foreach(range(1, 8) as $i)
