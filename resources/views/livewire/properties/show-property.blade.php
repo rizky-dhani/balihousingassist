@@ -89,14 +89,14 @@
                     {{ $property->description }}
                 </div>
             </div>
-
-                            @if($property->amenities->count() > 0)
-                                <div class="mb-16">
-                                    <h2 class="text-2xl font-black mb-8">Amenities</h2>
-                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">                        @foreach($property->amenities as $amenity)
+            @if($property->amenities->count() > 0)
+                <div class="mb-16">
+                    <h2 class="text-2xl font-black mb-8">Amenities</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">                        
+                        @foreach($property->amenities as $amenity)
                             <div class="flex items-center gap-4 p-4 rounded-2xl border border-base-200 bg-base-100 group hover:border-primary transition-colors">
                                 <div class="size-10 rounded-xl bg-base-200 flex items-center justify-center text-primary transition-colors">
-                                    <x-hugeicons-checkmark-circle-01 class="size-5" />
+                                    <x-dynamic-component :component="'hugeicons-'.$amenity->icon" class="size-5" />
                                 </div>
                                 <span class="font-bold text-sm leading-tight">{{ $amenity->name }}</span>
                             </div>
@@ -127,8 +127,8 @@
         </div>
 
         {{-- Right Column: Booking Card (Sticky) --}}
-        <div class="lg:col-span-4">
-            <div class="lg:sticky lg:top-24 mb-12">
+            <div class="lg:col-span-4" x-data="{ showDateInputs: false }">            
+                <div class="lg:sticky lg:top-24 mb-12">
                 <div class="bg-base-100 rounded-3xl border border-base-200 shadow-2xl p-8">
                     <h3 class="text-sm font-black uppercase tracking-widest text-base-content/30 mb-6">Reservation Details</h3>
                     
@@ -172,24 +172,64 @@
                         </div>
                     </div>
 
-                    @php
-                        $siteSettings = \App\Models\SiteSetting::getSingleton();
-                        $waNumber = $siteSettings->whatsapp_number ?? '628123456789';
-                        $waText = urlencode("Hello, I'm interested in booking " . $property->name . " in " . ($property->location?->city ?? 'Bali') . ". Is it available for my dates?");
-                        $waUrl = "https://wa.me/{$waNumber}?text={$waText}";
-                    @endphp
                     
-                    <a 
+                    <div
+                        x-show="showDateInputs"
+                        x-cloak
+                        x-transition:enter="transition ease-[cubic-bezier(0.4,0,0.2,1)] duration-400"
+                        x-transition:enter-start="opacity-0 scale-95 translate-y-2"
+                        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
+                        x-transition:leave="transition ease-[cubic-bezier(0.4,0,1,1)] duration-300"
+                        x-transition:leave-start="opacity-100 scale-100 translate-y-0"
+                        x-transition:leave-end="opacity-0 scale-95 translate-y-2"
+                    >
+                        <div class="space-y-4 mb-4">
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="label label-text text-xs font-bold">Check-in</label>
+                                <input 
+                                    type="date" 
+                                    wire:model.live="checkInDate" 
+                                    class="input input-bordered w-full text-sm"
+                                    min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                />
+                            </div>
+                            <div>
+                                <label class="label label-text text-xs font-bold">Check-out</label>
+                                <input 
+                                    type="date" 
+                                    wire:model.live="checkOutDate" 
+                                    class="input input-bordered w-full text-sm"
+                                    :min="checkInDate || '{{ \Carbon\Carbon::now()->format('Y-m-d') }}'"
+                                    x-data="{ checkInDate: @entangle('checkInDate') }"
+                                    :disabled="!checkInDate"
+                                />
+                            </div>
+                        </div>
+                        
+                    </div>
+                    </div>
+
+                    <button
+                        x-show="!showDateInputs"
+                        x-on:click="showDateInputs = true"
+                        type="button"
+                        class="btn btn-primary btn-lg w-full rounded-2xl font-black h-16 shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform"
+                    >
+                        Direct Booking
+                    </button>
+                    
+                    <a
+                        x-show="showDateInputs"
+                        x-cloak
                         href="{{ $waUrl }}"
                         target="_blank"
                         x-intersect:enter="showSticky = false"
                         x-intersect:leave="showSticky = $el.getBoundingClientRect().top < 0"
                         class="btn btn-primary btn-lg w-full rounded-2xl font-black h-16 shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform"
                     >
-                        Confirm Reservation
+                        Proceed to WhatsApp
                     </a>
-                    
-                    <p class="text-center text-[10px] text-base-content/40 mt-4 uppercase font-bold tracking-widest">Powered by {{ config('app.name') }}</p>
                 </div>
             </div>
         </div>
@@ -246,9 +286,11 @@
                 <p class="text-xs font-black truncate max-w-[150px]">{{ $property->name }}</p>
             </div>
         </div>
+        
+        
         <a href="{{ $waUrl }}" target="_blank" class="btn btn-primary w-full btn-lg rounded-2xl font-black shadow-xl shadow-primary/30 h-16">
             <x-hugeicons-whatsapp class="size-6" />
-            Book Now
+            Direct Booking
         </a>
     </div>
 </section>

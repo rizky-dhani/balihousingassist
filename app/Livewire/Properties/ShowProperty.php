@@ -12,6 +12,10 @@ class ShowProperty extends Component
 {
     public Property $property;
 
+    public $checkInDate = null;
+
+    public $checkOutDate = null;
+
     public function mount(Property $property)
     {
         $this->property = $property->load(['amenities', 'seo']);
@@ -21,8 +25,45 @@ class ShowProperty extends Component
     {
         app(TagManager::class)->for($this->property);
 
+        // Prepare WhatsApp URL with date information if available
+        $siteSettings = \App\Models\SiteSetting::getSingleton();
+        $waNumber = preg_replace('/[^0-9]/', '', $siteSettings->whatsapp_number ?? '628123456789');
+
+        $datesInfo = '';
+        $checkInFormatted = '';
+        $checkOutFormatted = '';
+
+        if ($this->checkInDate && $this->checkOutDate) {
+            // Format dates in M d Y format
+            $checkInFormatted = \Carbon\Carbon::parse($this->checkInDate)->format('M j Y');
+            $checkOutFormatted = \Carbon\Carbon::parse($this->checkOutDate)->format('M j Y');
+
+            // Extract years to compare
+            $checkInYear = \Carbon\Carbon::parse($this->checkInDate)->year;
+            $checkOutYear = \Carbon\Carbon::parse($this->checkOutDate)->year;
+
+            // Show year only on checkout date if check-in and checkout dates are within same year
+            if ($checkInYear === $checkOutYear) {
+                $checkInFormatted = \Carbon\Carbon::parse($this->checkInDate)->format('M j');
+                $checkOutFormatted = \Carbon\Carbon::parse($this->checkOutDate)->format('M j Y'); // Year visible on checkout
+            } else {
+                // For different years, both should show the year
+                $checkInFormatted = \Carbon\Carbon::parse($this->checkInDate)->format('M j Y');
+                $checkOutFormatted = \Carbon\Carbon::parse($this->checkOutDate)->format('M j Y');
+            }
+
+            $waText = urlencode("Hello, I'm interested in booking ".$this->property->name.' in '.($this->property->location?->city ?? 'Bali').". Is it available for this date: {$checkInFormatted} to {$checkOutFormatted}?");
+        } elseif ($this->checkInDate) {
+            $checkInFormattedSingle = \Carbon\Carbon::parse($this->checkInDate)->format('M j Y');
+            $waText = urlencode("Hello, I'm interested in booking ".$this->property->name.' in '.($this->property->location?->city ?? 'Bali').". Is it available for check-in: {$checkInFormattedSingle}?");
+        } else {
+            $waText = urlencode("Hello, I'm interested in booking ".$this->property->name.' in '.($this->property->location?->city ?? 'Bali').'. Is it available?');
+        }
+        $waUrl = "https://wa.me/{$waNumber}?text={$waText}";
+
         return view('livewire.properties.show-property', [
             'schema' => $this->property->generateSchema(),
+            'waUrl' => $waUrl,
         ]);
     }
 }
