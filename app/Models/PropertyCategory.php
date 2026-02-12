@@ -16,6 +16,7 @@ class PropertyCategory extends Model
     protected $fillable = [
         'name',
         'slug',
+        'icon',
     ];
 
     public function getRouteKeyName(): string

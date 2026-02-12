@@ -48,6 +48,9 @@ class PropertiesTable
                     ->sortable(),
                 IconColumn::make('is_available')
                     ->boolean(),
+                IconColumn::make('is_featured')
+                    ->label('Featured')
+                    ->boolean(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

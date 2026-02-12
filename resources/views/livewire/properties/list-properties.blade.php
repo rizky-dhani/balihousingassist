@@ -21,29 +21,46 @@
         </div>
 
         {{-- Category Navigation Bar --}}
-        @php
-            $categoryIcons = [
-                'Villa' => 'hugeicons-house-01',
-                'Mansion' => 'hugeicons-castle-01',
-                'Cabin' => 'hugeicons-home-02',
-                'Loft' => 'hugeicons-building-05',
-                'Apartment' => 'hugeicons-building-01',
-                'House' => 'hugeicons-home-01',
-                'Land' => 'hugeicons-mountain',
-            ];
-        @endphp
-        <div class="mb-8 border-b border-base-200 pb-2 overflow-x-auto no-scrollbar flex items-center gap-8 lg:gap-12 px-2">
-            <button wire:click="$set('category', '')" class="flex flex-col items-center gap-2 group border-b-2 transition-all pb-2 whitespace-nowrap {{ $category === '' ? 'border-primary text-primary opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-base-300' }}">
-                <x-hugeicons-grid-view class="size-6 group-hover:scale-110 transition-transform" />
-                <span class="text-xs font-bold uppercase tracking-wider">All</span>
-            </button>
-            @foreach($categories as $cat)
-                @php $icon = $categoryIcons[$cat->name] ?? 'hugeicons-house-01'; @endphp
-                <button wire:click="$set('category', '{{ $cat->slug }}')" class="flex flex-col items-center gap-2 group border-b-2 transition-all pb-2 whitespace-nowrap {{ $category === $cat->slug ? 'border-primary text-primary opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-base-300' }}">
-                    <x-dynamic-component :component="$icon" class="size-6 group-hover:scale-110 transition-transform" />
-                    <span class="text-xs font-bold uppercase tracking-wider">{{ $cat->name }}</span>
+        <div class="relative group mb-8" x-data="{
+            slider: null,
+            init() {
+                this.slider = this.$refs.slider;
+            },
+            scrollLeft() {
+                this.slider.scrollBy({ left: -200, behavior: 'smooth' });
+            },
+            scrollRight() {
+                this.slider.scrollBy({ left: 200, behavior: 'smooth' });
+            },
+            canScrollLeft: false,
+            canScrollRight: false,
+            updateScrollButtons() {
+                this.canScrollLeft = this.slider.scrollLeft > 0;
+                this.canScrollRight = this.slider.scrollLeft < this.slider.scrollWidth - this.slider.clientWidth - 10;
+            }
+        }" x-init="updateScrollButtons" @scroll.window="updateScrollButtons">
+            <div class="absolute left-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <button @click="scrollLeft()" x-show="canScrollLeft" class="btn btn-circle btn-sm btn-primary shadow-lg bg-base-100" x-cloak>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
                 </button>
-            @endforeach
+            </div>
+            <div x-ref="slider" class="border-b border-base-200 pb-2 overflow-x-auto no-scrollbar flex items-center gap-4 px-4 lg:gap-6 scroll-smooth" @scroll="updateScrollButtons()">
+                <button wire:click="$set('category', '')" class="flex flex-col items-center gap-2 group border-b-2 transition-all pb-2 whitespace-nowrap flex-shrink-0 {{ $category === '' ? 'border-primary text-primary opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-base-300' }}">
+                    <x-hugeicons-grid-view class="size-6 group-hover:scale-110 transition-transform" />
+                    <span class="text-xs font-bold uppercase tracking-wider">All</span>
+                </button>
+                @foreach($categories as $cat)
+                    <button wire:click="$set('category', '{{ $cat->slug }}')" class="flex flex-col items-center gap-2 group border-b-2 transition-all pb-2 whitespace-nowrap flex-shrink-0 {{ $category === $cat->slug ? 'border-primary text-primary opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-base-300' }}">
+                        <x-dynamic-component :component="$cat->icon ?? 'hugeicons-house-01'" class="size-6 group-hover:scale-110 transition-transform" />
+                        <span class="text-xs font-bold uppercase tracking-wider">{{ $cat->name }}</span>
+                    </button>
+                @endforeach
+            </div>
+            <div class="absolute right-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <button @click="scrollRight()" x-show="canScrollRight" class="btn btn-circle btn-sm btn-primary shadow-lg bg-base-100" x-cloak>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </button>
+            </div>
         </div>
 
         <div class="mb-8 flex flex-col lg:flex-row items-stretch lg:items-center gap-4 bg-base-100 p-4 rounded-3xl border border-base-200 shadow-sm" id="advanced-filters-top">
@@ -116,6 +133,24 @@
                             @endforeach
                         </select>
                     </div>
+
+                    <div class="form-control w-full col-span-1 sm:col-span-2">
+                        <label class="label"><span class="label-text font-bold">Price Range (Daily)</span></label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <input type="number" wire:model="min_price" placeholder="Min Price" min="0" max="10000000" step="100000" class="input input-bordered w-full rounded-xl" />
+                                <label class="label">
+                                    <span class="label-text-alt text-base-content/50">Min: {{ $min_price ? 'IDR ' . number_format($min_price, 0, ',', '.') : 'Any' }}</span>
+                                </label>
+                            </div>
+                            <div>
+                                <input type="number" wire:model="max_price" placeholder="Max Price" min="0" max="10000000" step="100000" class="input input-bordered w-full rounded-xl" />
+                                <label class="label">
+                                    <span class="label-text-alt text-base-content/50">Max: {{ $max_price ? 'IDR ' . number_format($max_price, 0, ',', '.') : 'Any' }}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="p-6 bg-base-200 flex gap-4">
                     <button wire:click="resetFilters" @click="open = false" class="btn btn-secondary flex-1 rounded-xl font-bold">Reset</button>
@@ -127,14 +162,14 @@
 
     <div class="max-w-screen-xl mx-auto px-4 lg:px-8">
         {{-- Skeleton Loading --}}
-        <div wire:loading.grid wire:target="sortBy, category, property_location_id, bedroom, bathroom, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        <div wire:loading.grid wire:target="sortBy, category, property_location_id, bedroom, bathroom, min_price, max_price, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             @foreach(range(1, 8) as $i)
                 <x-property-skeleton />
             @endforeach
         </div>
 
         {{-- Properties Grid --}}
-        <div wire:loading.remove wire:target="sortBy, category, property_location_id, bedroom, bathroom, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        <div wire:loading.remove wire:target="sortBy, category, property_location_id, bedroom, bathroom, min_price, max_price, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             @foreach($properties as $property)
                 <x-single-property :property="$property" />
             @endforeach

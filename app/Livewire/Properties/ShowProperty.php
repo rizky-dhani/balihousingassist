@@ -19,6 +19,7 @@ class ShowProperty extends Component
     public function mount(Property $property)
     {
         $this->property = $property->load(['amenities', 'seo']);
+        $this->property->display_name = $this->property->category?->name . ' in ' . ($this->property->location?->city ?? 'Bali');
     }
 
     public function render()
@@ -52,12 +53,18 @@ class ShowProperty extends Component
                 $checkOutFormatted = \Carbon\Carbon::parse($this->checkOutDate)->format('M j Y');
             }
 
-            $waText = urlencode("Hello, I'm interested in booking ".$this->property->name.' in '.($this->property->location?->city ?? 'Bali').". Is it available for this date: {$checkInFormatted} to {$checkOutFormatted}?");
+            $propertyUrl = route('properties.show', $this->property->slug);
+            $locationName = $this->property->location?->city ?? 'Bali';
+            $waText = urlencode("Hello, I'm interested in booking this property in {$locationName}: {$propertyUrl}. Is it available for this date: {$checkInFormatted} to {$checkOutFormatted}?");
         } elseif ($this->checkInDate) {
             $checkInFormattedSingle = \Carbon\Carbon::parse($this->checkInDate)->format('M j Y');
-            $waText = urlencode("Hello, I'm interested in booking ".$this->property->name.' in '.($this->property->location?->city ?? 'Bali').". Is it available for check-in: {$checkInFormattedSingle}?");
+            $propertyUrl = route('properties.show', $this->property->slug);
+            $locationName = $this->property->location?->city ?? 'Bali';
+            $waText = urlencode("Hello, I'm interested in booking this property in {$locationName}: {$propertyUrl}. Is it available for check-in: {$checkInFormattedSingle}?");
         } else {
-            $waText = urlencode("Hello, I'm interested in booking ".$this->property->name.' in '.($this->property->location?->city ?? 'Bali').'. Is it available?');
+            $propertyUrl = route('properties.show', $this->property->slug);
+            $locationName = $this->property->location?->city ?? 'Bali';
+            $waText = urlencode("Hello, I'm interested in booking this property in {$locationName}: {$propertyUrl}. Is it available?");
         }
         $waUrl = "https://wa.me/{$waNumber}?text={$waText}";
 

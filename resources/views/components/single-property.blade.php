@@ -1,26 +1,40 @@
 @props(['property'])
 
+@php
+    $displayName = $property->category?->name . ' in ' . ($property->location?->city ?? 'Bali');
+    $thumbnail = 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80';
+    if ($property->main_image) {
+        $thumbnail = asset('storage/' . $property->main_image);
+    } elseif ($property->images && count($property->images) > 0) {
+        $thumbnail = asset('storage/' . $property->images[0]);
+    }
+    $siteSettings = \App\Models\SiteSetting::getSingleton();
+    $waNumber = preg_replace('/[^0-9]/', '', $siteSettings->whatsapp_number ?? '628123456789');
+    $locationName = $property->location?->city ?? 'Bali';
+    $propertyUrl = route('properties.show', $property->slug);
+    $waText = urlencode("Hello, I'm interested in booking this property in {$locationName}: {$propertyUrl}");
+    $waUrl = "https://wa.me/{$waNumber}?text={$waText}";
+@endphp
+
 <div class="group flex flex-col h-full rounded-3xl overflow-hidden border border-base-200 bg-base-100 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-  <div class="relative aspect-4/3 overflow-hidden">
+    <div class="relative aspect-4/3 overflow-hidden">
     <a href="{{ route('properties.show', $property->slug) }}" wire:navigate class="block h-full">
-      @php
-          $thumbnail = 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80';
-          if ($property->main_image) {
-              $thumbnail = asset('storage/' . $property->main_image);
-          } elseif ($property->images && count($property->images) > 0) {
-              $thumbnail = asset('storage/' . $property->images[0]);
-          }
-      @endphp
       <img
-        alt="{{ $property->name }}"
+        alt="{{ $displayName }}"
         src="{{ $thumbnail }}"
         class="w-full h-full object-cover transition duration-700 group-hover:scale-110"
       />
       <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
     </a>
-    
-    @if($property->category)
+
+    @if($property->is_featured)
         <div class="absolute top-4 left-4">
+            <span class="badge badge-secondary font-bold shadow-lg">Featured</span>
+        </div>
+    @endif
+
+    @if($property->category)
+        <div class="absolute top-4 {{ $property->is_featured ? 'left-28' : 'left-4' }}">
             <span class="badge badge-primary font-bold shadow-lg">{{ $property->category->name }}</span>
         </div>
     @endif
@@ -33,7 +47,7 @@
     </div>
 
     <a href="{{ route('properties.show', $property->slug) }}" wire:navigate>
-      <h3 class="font-bold text-xl mb-3 group-hover:text-primary transition-colors line-clamp-1">{{ $property->name }}</h3>
+      <h3 class="font-bold text-xl mb-3 group-hover:text-primary transition-colors line-clamp-1">{{ $displayName }}</h3>
     </a>
 
     <div class="flex items-center gap-4 text-base-content/70 mb-6">
@@ -73,13 +87,6 @@
             @endif
         </div>
 
-        @php
-            $siteSettings = \App\Models\SiteSetting::getSingleton();
-            $waNumber = $siteSettings->whatsapp_number ?? '628123456789';
-            $locationName = $property->location?->city ?? 'Bali';
-            $waText = urlencode("Hello, I'm interested in booking " . $property->name . " in " . $locationName . ". Can I get more details?");
-            $waUrl = "https://wa.me/{$waNumber}?text={$waText}";
-        @endphp
         <a href="{{ $waUrl }}" target="_blank" class="btn btn-circle btn-primary btn-sm shadow-md shadow-primary/30">
             <x-hugeicons-whatsapp class="h-4 w-4" />
         </a>

@@ -38,6 +38,12 @@ class ListProperties extends Component
     #[Url]
     public $sortBy = 'latest';
 
+    #[Url]
+    public $min_price = '';
+
+    #[Url]
+    public $max_price = '';
+
     public $showBottomFilters = false;
 
     public $perPage = 9;
@@ -47,7 +53,7 @@ class ListProperties extends Component
 
     public function updating($name, $value)
     {
-        if (in_array($name, ['search', 'bedroom', 'bathroom', 'property_location_id', 'category', 'sortBy'])) {
+        if (in_array($name, ['search', 'bedroom', 'bathroom', 'property_location_id', 'category', 'sortBy', 'min_price', 'max_price'])) {
             $this->showBottomFilters = false;
             $this->perPage = 9;
         }
@@ -66,7 +72,7 @@ class ListProperties extends Component
 
     public function resetFilters()
     {
-        $this->reset(['search', 'bedroom', 'bathroom', 'property_location_id', 'category', 'sortBy', 'perPage']);
+        $this->reset(['search', 'bedroom', 'bathroom', 'property_location_id', 'category', 'sortBy', 'min_price', 'max_price', 'perPage']);
         $this->resetPage();
     }
 
@@ -99,11 +105,19 @@ class ListProperties extends Component
             });
         }
 
+        if ($this->min_price) {
+            $query->where('price_daily', '>=', $this->min_price);
+        }
+
+        if ($this->max_price) {
+            $query->where('price_daily', '<=', $this->max_price);
+        }
+
         $query = match ($this->sortBy) {
-            'price_low' => $query->orderBy('price_daily', 'asc'),
-            'price_high' => $query->orderBy('price_daily', 'desc'),
-            'oldest' => $query->oldest(),
-            default => $query->latest(),
+            'price_low' => $query->orderBy('is_featured', 'desc')->orderBy('price_daily', 'asc'),
+            'price_high' => $query->orderBy('is_featured', 'desc')->orderBy('price_daily', 'desc'),
+            'oldest' => $query->orderBy('is_featured', 'desc')->oldest(),
+            default => $query->orderBy('is_featured', 'desc')->latest(),
         };
 
         return view('livewire.properties.list-properties', [

@@ -30,6 +30,7 @@ class Property extends Model
         'price_monthly',
         'price_yearly',
         'is_available',
+        'is_featured',
         'property_category_id',
         'property_location_id',
     ];
@@ -61,6 +62,7 @@ class Property extends Model
             'price_monthly' => 'integer',
             'price_yearly' => 'integer',
             'is_available' => 'boolean',
+            'is_featured' => 'boolean',
             'property_category_id' => 'integer',
             'property_location_id' => 'integer',
         ];

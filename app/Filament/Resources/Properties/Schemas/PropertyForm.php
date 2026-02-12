@@ -221,6 +221,9 @@ class PropertyForm
                                 ->columnSpanFull(),
                             Toggle::make('is_available')
                                 ->required(),
+                            Toggle::make('is_featured')
+                                ->label('Featured Property')
+                                ->required(),
                         ]),
                 ])->columnSpanFull(),
             ]);
