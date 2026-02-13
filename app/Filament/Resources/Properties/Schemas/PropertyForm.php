@@ -8,6 +8,7 @@ use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -110,6 +111,14 @@ class PropertyForm
                                                 ->numeric()
                                                 ->step(0.5)
                                                 ->default(0),
+                                            TimePicker::make('check_in_time')
+                                                ->label('Check In')
+                                                ->default('14:00')
+                                                ->required(),
+                                            TimePicker::make('check_out_time')
+                                                ->label('Check Out')
+                                                ->default('12:00')
+                                                ->required(),
                                             Section::make('Amenities')
                                                 ->schema([
                                                     CheckboxList::make('amenities')

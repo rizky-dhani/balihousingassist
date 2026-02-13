@@ -23,6 +23,8 @@ class Property extends Model
         'latitude',
         'longitude',
         'address',
+        'check_in_time',
+        'check_out_time',
         'main_image',
         'images',
         'price_daily',
@@ -65,6 +67,8 @@ class Property extends Model
             'is_featured' => 'boolean',
             'property_category_id' => 'integer',
             'property_location_id' => 'integer',
+            'check_in_time' => 'datetime:H:i',
+            'check_out_time' => 'datetime:H:i',
         ];
     }
 

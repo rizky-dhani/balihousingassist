@@ -60,6 +60,11 @@ class DashboardPanelProvider extends PanelProvider
                     ->icon(Heroicon::OutlinedArrowTopRightOnSquare)
                     ->group('Site Settings')
                     ->sort(0),
+                NavigationItem::make('Google Analytics Docs')
+                    ->url('/docs/google-analytics')
+                    ->icon(Heroicon::OutlinedBookOpen)
+                    ->group('Site Management')
+                    ->sort(2),
             ]);
     }
 }

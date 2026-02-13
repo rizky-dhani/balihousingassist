@@ -3,6 +3,7 @@
 namespace App\Filament\Pages;
 
 use App\Filament\Widgets\ActiveUsersWidget;
+use App\Filament\Widgets\GoogleAnalyticsDocsWidget;
 use App\Filament\Widgets\PageViewsWidget;
 use App\Filament\Widgets\TopPagesWidget;
 use BackedEnum;
@@ -27,6 +28,7 @@ class Analytics extends Page
     protected function getHeaderWidgets(): array
     {
         return [
+            GoogleAnalyticsDocsWidget::class,
             ActiveUsersWidget::class,
             PageViewsWidget::class,
             TopPagesWidget::class,

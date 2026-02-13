@@ -106,32 +106,41 @@
                 <x-property-gallery :images="$property->images" :name="$property->name" :mainImage="$property->main_image" />
             </div>
 
-            <div class="flex items-center gap-8 py-6 border-y border-base-200 mb-12 overflow-x-auto no-scrollbar">
-                <div class="flex items-center gap-3">
-                    <div class="size-12 rounded-2xl bg-base-200 flex items-center justify-center">
+            <div class="grid grid-cols-2 gap-x-4 gap-y-6 lg:flex lg:items-center lg:justify-center lg:gap-8 py-6 border-y border-base-200 mb-12">
+                <div class="flex items-center justify-center lg:justify-start gap-3">
+                    <div class="size-12 rounded-2xl bg-base-200 flex items-center justify-center shrink-0">
                         <x-hugeicons-bed-double class="size-6 text-primary" />
                     </div>
-                    <div>
+                    <div class="text-center lg:text-left">
                         <p class="text-xs font-bold uppercase tracking-tighter text-base-content/40 leading-none mb-1">Bedrooms</p>
                         <p class="text-lg font-black leading-none">{{ $property->bedroom }}</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="size-12 rounded-2xl bg-base-200 flex items-center justify-center">
+                <div class="flex items-center justify-center lg:justify-start gap-3">
+                    <div class="size-12 rounded-2xl bg-base-200 flex items-center justify-center shrink-0">
                         <x-hugeicons-bathtub-01 class="size-6 text-primary" />
                     </div>
-                    <div>
+                    <div class="text-center lg:text-left">
                         <p class="text-xs font-bold uppercase tracking-tighter text-base-content/40 leading-none mb-1">Bathrooms</p>
                         <p class="text-lg font-black leading-none">{{ (float) $property->bathroom }}</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-3">
-                    <div class="size-12 rounded-2xl bg-base-200 flex items-center justify-center">
+                <div class="flex items-center justify-center lg:justify-start gap-3">
+                    <div class="size-12 rounded-2xl bg-base-200 flex items-center justify-center shrink-0">
                         <x-hugeicons-checkmark-circle-01 class="size-6 text-primary" />
                     </div>
-                    <div>
-                        <p class="text-xs font-bold uppercase tracking-tighter text-base-content/40 leading-none mb-1">Status</p>
-                        <p class="text-lg font-black leading-none">{{ $property->is_available ? 'Available' : 'Booked' }}</p>
+                    <div class="text-center lg:text-left">
+                        <p class="text-xs font-bold uppercase tracking-tighter text-base-content/40 leading-none mb-1">Check In</p>
+                        <p class="text-lg font-black leading-none">{{ $property->check_in_time ? \Carbon\Carbon::parse($property->check_in_time)->format('H:i') : '14:00' }}</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-center lg:justify-start gap-3">
+                    <div class="size-12 rounded-2xl bg-base-200 flex items-center justify-center shrink-0">
+                        <x-hugeicons-clock-01 class="size-6 text-primary" />
+                    </div>
+                    <div class="text-center lg:text-left">
+                        <p class="text-xs font-bold uppercase tracking-tighter text-base-content/40 leading-none mb-1">Check Out</p>
+                        <p class="text-lg font-black leading-none">{{ $property->check_out_time ? \Carbon\Carbon::parse($property->check_out_time)->format('H:i') : '12:00' }}</p>
                     </div>
                 </div>
             </div>
@@ -268,61 +277,13 @@
                         </div>
                     </div>
 
-                    
-                    <div
-                        x-show="showDateInputs"
-                        x-cloak
-                        x-transition:enter="transition ease-[cubic-bezier(0.4,0,0.2,1)] duration-400"
-                        x-transition:enter-start="opacity-0 scale-95 translate-y-2"
-                        x-transition:enter-end="opacity-100 scale-100 translate-y-0"
-                        x-transition:leave="transition ease-[cubic-bezier(0.4,0,1,1)] duration-300"
-                        x-transition:leave-start="opacity-100 scale-100 translate-y-0"
-                        x-transition:leave-end="opacity-0 scale-95 translate-y-2"
-                    >
-                        <div class="space-y-4 mb-4">
-                        <div class="grid grid-cols-2 gap-4">
-                            <div>
-                                <label class="label label-text text-xs font-bold">Check-in</label>
-                                <input 
-                                    type="date" 
-                                    wire:model.live="checkInDate" 
-                                    class="input input-bordered w-full text-sm"
-                                    min="{{ \Carbon\Carbon::now()->format('Y-m-d') }}"
-                                />
-                            </div>
-                            <div>
-                                <label class="label label-text text-xs font-bold">Check-out</label>
-                                <input 
-                                    type="date" 
-                                    wire:model.live="checkOutDate" 
-                                    class="input input-bordered w-full text-sm"
-                                    :min="checkInDate || '{{ \Carbon\Carbon::now()->format('Y-m-d') }}'"
-                                    x-data="{ checkInDate: @entangle('checkInDate') }"
-                                    :disabled="!checkInDate"
-                                />
-                            </div>
-                        </div>
-                        
-                    </div>
-                    </div>
-
-                    <button
-                        x-show="!showDateInputs"
-                        x-on:click="showDateInputs = true"
-                        type="button"
-                        class="btn btn-primary btn-lg w-full rounded-2xl font-black h-16 shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform"
-                    >
-                        Direct Booking
-                    </button>
-                    
                     <a
-                        x-show="showDateInputs"
-                        x-cloak
                         href="{{ $waUrl }}"
                         target="_blank"
                         class="btn btn-primary btn-lg w-full rounded-2xl font-black h-16 shadow-xl shadow-primary/20 hover:scale-[1.02] transition-transform"
                     >
-                        Proceed to WhatsApp
+                        <x-hugeicons-whatsapp class="size-6" />
+                        Direct Booking
                     </a>
                 </div>
             </div>
