@@ -17,9 +17,6 @@ class PropertyLocation extends Model
     protected $fillable = [
         'name',
         'slug',
-        'latitude',
-        'longitude',
-        'parent_id',
     ];
 
     protected static function boot(): void
@@ -42,15 +39,5 @@ class PropertyLocation extends Model
     public function getRouteKeyName(): string
     {
         return 'slug';
-    }
-
-    public function parent(): \Illuminate\Database\Eloquent\Relations\BelongsTo
-    {
-        return $this->belongsTo(PropertyLocation::class, 'parent_id');
-    }
-
-    public function children(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(PropertyLocation::class, 'parent_id');
     }
 }

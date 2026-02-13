@@ -23,16 +23,6 @@ class PropertyLocationForm
                         TextInput::make('slug')
                             ->required()
                             ->unique(ignoreRecord: true),
-                        \Filament\Forms\Components\Select::make('parent_id')
-                            ->relationship('parent', 'name')
-                            ->searchable()
-                            ->preload(),
-                        TextInput::make('latitude')
-                            ->numeric()
-                            ->step(0.00000001),
-                        TextInput::make('longitude')
-                            ->numeric()
-                            ->step(0.00000001),
                     ])->columns(2),
 
                 \Filament\Schemas\Components\Section::make('SEO')
