@@ -107,38 +107,38 @@
             </div>
 
             <div class="grid grid-cols-2 gap-x-4 gap-y-6 lg:flex lg:items-center lg:justify-center lg:gap-8 py-6 border-y border-base-200 mb-12">
-                <div class="flex items-center justify-center lg:justify-start gap-3">
+                <div class="flex items-center justify-start gap-3 w-full">
                     <div class="size-12 rounded-2xl bg-base-200 flex items-center justify-center shrink-0">
                         <x-hugeicons-bed-double class="size-6 text-primary" />
                     </div>
-                    <div class="text-center lg:text-left">
+                    <div>
                         <p class="text-xs font-bold uppercase tracking-tighter text-base-content/40 leading-none mb-1">Bedrooms</p>
                         <p class="text-lg font-black leading-none">{{ $property->bedroom }}</p>
                     </div>
                 </div>
-                <div class="flex items-center justify-center lg:justify-start gap-3">
+                <div class="flex items-center justify-start gap-3 w-full">
                     <div class="size-12 rounded-2xl bg-base-200 flex items-center justify-center shrink-0">
                         <x-hugeicons-bathtub-01 class="size-6 text-primary" />
                     </div>
-                    <div class="text-center lg:text-left">
+                    <div>
                         <p class="text-xs font-bold uppercase tracking-tighter text-base-content/40 leading-none mb-1">Bathrooms</p>
                         <p class="text-lg font-black leading-none">{{ (float) $property->bathroom }}</p>
                     </div>
                 </div>
-                <div class="flex items-center justify-center lg:justify-start gap-3">
+                <div class="flex items-center justify-start gap-3 w-full">
                     <div class="size-12 rounded-2xl bg-base-200 flex items-center justify-center shrink-0">
                         <x-hugeicons-checkmark-circle-01 class="size-6 text-primary" />
                     </div>
-                    <div class="text-center lg:text-left">
+                    <div>
                         <p class="text-xs font-bold uppercase tracking-tighter text-base-content/40 leading-none mb-1">Check In</p>
                         <p class="text-lg font-black leading-none">{{ $property->check_in_time ? \Carbon\Carbon::parse($property->check_in_time)->format('H:i') : '14:00' }}</p>
                     </div>
                 </div>
-                <div class="flex items-center justify-center lg:justify-start gap-3">
+                <div class="flex items-center justify-start gap-3 w-full">
                     <div class="size-12 rounded-2xl bg-base-200 flex items-center justify-center shrink-0">
                         <x-hugeicons-clock-01 class="size-6 text-primary" />
                     </div>
-                    <div class="text-center lg:text-left">
+                    <div>
                         <p class="text-xs font-bold uppercase tracking-tighter text-base-content/40 leading-none mb-1">Check Out</p>
                         <p class="text-lg font-black leading-none">{{ $property->check_out_time ? \Carbon\Carbon::parse($property->check_out_time)->format('H:i') : '12:00' }}</p>
                     </div>
@@ -158,22 +158,25 @@
                     $waUrl = "https://wa.me/{$waNumber}?text={$waText}";
                 @endphp
                 <div class="bg-base-100 rounded-3xl border border-base-200 shadow-2xl p-6">
-                    <h3 class="text-sm font-black uppercase tracking-widest text-base-content/30 mb-4">Reservation Details</h3>
-                    
                     <div class="space-y-3 mb-4">
                         @if($property->price_daily)
                             <div class="flex items-center justify-between p-3 rounded-xl bg-base-200/50 border border-transparent hover:border-primary/20 transition-all">
-                                <span class="font-bold text-sm">Daily Rate</span>
+                                <span class="font-bold text-sm">Daily</span>
                                 <span class="text-lg font-black text-primary">IDR {{ number_format($property->price_daily) }}</span>
                             </div>
                         @endif
                         @if($property->price_monthly)
                             <div class="flex items-center justify-between p-3 rounded-xl bg-base-200/50 border border-transparent hover:border-primary/20 transition-all">
-                                <span class="font-bold text-sm">Monthly Rate</span>
+                                <span class="font-bold text-sm">Monthly</span>
                                 <span class="text-lg font-black text-primary">IDR {{ number_format($property->price_monthly) }}</span>
                             </div>
                         @endif
-                        
+                        @if($property->price_yearly)
+                            <div class="flex items-center justify-between p-3 rounded-xl bg-base-200/50 border border-transparent hover:border-primary/20 transition-all">
+                                <span class="font-bold text-sm">Yearly</span>
+                                <span class="text-lg font-black text-primary">IDR {{ number_format($property->price_yearly) }}</span>
+                            </div>
+                        @endif
                         @if(!$property->price_daily && !$property->price_monthly)
                             <div class="p-4 rounded-xl bg-primary/5 border border-primary/20 text-center">
                                 <p class="font-black text-primary">Price upon request</p>
@@ -189,7 +192,7 @@
             </div>
 
             <div class="mb-16">
-                <h2 class="text-2xl font-black mb-6">About this sanctuary</h2>
+                <h2 class="text-2xl font-black mb-6">About this {{ $property->category->name }}</h2>
                 <div class="text-lg text-base-content/80 leading-relaxed whitespace-pre-line prose max-w-none">
                     {{ $property->description }}
                 </div>
@@ -235,24 +238,22 @@
             <div class="hidden lg:block lg:col-span-4" x-data="{ showDateInputs: false }">            
                 <div class="lg:sticky lg:top-24 mb-12">
                 <div class="bg-base-100 rounded-3xl border border-base-200 shadow-2xl p-8">
-                    <h3 class="text-sm font-black uppercase tracking-widest text-base-content/30 mb-6">Reservation Details</h3>
-                    
                     <div class="space-y-4 mb-8">
                         @if($property->price_daily)
                             <div class="flex items-center justify-between p-4 rounded-2xl bg-base-200/50 border border-transparent hover:border-primary/20 transition-all">
-                                <span class="font-bold text-sm">Daily Rate</span>
+                                <span class="font-bold text-sm">Daily</span>
                                 <span class="text-lg font-black text-primary">IDR {{ number_format($property->price_daily) }}</span>
                             </div>
                         @endif
                         @if($property->price_monthly)
                             <div class="flex items-center justify-between p-4 rounded-2xl bg-base-200/50 border border-transparent hover:border-primary/20 transition-all">
-                                <span class="font-bold text-sm">Monthly Rate</span>
+                                <span class="font-bold text-sm">Monthly</span>
                                 <span class="text-lg font-black text-primary">IDR {{ number_format($property->price_monthly) }}</span>
                             </div>
                         @endif
                         @if($property->price_yearly)
                             <div class="flex items-center justify-between p-4 rounded-2xl bg-base-200/50 border border-transparent hover:border-primary/20 transition-all">
-                                <span class="font-bold text-sm">Yearly Rate</span>
+                                <span class="font-bold text-sm">Yearly</span>
                                 <span class="text-lg font-black text-primary">IDR {{ number_format($property->price_yearly) }}</span>
                             </div>
                         @endif
