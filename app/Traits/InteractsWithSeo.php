@@ -18,10 +18,33 @@ trait InteractsWithSeo
     {
         $this->seo()->create([
             'title' => $this->name ?? $this->title ?? null,
-            'description' => str($this->description ?? '')->limit(160)->trim()->toString() ?: null,
+            'description' => $this->getSeoDescription(),
+            'author' => $this->getSeoAuthor(),
+            'robots' => $this->getSeoRobots() ?? 'index, follow',
         ]);
 
         return $this;
+    }
+
+    protected function getSeoDescription(): ?string
+    {
+        $description = $this->description ?? '';
+
+        if (is_array($description)) {
+            $description = implode(' ', $description);
+        }
+
+        return str($description)->limit(160)->trim()->toString() ?: null;
+    }
+
+    protected function getSeoAuthor(): ?string
+    {
+        return null;
+    }
+
+    protected function getSeoRobots(): ?string
+    {
+        return 'index, follow';
     }
 
     /**
