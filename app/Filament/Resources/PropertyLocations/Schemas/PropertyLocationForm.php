@@ -18,7 +18,8 @@ class PropertyLocationForm
                             ->required()
                             ->maxLength(255)
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (\Filament\Schemas\Components\Utilities\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                            ->afterStateUpdated(fn (\Filament\Schemas\Components\Utilities\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state)))
+                            ->afterStateUpdated(fn (\Filament\Schemas\Components\Utilities\Set $set, ?string $state) => $set('seo_title', $state)),
                         TextInput::make('slug')
                             ->required()
                             ->unique(ignoreRecord: true),
@@ -38,7 +39,7 @@ class PropertyLocationForm
                     ->schema([
                         TextInput::make('seo_title')
                             ->label('SEO Title')
-                            ->placeholder(fn ($record) => $record?->name ?? 'Defaults to Location Name')
+                            ->default(fn ($get) => $get('name'))
                             ->columnSpanFull(),
                         Textarea::make('seo_description')
                             ->label('SEO Description')
