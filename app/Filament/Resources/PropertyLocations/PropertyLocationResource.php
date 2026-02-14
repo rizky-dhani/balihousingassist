@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\PropertyLocations;
 
-use App\Filament\Resources\PropertyLocations\Pages\CreatePropertyLocation;
-use App\Filament\Resources\PropertyLocations\Pages\EditPropertyLocation;
 use App\Filament\Resources\PropertyLocations\Pages\ListPropertyLocations;
 use App\Filament\Resources\PropertyLocations\Schemas\PropertyLocationForm;
 use App\Filament\Resources\PropertyLocations\Tables\PropertyLocationsTable;
@@ -48,8 +46,6 @@ class PropertyLocationResource extends Resource
     {
         return [
             'index' => ListPropertyLocations::route('/'),
-            'create' => CreatePropertyLocation::route('/create'),
-            'edit' => EditPropertyLocation::route('/{record}/edit'),
         ];
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Amenities\Tables;
 
+use App\Filament\Resources\Amenities\Schemas\AmenityForm;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -30,12 +32,17 @@ class AmenitiesTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->form(AmenityForm::configure(...)),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                CreateAction::make()
+                    ->form(AmenityForm::configure(...)),
             ]);
     }
 }

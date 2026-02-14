@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\PropertyCategories;
 
-use App\Filament\Resources\PropertyCategories\Pages\CreatePropertyCategory;
-use App\Filament\Resources\PropertyCategories\Pages\EditPropertyCategory;
 use App\Filament\Resources\PropertyCategories\Pages\ListPropertyCategories;
 use App\Filament\Resources\PropertyCategories\Schemas\PropertyCategoryForm;
 use App\Filament\Resources\PropertyCategories\Tables\PropertyCategoriesTable;
@@ -48,8 +46,6 @@ class PropertyCategoryResource extends Resource
     {
         return [
             'index' => ListPropertyCategories::route('/'),
-            'create' => CreatePropertyCategory::route('/create'),
-            'edit' => EditPropertyCategory::route('/{record}/edit'),
         ];
     }
 }

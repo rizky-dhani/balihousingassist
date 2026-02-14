@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources\Amenities;
 
-use App\Filament\Resources\Amenities\Pages\CreateAmenity;
-use App\Filament\Resources\Amenities\Pages\EditAmenity;
 use App\Filament\Resources\Amenities\Pages\ListAmenities;
 use App\Filament\Resources\Amenities\Schemas\AmenityForm;
 use App\Filament\Resources\Amenities\Tables\AmenitiesTable;
@@ -46,8 +44,6 @@ class AmenityResource extends Resource
     {
         return [
             'index' => ListAmenities::route('/'),
-            'create' => CreateAmenity::route('/create'),
-            'edit' => EditAmenity::route('/{record}/edit'),
         ];
     }
 }

@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\PropertyLocations\Tables;
 
+use App\Filament\Resources\PropertyLocations\Schemas\PropertyLocationForm;
 use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Table;
@@ -28,12 +30,17 @@ class PropertyLocationsTable
                 //
             ])
             ->recordActions([
-                EditAction::make(),
+                EditAction::make()
+                    ->form(PropertyLocationForm::configure(...)),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
                     DeleteBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                CreateAction::make()
+                    ->form(PropertyLocationForm::configure(...)),
             ]);
     }
 }
