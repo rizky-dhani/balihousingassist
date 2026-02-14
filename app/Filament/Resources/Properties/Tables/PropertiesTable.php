@@ -28,12 +28,11 @@ class PropertiesTable
                     ->label('Location')
                     ->searchable()
                     ->sortable(),
-                TextColumn::make('bedroom')
-                    ->numeric()
-                    ->sortable(),
-                TextColumn::make('bathroom')
-                    ->numeric()
-                    ->sortable(),
+                TextColumn::make('bed_bath')
+                    ->label('Beds/Baths')
+                    ->getStateUsing(function ($record) {
+                        return $record->bedroom . ' Bed / ' . $record->bathroom . ' Bath';
+                    }),
                 TextColumn::make('pricing')
                     ->label('Pricing')
                     ->getStateUsing(function ($record) {
