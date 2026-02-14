@@ -11,6 +11,13 @@ trait InteractsWithSeo
         addSEO as parentAddSEO;
     }
 
+    protected static function bootInteractsWithSeo(): void
+    {
+        static::deleting(function ($model) {
+            $model->seo()->delete();
+        });
+    }
+
     /**
      * Create the SEO record with initial data from the model.
      */
