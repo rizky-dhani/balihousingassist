@@ -53,6 +53,7 @@ class PropertiesTable
                     })
                     ->html(),
                 IconColumn::make('is_available')
+                    ->label('Availability')
                     ->boolean(),
                 IconColumn::make('is_featured')
                     ->label('Featured')
