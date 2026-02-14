@@ -34,18 +34,25 @@ class PropertiesTable
                 TextColumn::make('bathroom')
                     ->numeric()
                     ->sortable(),
-                TextColumn::make('price_daily')
-                    ->money('IDR', locale: 'id')
-                    ->sortable(),
-                TextColumn::make('price_weekly')
-                    ->money('IDR', locale: 'id')
-                    ->sortable(),
-                TextColumn::make('price_monthly')
-                    ->money('IDR', locale: 'id')
-                    ->sortable(),
-                TextColumn::make('price_yearly')
-                    ->money('IDR', locale: 'id')
-                    ->sortable(),
+                TextColumn::make('pricing')
+                    ->label('Pricing')
+                    ->getStateUsing(function ($record) {
+                        $prices = [];
+                        if ($record->price_daily) {
+                            $prices[] = 'Daily: ' . number_format($record->price_daily, 0, ',', '.');
+                        }
+                        if ($record->price_weekly) {
+                            $prices[] = 'Weekly: ' . number_format($record->price_weekly, 0, ',', '.');
+                        }
+                        if ($record->price_monthly) {
+                            $prices[] = 'Monthly: ' . number_format($record->price_monthly, 0, ',', '.');
+                        }
+                        if ($record->price_yearly) {
+                            $prices[] = 'Yearly: ' . number_format($record->price_yearly, 0, ',', '.');
+                        }
+                        return implode("\n", $prices);
+                    })
+                    ->html(),
                 IconColumn::make('is_available')
                     ->boolean(),
                 IconColumn::make('is_featured')
