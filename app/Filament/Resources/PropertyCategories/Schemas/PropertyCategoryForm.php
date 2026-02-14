@@ -16,7 +16,8 @@ class PropertyCategoryForm
                         \Filament\Forms\Components\TextInput::make('name')
                             ->required()
                             ->live(onBlur: true)
-                            ->afterStateUpdated(fn (\Filament\Schemas\Components\Utilities\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state))),
+                            ->afterStateUpdated(fn (\Filament\Schemas\Components\Utilities\Set $set, ?string $state) => $set('slug', \Illuminate\Support\Str::slug($state)))
+                            ->afterStateUpdated(fn (\Filament\Schemas\Components\Utilities\Set $set, ?string $state) => $set('seo.title', $state)),
                         \Filament\Forms\Components\TextInput::make('slug')
                             ->required()
                             ->unique(ignoreRecord: true),

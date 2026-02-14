@@ -23,4 +23,9 @@ class PropertyCategory extends Model
     {
         return 'slug';
     }
+
+    protected function getSeoAuthor(): ?string
+    {
+        return \Illuminate\Support\Facades\Auth::user()?->name;
+    }
 }
