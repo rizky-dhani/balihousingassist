@@ -28,6 +28,7 @@ class DashboardPanelProvider extends PanelProvider
             ->id('dashboard')
             ->path('dashboard')
             ->login()
+            ->profile()
             ->maxContentWidth(Width::Full)
             ->colors([
                 'primary' => '#FE7734',
