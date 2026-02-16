@@ -4,6 +4,7 @@ namespace App\Filament\Resources\SiteSettings\Schemas;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -44,6 +45,13 @@ class SiteSettingForm
                         Section::make('')
                             ->schema([
                                 KeyValue::make('settings'),
+                            ]),
+                        Section::make('Tracking')
+                            ->schema([
+                                Textarea::make('google_tag_script')
+                                    ->label('Google Tag Manager Script')
+                                    ->placeholder('Paste your Google Tag Manager script here')
+                                    ->columnSpanFull(),
                             ]),
                     ]),
             ]);

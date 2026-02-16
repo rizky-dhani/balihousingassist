@@ -14,6 +14,7 @@ class SiteSetting extends Model
         'linkedin_url',
         'whatsapp_number',
         'settings',
+        'google_tag_script',
     ];
 
     protected function casts(): array
