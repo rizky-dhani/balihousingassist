@@ -19,7 +19,6 @@ use Filament\Schemas\Components\Wizard\Step;
 use Filament\Schemas\Schema;
 use Filament\Support\RawJs;
 use Illuminate\Database\Eloquent\Model;
-use App\Services\WatermarkService;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
@@ -208,11 +207,6 @@ class PropertyForm
 
                                     return "{$name}-main.{$extension}";
                                 })
-                                ->afterStateUpdated(function (?string $state) {
-                                    if ($state) {
-                                        WatermarkService::apply(Storage::disk('public')->path($state));
-                                    }
-                                })
                                 ->columnSpanFull(),
                             FileUpload::make('images')
                                 ->multiple()
@@ -233,13 +227,6 @@ class PropertyForm
                                     }
 
                                     return "{$name}-{$count}.{$extension}";
-                                })
-                                ->afterStateUpdated(function (?array $state) {
-                                    if ($state) {
-                                        foreach ($state as $path) {
-                                            WatermarkService::apply(Storage::disk('public')->path($path));
-                                        }
-                                    }
                                 })
                                 ->columnSpanFull(),
                             Toggle::make('is_available')
