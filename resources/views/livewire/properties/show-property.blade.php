@@ -334,8 +334,8 @@
     >
         <div class="flex items-center justify-between mb-4">
             <div>
-                <p class="text-xs font-bold uppercase tracking-widest text-base-content/40 leading-none mb-1">Starting from</p>
-                <p class="text-xl font-black text-primary">IDR {{ number_format($property->price_daily ?? $property->price_monthly ?? 0) }}</p>
+                <p class="text-xs font-bold uppercase tracking-widest text-base-content/40 leading-none mb-1">{{ $property->price_daily || $property->price_monthly ? 'Starting from' : '' }}</p>
+                <p class="text-xl font-black text-primary">{{ $property->price_daily ? 'IDR ' . number_format($property->price_daily) : ($property->price_monthly ? 'IDR ' . number_format($property->price_monthly) : 'Price upon Request') }}</p>
             </div>
         </div>
         
