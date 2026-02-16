@@ -1,5 +1,5 @@
 User-agent: *
-Disallow: /admin
+Disallow: /dashboard
 Disallow: /livewire
 
 Sitemap: /sitemap.xml
