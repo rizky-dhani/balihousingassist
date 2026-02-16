@@ -78,12 +78,12 @@ class AmenitySeeder extends Seeder
     private function getIconForAmenity(string $amenityName): string
     {
         return match ($amenityName) {
-            'WiFi' => 'wifi',
+            'WiFi' => 'wifi-01',
             'Air Conditioning' => 'snow',
-            'Heating' => 'sun',
+            'Heating' => 'sun-03',
             'Washing Machine' => 'washing-machine',
             'Dryer' => 'hanger',
-            'TV' => 'tv',
+            'TV' => 'modern-tv-4-k',
             'Iron' => 'suit-01',
             'Hair Dryer' => 'hair-dryer',
             'Dedicated Workspace' => 'computer-desk-01',
@@ -105,6 +105,7 @@ class AmenitySeeder extends Seeder
             'Patio or Balcony' => 'home-02',
             'Backyard' => 'football-pitch',
             'BBQ Grill' => 'bbq-grill',
+            'Outdoor Furniture' => 'bbq-grill',
             'Beach Access' => 'beach',
             'Waterfront' => 'water-polo',
             'Smoke Alarm' => 'alert-square',
