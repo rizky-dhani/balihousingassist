@@ -381,7 +381,7 @@
                 </button>
             </div>
 
-            <div class="grid grid-cols-2 gap-4 mb-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
                 <button @click="copyToClipboard()" class="flex flex-row items-center gap-4 group p-3 rounded-xl hover:bg-base-200 transition-colors">
                     <div class="size-14 rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
                         <x-hugeicons-copy-01 class="size-6" />
