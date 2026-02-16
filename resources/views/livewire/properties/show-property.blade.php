@@ -372,54 +372,54 @@
             x-transition:leave="transition ease-in duration-200"
             x-transition:leave-start="opacity-100 scale-100 translate-y-0"
             x-transition:leave-end="opacity-0 scale-95 translate-y-4"
-            class="relative bg-base-100 w-full max-w-lg rounded-3xl shadow-2xl p-8 border border-base-200"
+            class="relative bg-base-100 w-full max-w-lg rounded-3xl shadow-2xl p-4 sm:p-8 border border-base-200"
         >
-            <div class="flex items-center justify-between mb-8">
-                <h3 class="text-xl font-black tracking-tight">Share</h3>
+            <div class="flex items-center justify-between mb-6 sm:mb-8">
+                <h3 class="text-lg sm:text-xl font-black tracking-tight">Share</h3>
                 <button @click="showShareModal = false" class="btn btn-ghost btn-circle btn-sm">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
             </div>
 
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-                <button @click="copyToClipboard()" class="flex flex-row items-center gap-4 group p-3 rounded-xl hover:bg-base-200 transition-colors">
-                    <div class="size-14 rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                        <x-hugeicons-copy-01 class="size-6" />
+            <div class="grid grid-cols-3 sm:grid-cols-2 gap-2 sm:gap-4 mb-6 sm:mb-8">
+                <button @click="copyToClipboard()" class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 group p-2 sm:p-3 rounded-xl hover:bg-base-200 transition-colors">
+                    <div class="size-10 sm:size-14 rounded-xl sm:rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                        <x-hugeicons-copy-01 class="size-5 sm:size-6" />
                     </div>
                     <span class="text-[10px] font-bold uppercase tracking-widest opacity-40 group-hover:opacity-100 transition-opacity" x-text="copyStatus">Copy Link</span>
                 </button>
 
-                <a href="mailto:?subject=Check out this property: {{ $displayName }}&body={{ $propertyUrl }}" class="flex flex-row items-center gap-4 group p-3 rounded-xl hover:bg-base-200 transition-colors">
-                    <div class="size-14 rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
-                        <x-hugeicons-mail-01 class="size-6" />
+                <a href="mailto:?subject=Check out this property: {{ $displayName }}&body={{ $propertyUrl }}" class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 group p-2 sm:p-3 rounded-xl hover:bg-base-200 transition-colors">
+                    <div class="size-10 sm:size-14 rounded-xl sm:rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all shadow-sm">
+                        <x-hugeicons-mail-01 class="size-5 sm:size-6" />
                     </div>
                     <span class="text-[10px] font-bold uppercase tracking-widest opacity-40 group-hover:opacity-100 transition-opacity">Email</span>
                 </a>
 
-                <a href="https://wa.me/?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" class="flex flex-row items-center gap-4 group p-3 rounded-xl hover:bg-base-200 transition-colors">
-                    <div class="size-14 rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-[#25D366] group-hover:text-white transition-all shadow-sm">
-                        <x-hugeicons-whatsapp class="size-6" />
+                <a href="https://wa.me/?text={{ $shareText }}%20{{ $shareUrl }}" target="_blank" class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 group p-2 sm:p-3 rounded-xl hover:bg-base-200 transition-colors">
+                    <div class="size-10 sm:size-14 rounded-xl sm:rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-[#25D366] group-hover:text-white transition-all shadow-sm">
+                        <x-hugeicons-whatsapp class="size-5 sm:size-6" />
                     </div>
                     <span class="text-[10px] font-bold uppercase tracking-widest opacity-40 group-hover:opacity-100 transition-opacity">WhatsApp</span>
                 </a>
 
-                <a href="fb-messenger://share/?link={{ $shareUrl }}" target="_blank" class="flex flex-row items-center gap-4 group p-3 rounded-xl hover:bg-base-200 transition-colors">
-                    <div class="size-14 rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-[#0084FF] group-hover:text-white transition-all shadow-sm">
-                        <x-hugeicons-messenger class="size-6" />
+                <a href="fb-messenger://share/?link={{ $shareUrl }}" target="_blank" class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 group p-2 sm:p-3 rounded-xl hover:bg-base-200 transition-colors">
+                    <div class="size-10 sm:size-14 rounded-xl sm:rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-[#0084FF] group-hover:text-white transition-all shadow-sm">
+                        <x-hugeicons-messenger class="size-5 sm:size-6" />
                     </div>
                     <span class="text-[10px] font-bold uppercase tracking-widest opacity-40 group-hover:opacity-100 transition-opacity">Messenger</span>
                 </a>
 
-                <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" class="flex flex-row items-center gap-4 group p-3 rounded-xl hover:bg-base-200 transition-colors">
-                    <div class="size-14 rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-[#1877F2] group-hover:text-white transition-all shadow-sm">
-                        <x-hugeicons-facebook-01 class="size-6" />
+                <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 group p-2 sm:p-3 rounded-xl hover:bg-base-200 transition-colors">
+                    <div class="size-10 sm:size-14 rounded-xl sm:rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-[#1877F2] group-hover:text-white transition-all shadow-sm">
+                        <x-hugeicons-facebook-01 class="size-5 sm:size-6" />
                     </div>
                     <span class="text-[10px] font-bold uppercase tracking-widest opacity-40 group-hover:opacity-100 transition-opacity">Facebook</span>
                 </a>
 
-                <a href="https://twitter.com/intent/tweet?text={{ $shareText }}&url={{ $shareUrl }}" target="_blank" class="flex flex-row items-center gap-4 group p-3 rounded-xl hover:bg-base-200 transition-colors">
-                    <div class="size-14 rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all shadow-sm">
-                        <x-hugeicons-new-twitter class="size-6" />
+                <a href="https://twitter.com/intent/tweet?text={{ $shareText }}&url={{ $shareUrl }}" target="_blank" class="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 group p-2 sm:p-3 rounded-xl hover:bg-base-200 transition-colors">
+                    <div class="size-10 sm:size-14 rounded-xl sm:rounded-2xl bg-base-200 flex items-center justify-center group-hover:bg-black group-hover:text-white transition-all shadow-sm">
+                        <x-hugeicons-new-twitter class="size-5 sm:size-6" />
                     </div>
                     <span class="text-[10px] font-bold uppercase tracking-widest opacity-40 group-hover:opacity-100 transition-opacity">X</span>
                 </a>
