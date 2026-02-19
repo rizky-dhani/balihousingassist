@@ -8,17 +8,17 @@ use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 use Spatie\Analytics\Period;
 
-class TopPagesWidget extends BaseWidget
+class TopReferrersWidget extends BaseWidget
 {
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?int $sort = 6;
+    protected static ?int $sort = 7;
 
     public ?string $filter = '30';
 
     protected function getTableHeading(): string
     {
-        return 'Most Visited Pages (Last '.($this->filter ?? 30).' Days)';
+        return 'Top Referrers (Last '.($this->filter ?? 30).' Days)';
     }
 
     protected function getFilters(): array
@@ -39,26 +39,22 @@ class TopPagesWidget extends BaseWidget
                     $days = (int) ($this->filter ?? 30);
                     $analytics = app(AnalyticsService::class);
 
-                    return $analytics->fetchMostVisitedPages(Period::days($days), 15);
+                    return $analytics->fetchTopReferrers(Period::days($days), 15);
                 } catch (\Throwable $e) {
                     return collect();
                 }
             })
             ->columns([
-                Tables\Columns\TextColumn::make('pageTitle')
-                    ->label('Page Title')
+                Tables\Columns\TextColumn::make('pageReferrer')
+                    ->label('Referrer')
                     ->weight('medium')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('fullPageUrl')
-                    ->label('URL')
-                    ->color('gray')
-                    ->limit(50)
+                    ->formatStateUsing(fn ($state) => $state ?: '(Direct / None)')
                     ->copyable()
-                    ->copyMessage('URL copied!'),
+                    ->copyMessage('Referrer copied!'),
                 Tables\Columns\TextColumn::make('screenPageViews')
                     ->label('Views')
                     ->badge()
-                    ->color('info')
+                    ->color('success')
                     ->formatStateUsing(fn ($state) => number_format($state))
                     ->sortable(),
             ])

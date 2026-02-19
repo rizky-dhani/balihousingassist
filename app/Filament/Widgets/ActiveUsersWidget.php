@@ -2,40 +2,48 @@
 
 namespace App\Filament\Widgets;
 
+use App\Services\AnalyticsService;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-use Spatie\Analytics\Facades\Analytics;
 use Spatie\Analytics\Period;
 
 class ActiveUsersWidget extends StatsOverviewWidget
 {
+    protected static ?int $sort = 1;
+
     protected function getStats(): array
     {
         try {
-            $analyticsData = Analytics::fetchTotalVisitorsAndPageViews(Period::days(7));
+            $analytics = app(AnalyticsService::class);
+            $analyticsData = $analytics->fetchTotalVisitorsAndPageViews(Period::days(30));
 
             $totalVisitors = $analyticsData->sum('visitors');
             $totalPageViews = $analyticsData->sum('pageViews');
 
-            // For real-time active users (last 30 mins)
-            // GA4 API via Spatie Analytics has some limitations on real-time,
-            // but we can at least show trends.
+            $chartData = $analyticsData->take(7)->pluck('visitors')->toArray();
+            $pageViewChartData = $analyticsData->take(7)->pluck('pageViews')->toArray();
 
             return [
                 Stat::make('Total Visitors', number_format($totalVisitors))
-                    ->description('Last 7 days')
+                    ->description('Last 30 days')
                     ->descriptionIcon('heroicon-m-users')
-                    ->chart([7, 3, 4, 5, 6, 3, 5, 2])
+                    ->chart($chartData)
                     ->color('success'),
                 Stat::make('Page Views', number_format($totalPageViews))
-                    ->description('Last 7 days')
+                    ->description('Last 30 days')
                     ->descriptionIcon('heroicon-m-eye')
+                    ->chart($pageViewChartData)
                     ->color('primary'),
+                Stat::make('Avg. Pages/Session', $totalVisitors > 0 ? number_format($totalPageViews / $totalVisitors, 1) : '0')
+                    ->description('Engagement rate')
+                    ->descriptionIcon('heroicon-m-chart-bar')
+                    ->color('info'),
             ];
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return [
-                Stat::make('Analytics', 'Not Configured')
-                    ->description('Please check your .env settings')
+                Stat::make('Analytics Error', $e->getMessage())
+                    ->description('Unable to fetch data from Google Analytics')
+                    ->descriptionIcon('heroicon-m-exclamation-triangle')
                     ->color('danger'),
             ];
         }
