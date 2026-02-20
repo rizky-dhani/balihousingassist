@@ -6,20 +6,20 @@
     $whatsappUrl = $whatsappNumber ? 'https://wa.me/' . preg_replace('/[^0-9]/', '', $whatsappNumber) : '#';
 @endphp
 
-<footer class="bg-base-200 pt-16 pb-8 px-4 lg:px-8 border-t border-base-300">
+<footer id="site-footer" class="bg-base-200 pt-16 pb-8 px-4 lg:px-8 border-t border-base-300">
     <div class="max-w-screen-xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
             {{-- Brand Section --}}
             <div class="flex flex-col gap-4">
                 <a class="block text-primary" href="/">
                     @if ($siteSettings?->logo)
-                        <img class="h-12 w-auto" src="{{ asset('storage/' . $siteSettings->logo) }}" alt="{{ config('app.name') }}">
+                        <img class="w-auto" src="{{ asset('storage/' . $siteSettings->logo) }}" alt="{{ config('app.name') }}">
                     @else
                         <span class="text-2xl font-bold uppercase tracking-wider">{{ config('app.name') }}</span>
                     @endif
                 </a>
                 <p class="text-base-content/60 text-sm leading-relaxed">
-                    Helping you find your perfect home in Bali. Quality service and professional assistance for all your housing needs.
+                    Find your perfect getaway in Bali. We're here to help you feel at home.
                 </p>
             </div>
 

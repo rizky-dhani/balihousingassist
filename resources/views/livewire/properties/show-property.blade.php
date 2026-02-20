@@ -37,7 +37,7 @@
     }
 }">
 @php
-    $displayName = $property->category?->name . ' in ' . ($property->location?->city ?? 'Bali');
+    $displayName = $property->category?->name . ' in ' . ($property->location?->name ?? 'Bali');
     $propertyUrl = route('properties.show', $property->slug);
     $shareText = urlencode("Check out this property: " . $displayName);
     $shareUrl = urlencode($propertyUrl);
@@ -71,7 +71,7 @@
                         @endif
                         <span class="flex items-center gap-1 text-xs font-bold uppercase tracking-wider text-base-content/60 bg-base-200 px-3 py-1 rounded-full">
                             <x-hugeicons-location-01 class="size-3" />
-                            {{ $property->location?->city ?? 'Bali' }}
+                            {{ $property->location?->name ?? 'Bali' }}
                         </span>
                     </div>
                     
@@ -152,7 +152,7 @@
                 @php
                     $siteSettings = \App\Models\SiteSetting::getSingleton();
                     $waNumber = preg_replace('/[^0-9]/', '', $siteSettings->whatsapp_number ?? '628123456789');
-                    $locationName = $property->location?->city ?? 'Bali';
+                    $locationName = $property->location?->name ?? 'Bali';
                     $propertyUrl = route('properties.show', $property->slug);
                     $waText = urlencode("Hello, I'm interested in booking this property in {$locationName}: {$propertyUrl}. Is it available?");
                     $waUrl = "https://wa.me/{$waNumber}?text={$waText}";

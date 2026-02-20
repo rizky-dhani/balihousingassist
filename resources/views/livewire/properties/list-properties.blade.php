@@ -1,19 +1,5 @@
 <section class="bg-base-100 py-8 lg:py-12 px-4 lg:px-8">
-    <div class="max-w-screen-xl mx-auto" x-data="{
-    init() {
-        let observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    @this.set('showBottomFilters', false);
-                } else {
-                    @this.set('showBottomFilters', true);
-                }
-            });
-        }, { threshold: 0 });
-
-        observer.observe(document.getElementById('advanced-filters-top'));
-    },
-}">
+    <div class="max-w-screen-xl mx-auto" x-data="{}">
         {{-- Hero Section --}}
         <div class="mb-12 text-center">
             <h1 class="text-4xl lg:text-5xl font-extrabold mb-4 tracking-tight">Discover Your Dream Stay in Bali</h1>
@@ -23,8 +9,11 @@
         {{-- Category Navigation Bar --}}
         <div class="relative group mb-8" x-data="{
             slider: null,
+            canScrollLeft: false,
+            canScrollRight: false,
             init() {
                 this.slider = this.$refs.slider;
+                this.updateScrollButtons();
             },
             scrollLeft() {
                 this.slider.scrollBy({ left: -200, behavior: 'smooth' });
@@ -32,13 +21,12 @@
             scrollRight() {
                 this.slider.scrollBy({ left: 200, behavior: 'smooth' });
             },
-            canScrollLeft: false,
-            canScrollRight: false,
             updateScrollButtons() {
+                if (!this.slider) return;
                 this.canScrollLeft = this.slider.scrollLeft > 0;
                 this.canScrollRight = this.slider.scrollLeft < this.slider.scrollWidth - this.slider.clientWidth - 10;
             }
-        }" x-init="updateScrollButtons" @scroll.window="updateScrollButtons">
+        }" @scroll.window="updateScrollButtons">
             <div class="absolute left-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <button @click="scrollLeft()" x-show="canScrollLeft" class="btn btn-circle btn-sm btn-primary shadow-lg bg-base-100" x-cloak>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
@@ -160,7 +148,7 @@
         </div>
     </div>
 
-    <div class="max-w-screen-xl mx-auto px-4 lg:px-8">
+    <div class="max-w-screen-xl mx-auto">
         {{-- Skeleton Loading --}}
         <div wire:loading.grid wire:target="sortBy, category, property_location_id, bedroom, bathroom, min_price, max_price, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             @foreach(range(1, 8) as $i)

@@ -1,7 +1,7 @@
 @props(['property'])
 
 @php
-    $displayName = $property->category?->name . ' in ' . ($property->location?->city ?? 'Bali');
+    $displayName = $property->category?->name . ' in ' . ($property->location?->name ?? 'Bali');
     $thumbnail = 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80';
     if ($property->main_image) {
         $thumbnail = asset('storage/' . $property->main_image);
@@ -10,7 +10,7 @@
     }
     $siteSettings = \App\Models\SiteSetting::getSingleton();
     $waNumber = preg_replace('/[^0-9]/', '', $siteSettings->whatsapp_number ?? '628123456789');
-    $locationName = $property->location?->city ?? 'Bali';
+    $locationName = $property->location?->name ?? 'Bali';
     $propertyUrl = route('properties.show', $property->slug);
     $waText = urlencode("Hello, I'm interested in booking this property in {$locationName}: {$propertyUrl}");
     $waUrl = "https://wa.me/{$waNumber}?text={$waText}";
@@ -41,10 +41,7 @@
   </div>
 
   <div class="flex flex-col flex-grow p-5">
-    <div class="flex items-center gap-1 text-base-content/50 mb-2">
-        <x-hugeicons-location-01 class="h-3.5 w-3.5" />
-        <span class="text-xs font-bold uppercase tracking-wider">{{ $property->location?->city ?? 'Bali' }}</span>
-    </div>
+
 
     <a href="{{ route('properties.show', $property->slug) }}" wire:navigate>
       <h3 class="font-bold text-xl mb-3 group-hover:text-primary transition-colors line-clamp-1">{{ $displayName }}</h3>
@@ -59,9 +56,7 @@
             <x-hugeicons-bathtub-01 class="h-5 w-5 text-base-content/40" />
             <span class="text-sm font-bold">{{ (float) $property->bathroom }}</span>
         </div>
-        <div class="flex items-center gap-1.5 ml-auto">
-            <span class="badge badge-ghost badge-sm font-bold">{{ $property->is_available ? 'Available' : 'Booked' }}</span>
-        </div>
+
     </div>
 
     <div class="mt-auto border-t border-base-200 pt-5 flex items-center justify-between">
@@ -87,9 +82,7 @@
             @endif
         </div>
 
-        <a href="{{ $waUrl }}" target="_blank" class="btn btn-circle btn-primary btn-sm shadow-md shadow-primary/30">
-            <x-hugeicons-whatsapp class="h-4 w-4" />
-        </a>
+
     </div>
   </div>
 </div>
