@@ -16,15 +16,15 @@
     $waUrl = "https://wa.me/{$waNumber}?text={$waText}";
 @endphp
 
-<div class="group flex flex-col h-full rounded-3xl overflow-hidden border border-base-200 bg-base-100 transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
-    <div class="relative aspect-4/3 overflow-hidden">
+<div class="flex flex-col h-full rounded-3xl overflow-hidden bg-base-100">
+    <div class="relative aspect-4/3 overflow-hidden rounded-3xl border border-base-200">
     <a href="{{ route('properties.show', $property->slug) }}" wire:navigate class="block h-full">
       <img
         alt="{{ $displayName }}"
         src="{{ $thumbnail }}"
-        class="w-full h-full object-cover transition duration-700 group-hover:scale-110"
+        class="w-full h-full object-cover"
       />
-      <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+      <div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
     </a>
 
     @if($property->is_featured)
@@ -40,45 +40,45 @@
     @endif
   </div>
 
-  <div class="flex flex-col flex-grow p-5">
+  <div class="flex flex-col flex-grow py-4">
 
 
     <a href="{{ route('properties.show', $property->slug) }}" wire:navigate>
-      <h3 class="font-bold text-xl mb-3 group-hover:text-primary transition-colors line-clamp-1">{{ $displayName }}</h3>
+      <h3 class="font-bold text-lg mb-2 transition-colors line-clamp-2">{{ $displayName }}</h3>
     </a>
 
-    <div class="flex items-center gap-4 text-base-content/70 mb-6">
-        <div class="flex items-center gap-1.5">
-            <x-hugeicons-bed-double class="h-5 w-5 text-base-content/40" />
-            <span class="text-sm font-bold">{{ $property->bedroom }}</span>
+    <div class="flex items-center gap-3 text-base-content/70 mb-4">
+        <div class="flex items-center gap-1">
+            <x-hugeicons-bed-double class="h-4 w-4 text-base-content/40" />
+            <span class="text-xs font-bold">{{ $property->bedroom }}</span>
         </div>
-        <div class="flex items-center gap-1.5">
-            <x-hugeicons-bathtub-01 class="h-5 w-5 text-base-content/40" />
-            <span class="text-sm font-bold">{{ (float) $property->bathroom }}</span>
+        <div class="flex items-center gap-1">
+            <x-hugeicons-bathtub-01 class="h-4 w-4 text-base-content/40" />
+            <span class="text-xs font-bold">{{ (float) $property->bathroom }}</span>
         </div>
 
     </div>
 
-    <div class="mt-auto border-t border-base-200 pt-5 flex items-center justify-between">
+    <div class="mt-auto border-t border-base-200 pt-4 flex items-center justify-between">
         <div>
             @if($property->price_daily)
                 <div class="flex flex-col">
-                    <span class="text-[10px] uppercase font-bold text-base-content/40 tracking-widest leading-none mb-1">Daily from</span>
+                    <span class="text-[9px] uppercase font-bold text-base-content/40 tracking-widest leading-none mb-1">Daily from</span>
                     <div class="flex items-baseline gap-1">
-                        <span class="text-lg font-extrabold text-primary">IDR {{ number_format($property->price_daily / 1000) }}k</span>
-                        <span class="text-[10px] text-base-content/50 font-bold uppercase">/ night</span>
+                        <span class="text-base font-extrabold text-primary">IDR {{ number_format($property->price_daily / 1000) }}k</span>
+                        <span class="text-[9px] text-base-content/50 font-bold uppercase">/ night</span>
                     </div>
                 </div>
             @elseif($property->price_monthly)
                 <div class="flex flex-col">
-                    <span class="text-[10px] uppercase font-bold text-base-content/40 tracking-widest leading-none mb-1">Monthly from</span>
+                    <span class="text-[9px] uppercase font-bold text-base-content/40 tracking-widest leading-none mb-1">Monthly from</span>
                     <div class="flex items-baseline gap-1">
-                        <span class="text-lg font-extrabold text-primary">IDR {{ number_format($property->price_monthly / 1000000, 1) }}M</span>
-                        <span class="text-[10px] text-base-content/50 font-bold uppercase">/ month</span>
+                        <span class="text-base font-extrabold text-primary">IDR {{ number_format($property->price_monthly / 1000000, 1) }}M</span>
+                        <span class="text-[9px] text-base-content/50 font-bold uppercase">/ month</span>
                     </div>
                 </div>
             @else
-                <span class="text-sm font-bold text-base-content/40 uppercase tracking-widest">Contact for Price</span>
+                <span class="text-xs font-bold text-base-content/40 uppercase tracking-widest">Contact for Price</span>
             @endif
         </div>
 

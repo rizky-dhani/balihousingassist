@@ -1,5 +1,5 @@
 <section class="bg-base-100 py-8 lg:py-12 px-4 lg:px-8">
-    <div class="max-w-screen-xl mx-auto">
+    <div class="max-w-screen-2xl mx-auto">
         <div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
             <div>
                 <div class="h-9 w-64 bg-base-200 rounded animate-pulse mb-2"></div>

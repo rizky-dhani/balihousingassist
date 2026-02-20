@@ -7,7 +7,7 @@
 @endphp
 
 <footer id="site-footer" class="bg-base-200 pt-16 pb-8 px-4 lg:px-8 border-t border-base-300">
-    <div class="max-w-screen-xl mx-auto">
+    <div class="max-w-screen-2xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
             {{-- Brand Section --}}
             <div class="flex flex-col gap-4">

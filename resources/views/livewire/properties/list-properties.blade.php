@@ -6,89 +6,93 @@
             <p class="text-lg text-base-content/70 max-w-2xl mx-auto">From daily retreats to yearly sanctuaries, explore our curated collection of luxury properties across the island.</p>
         </div>
 
-        {{-- Category Navigation Bar --}}
-        <div class="relative group mb-8" x-data="{
-            slider: null,
-            canScrollLeft: false,
-            canScrollRight: false,
-            init() {
-                this.slider = this.$refs.slider;
-                this.updateScrollButtons();
-            },
-            scrollLeft() {
-                this.slider.scrollBy({ left: -200, behavior: 'smooth' });
-            },
-            scrollRight() {
-                this.slider.scrollBy({ left: 200, behavior: 'smooth' });
-            },
-            updateScrollButtons() {
-                if (!this.slider) return;
-                this.canScrollLeft = this.slider.scrollLeft > 0;
-                this.canScrollRight = this.slider.scrollLeft < this.slider.scrollWidth - this.slider.clientWidth - 10;
-            }
-        }" @scroll.window="updateScrollButtons">
-            <div class="absolute left-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <button @click="scrollLeft()" x-show="canScrollLeft" class="btn btn-circle btn-sm btn-primary shadow-lg bg-base-100" x-cloak>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
-                </button>
-            </div>
-            <div x-ref="slider" class="border-b border-base-200 pb-6 overflow-x-auto no-scrollbar flex items-center gap-4 px-4 lg:gap-6 scroll-smooth" @scroll="updateScrollButtons()">
-                <button wire:click="$set('category', '')" class="flex flex-col items-center gap-2 group border-b-2 transition-all pb-2 whitespace-nowrap flex-shrink-0 {{ $category === '' ? 'border-primary text-primary opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-base-300' }}">
-                    <x-hugeicons-grid-view class="size-6 group-hover:scale-110 transition-transform" />
-                    <span class="text-xs font-bold uppercase tracking-wider">All</span>
-                </button>
-                @foreach($categories as $cat)
-                    <button wire:click="$set('category', '{{ $cat->slug }}')" class="flex flex-col items-center gap-2 group border-b-2 transition-all pb-2 whitespace-nowrap flex-shrink-0 {{ $category === $cat->slug ? 'border-primary text-primary opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-base-300' }}">
-                        <x-dynamic-component :component="$cat->icon ?? 'hugeicons-house-01'" class="size-6 group-hover:scale-110 transition-transform" />
-                        <span class="text-xs font-bold uppercase tracking-wider">{{ $cat->name }}</span>
+        {{-- Category & Filters Section --}}
+        <div class="flex flex-col lg:flex-row gap-4 lg:items-center mb-8">
+            {{-- Category Navigation Bar --}}
+            <div class="relative group w-full lg:w-1/2" x-data="{
+                slider: null,
+                canScrollLeft: false,
+                canScrollRight: false,
+                init() {
+                    this.slider = this.$refs.slider;
+                    this.updateScrollButtons();
+                },
+                scrollLeft() {
+                    this.slider.scrollBy({ left: -200, behavior: 'smooth' });
+                },
+                scrollRight() {
+                    this.slider.scrollBy({ left: 200, behavior: 'smooth' });
+                },
+                updateScrollButtons() {
+                    if (!this.slider) return;
+                    this.canScrollLeft = this.slider.scrollLeft > 0;
+                    this.canScrollRight = this.slider.scrollLeft < this.slider.scrollWidth - this.slider.clientWidth - 10;
+                }
+            }" @scroll.window="updateScrollButtons">
+                <div class="absolute left-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button @click="scrollLeft()" x-show="canScrollLeft" class="btn btn-circle btn-sm btn-primary shadow-lg bg-base-100" x-cloak>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
                     </button>
-                @endforeach
-            </div>
-            <div class="absolute right-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <button @click="scrollRight()" x-show="canScrollRight" class="btn btn-circle btn-sm btn-primary shadow-lg bg-base-100" x-cloak>
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
-                </button>
-            </div>
-        </div>
-
-        <div class="mb-8 flex justify-end">
-            <div class="inline-flex items-center gap-2 bg-base-100 p-4 rounded-3xl border border-base-200 shadow-sm" id="advanced-filters-top">
-                <div class="dropdown dropdown-end w-full lg:w-auto">
-                    <div tabindex="0" role="button" class="btn btn-ghost border border-base-200 rounded-2xl h-12 w-full lg:w-auto px-6">
-                        <span class="text-sm font-bold opacity-50 uppercase mr-2">Loc:</span>
-                        <span class="text-sm font-bold truncate">
-                            {{ $locations->firstWhere('id', $property_location_id)?->name ?? 'All' }}
-                        </span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-50 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                    </div>
-                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 mt-2">
-                        <li><a wire:click="$set('property_location_id', '')" class="{{ $property_location_id === '' ? 'active' : '' }}">All Locations</a></li>
-                        @foreach($locations as $loc)
-                            <li><a wire:click="$set('property_location_id', '{{ $loc->id }}')" class="{{ $property_location_id == $loc->id ? 'active' : '' }}">{{ $loc->name }}</a></li>
-                        @endforeach
-                    </ul>
                 </div>
-
-                <div class="dropdown dropdown-end w-full lg:w-auto">
-                    <div tabindex="0" role="button" class="btn btn-ghost border border-base-200 rounded-2xl h-12 w-full lg:w-auto px-6">
-                        <span class="text-sm font-bold opacity-50 uppercase mr-2">Sort:</span>
-                        <span class="text-sm font-bold">
-                            @if($sortBy === 'latest') Newest @elseif($sortBy === 'oldest') Oldest @elseif($sortBy === 'price_low') Price Low @else Price High @endif
-                        </span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-50 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                    </div>
-                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 mt-2">
-                        <li><a wire:click="$set('sortBy', 'latest')" class="{{ $sortBy === 'latest' ? 'active' : '' }}">Newest First</a></li>
-                        <li><a wire:click="$set('sortBy', 'oldest')" class="{{ $sortBy === 'oldest' ? 'active' : '' }}">Oldest First</a></li>
-                        <li><a wire:click="$set('sortBy', 'price_low')" class="{{ $sortBy === 'price_low' ? 'active' : '' }}">Price: Low to High</a></li>
-                        <li><a wire:click="$set('sortBy', 'price_high')" class="{{ $sortBy === 'price_high' ? 'active' : '' }}">Price: High to Low</a></li>
-                    </ul>
+                <div x-ref="slider" class="border-b border-base-200 pb-6 overflow-x-auto no-scrollbar flex items-center gap-4 px-4 lg:gap-6 scroll-smooth" @scroll="updateScrollButtons()">
+                    <button wire:click="$set('category', '')" class="flex flex-col items-center gap-2 group border-b-2 transition-all pb-2 whitespace-nowrap flex-shrink-0 {{ $category === '' ? 'border-primary text-primary opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-base-300' }}">
+                        <x-hugeicons-grid-view class="size-6 group-hover:scale-110 transition-transform" />
+                        <span class="text-xs font-bold uppercase tracking-wider">All</span>
+                    </button>
+                    @foreach($categories as $cat)
+                        <button wire:click="$set('category', '{{ $cat->slug }}')" class="flex flex-col items-center gap-2 group border-b-2 transition-all pb-2 whitespace-nowrap flex-shrink-0 {{ $category === $cat->slug ? 'border-primary text-primary opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-base-300' }}">
+                            <x-dynamic-component :component="$cat->icon ?? 'hugeicons-house-01'" class="size-6 group-hover:scale-110 transition-transform" />
+                            <span class="text-xs font-bold uppercase tracking-wider">{{ $cat->name }}</span>
+                        </button>
+                    @endforeach
                 </div>
+                <div class="absolute right-0 top-1/2 -translate-y-1/2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button @click="scrollRight()" x-show="canScrollRight" class="btn btn-circle btn-sm btn-primary shadow-lg bg-base-100" x-cloak>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                </div>
+            </div>
 
-                <button @click="$dispatch('open-advanced-filters')" class="btn btn-primary rounded-2xl h-12 px-6 shadow-md shadow-primary/20">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
-                    Filters
-                </button>
+            {{-- Filters --}}
+            <div class="w-full lg:w-1/2">
+                <div class="flex gap-2 bg-base-100 p-4 rounded-3xl border border-base-200 shadow-sm" id="advanced-filters-top">
+                    <div class="dropdown dropdown-end flex-1">
+                        <div tabindex="0" role="button" class="btn btn-ghost border border-base-200 rounded-2xl h-12 w-full px-2 sm:px-4">
+                            <span class="text-sm font-bold opacity-50 uppercase mr-1">Loc:</span>
+                            <span class="text-sm font-bold truncate">
+                                {{ $locations->firstWhere('id', $property_location_id)?->name ?? 'All' }}
+                            </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-50 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 mt-2">
+                            <li><a wire:click="$set('property_location_id', '')" class="{{ $property_location_id === '' ? 'active' : '' }}">All Locations</a></li>
+                            @foreach($locations as $loc)
+                                <li><a wire:click="$set('property_location_id', '{{ $loc->id }}')" class="{{ $property_location_id == $loc->id ? 'active' : '' }}">{{ $loc->name }}</a></li>
+                            @endforeach
+                        </ul>
+                    </div>
+
+                    <div class="dropdown dropdown-end flex-1">
+                        <div tabindex="0" role="button" class="btn btn-ghost border border-base-200 rounded-2xl h-12 w-full px-2 sm:px-4">
+                            <span class="text-sm font-bold opacity-50 uppercase mr-1">Sort:</span>
+                            <span class="text-sm font-bold truncate">
+                                @if($sortBy === 'latest') Newest @elseif($sortBy === 'oldest') Oldest @elseif($sortBy === 'price_low') Price Low @else Price High @endif
+                            </span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-50 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                        </div>
+                        <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 mt-2">
+                            <li><a wire:click="$set('sortBy', 'latest')" class="{{ $sortBy === 'latest' ? 'active' : '' }}">Newest First</a></li>
+                            <li><a wire:click="$set('sortBy', 'oldest')" class="{{ $sortBy === 'oldest' ? 'active' : '' }}">Oldest First</a></li>
+                            <li><a wire:click="$set('sortBy', 'price_low')" class="{{ $sortBy === 'price_low' ? 'active' : '' }}">Price: Low to High</a></li>
+                            <li><a wire:click="$set('sortBy', 'price_high')" class="{{ $sortBy === 'price_high' ? 'active' : '' }}">Price: High to Low</a></li>
+                        </ul>
+                    </div>
+
+                    <button @click="$dispatch('open-advanced-filters')" class="btn btn-primary rounded-2xl h-12 px-2 sm:px-4 shadow-md shadow-primary/20 flex-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" /></svg>
+                        <span class="hidden sm:inline">Filters</span>
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -149,14 +153,14 @@
 
     <div class="max-w-screen-2xl mx-auto">
         {{-- Skeleton Loading --}}
-        <div wire:loading.grid wire:target="sortBy, category, property_location_id, bedroom, bathroom, min_price, max_price, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        <div wire:loading.grid wire:target="sortBy, category, property_location_id, bedroom, bathroom, min_price, max_price, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
             @foreach(range(1, 8) as $i)
                 <x-property-skeleton />
             @endforeach
         </div>
 
         {{-- Properties Grid --}}
-        <div wire:loading.remove wire:target="sortBy, category, property_location_id, bedroom, bathroom, min_price, max_price, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
+        <div wire:loading.remove wire:target="sortBy, category, property_location_id, bedroom, bathroom, min_price, max_price, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-6">
             @foreach($properties as $property)
                 <x-single-property :property="$property" />
             @endforeach

@@ -51,7 +51,7 @@
     @endif
 
     {{-- Hero Header Area --}}
-    <div class="px-4 lg:px-8 pt-8 pb-4 max-w-screen-xl mx-auto">
+    <div class="px-4 lg:px-8 pt-8 pb-4 max-w-screen-2xl mx-auto">
         <nav class="text-xs font-bold uppercase tracking-widest text-base-content/40 mb-6 flex items-center gap-2">
             <a href="{{ route('home') }}" wire:navigate class="hover:text-primary transition-colors">Home</a>
             <span class="opacity-30">/</span>
@@ -98,7 +98,7 @@
     </div>
 
     {{-- Main Content Grid --}}
-    <div class="max-w-screen-xl mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <div class="max-w-screen-2xl mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-12 gap-12">
         
         {{-- Left Column: Details --}}
         <div class="lg:col-span-8">
