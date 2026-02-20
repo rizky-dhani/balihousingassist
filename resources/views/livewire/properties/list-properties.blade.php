@@ -1,5 +1,5 @@
 <section class="bg-base-100 py-8 lg:py-12 px-4 lg:px-8">
-    <div class="max-w-screen-xl mx-auto" x-data="{}">
+    <div class="max-w-screen-2xl mx-auto" x-data="{}">
         {{-- Hero Section --}}
         <div class="mb-12 text-center">
             <h1 class="text-4xl lg:text-5xl font-extrabold mb-4 tracking-tight">Discover Your Dream Stay in Bali</h1>
@@ -32,7 +32,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
                 </button>
             </div>
-            <div x-ref="slider" class="border-b border-base-200 pb-2 overflow-x-auto no-scrollbar flex items-center gap-4 px-4 lg:gap-6 scroll-smooth" @scroll="updateScrollButtons()">
+            <div x-ref="slider" class="border-b border-base-200 pb-6 overflow-x-auto no-scrollbar flex items-center gap-4 px-4 lg:gap-6 scroll-smooth" @scroll="updateScrollButtons()">
                 <button wire:click="$set('category', '')" class="flex flex-col items-center gap-2 group border-b-2 transition-all pb-2 whitespace-nowrap flex-shrink-0 {{ $category === '' ? 'border-primary text-primary opacity-100' : 'border-transparent opacity-60 hover:opacity-100 hover:border-base-300' }}">
                     <x-hugeicons-grid-view class="size-6 group-hover:scale-110 transition-transform" />
                     <span class="text-xs font-bold uppercase tracking-wider">All</span>
@@ -51,15 +51,24 @@
             </div>
         </div>
 
-        <div class="mb-8 flex flex-col lg:flex-row items-stretch lg:items-center gap-4 bg-base-100 p-4 rounded-3xl border border-base-200 shadow-sm" id="advanced-filters-top">
-            <div class="relative flex-grow">
-                <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none opacity-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        <div class="mb-8 flex justify-end">
+            <div class="inline-flex items-center gap-2 bg-base-100 p-4 rounded-3xl border border-base-200 shadow-sm" id="advanced-filters-top">
+                <div class="dropdown dropdown-end w-full lg:w-auto">
+                    <div tabindex="0" role="button" class="btn btn-ghost border border-base-200 rounded-2xl h-12 w-full lg:w-auto px-6">
+                        <span class="text-sm font-bold opacity-50 uppercase mr-2">Loc:</span>
+                        <span class="text-sm font-bold truncate">
+                            {{ $locations->firstWhere('id', $property_location_id)?->name ?? 'All' }}
+                        </span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 opacity-50 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                    <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52 mt-2">
+                        <li><a wire:click="$set('property_location_id', '')" class="{{ $property_location_id === '' ? 'active' : '' }}">All Locations</a></li>
+                        @foreach($locations as $loc)
+                            <li><a wire:click="$set('property_location_id', '{{ $loc->id }}')" class="{{ $property_location_id == $loc->id ? 'active' : '' }}">{{ $loc->name }}</a></li>
+                        @endforeach
+                    </ul>
                 </div>
-                <input wire:model.live.debounce.500ms="search" type="text" placeholder="Search villa name or location..." class="input input-bordered w-full pl-12 rounded-2xl bg-base-200/50 border-none focus:bg-base-100 transition-colors h-12" />
-            </div>
 
-            <div class="flex items-center gap-2">
                 <div class="dropdown dropdown-end w-full lg:w-auto">
                     <div tabindex="0" role="button" class="btn btn-ghost border border-base-200 rounded-2xl h-12 w-full lg:w-auto px-6">
                         <span class="text-sm font-bold opacity-50 uppercase mr-2">Sort:</span>
@@ -92,16 +101,6 @@
                     </button>
                 </div>
                 <div class="p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div class="form-control w-full">
-                        <label class="label"><span class="label-text font-bold">Location</span></label>
-                        <select wire:model="property_location_id" class="select select-bordered w-full rounded-xl">
-                            <option value="">All Locations</option>
-                            @foreach($locations as $loc)
-                                <option value="{{ $loc->id }}">{{ $loc->name }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
                     <div class="form-control w-full">
                         <label class="label"><span class="label-text font-bold">Bedrooms</span></label>
                         <select wire:model="bedroom" class="select select-bordered w-full rounded-xl">
@@ -148,7 +147,7 @@
         </div>
     </div>
 
-    <div class="max-w-screen-xl mx-auto">
+    <div class="max-w-screen-2xl mx-auto">
         {{-- Skeleton Loading --}}
         <div wire:loading.grid wire:target="sortBy, category, property_location_id, bedroom, bathroom, min_price, max_price, applyFilters, resetFilters" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
             @foreach(range(1, 8) as $i)
